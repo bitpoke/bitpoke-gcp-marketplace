@@ -1,0 +1,6 @@
+dependencies:
+- name: stack
+  repository: file://stack
+  version: 0.0.1+master
+digest: sha256:b99aef15314bd270cb78dc0f5b7668ee04af5753ddb8b6f926da94af55ab18d1
+generated: 2019-05-17T19:35:01.728062+03:00

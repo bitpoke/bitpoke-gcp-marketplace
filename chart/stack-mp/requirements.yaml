@@ -1,0 +1,5 @@
+dependencies:
+- name: stack
+  version: "<1.0"
+  repository: "file://stack"
+  condition: stack.enabled
