@@ -9,14 +9,14 @@ include crd.Makefile
 include app.Makefile
 
 TAG ?= latest
-
+STACK_CHART_VERSION ?= v0.3.7
 CERT_MANAGER_TAG ?= v0.8.1
-
 METRICS_EXPORTER_TAG ?= v0.5.1
 
 $(info ---- TAG = $(TAG))
-
+$(info ---- STACK_CHART_VERSION = $(STACK_CHART_VERSION))
 $(info ---- CERT_MANAGER_TAG = $(CERT_MANAGER_TAG))
+
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/dashboard/deployer:$(TAG)
 NAME ?= dashboard-1
@@ -37,22 +37,18 @@ TESTER_IMAGE ?= $(REGISTRY)/dashboard/tester:$(TAG)
 
 app/build:: .build/dashboard/deployer \
             .build/dashboard/cert-manager-controller \
-            .build/dashboard/cert-manager-acmesolver
+            .build/dashboard/cert-manager-acmesolver \
+            .build/dashboard/cert-manager-webhook \
+            .build/dashboard/cert-manager-cainjector
 
-# app/build:: .build/dashboard/deployer \
-#             .build/dashboard/dashboard \
-#             .build/dashboard/apache-exporter \
-#             .build/dashboard/mysql \
-#             .build/dashboard/mysqld-exporter \
-#             .build/dashboard/prometheus-to-sd \
-#             .build/dashboard/tester
-
+## Republish docker images to Google registry
 
 .build/dashboard: | .build
 	mkdir -p "$@"
 
+# build deployer image
 .build/dashboard/deployer: deployer/* \
-                           manifest/* \
+                           .build/manifests.yaml.template \
                            schema.yaml \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/MARKETPLACE_TOOLS_TAG \
@@ -69,29 +65,74 @@ app/build:: .build/dashboard/deployer \
 	docker push "$(APP_DEPLOYER_IMAGE)"
 	@touch "$@"
 
-.build/dashboard/cert-manager-controller: .build/var/CERT_MANAGER_TAG \
-                            .build/var/TAG \
-                            | .build/dashboard
-	docker pull quay.io/jetstack/cert-manager-controller:$(CERT_MANAGER_TAG)
-	docker tag quay.io/jetstack/cert-manager-controller:$(CERT_MANAGER_TAG) \
-	    "$(REGISTRY)/dashboard/cert-manager-controller:$(TAG)"
-	docker push "$(REGISTRY)/dashboard/cert-manager-controller:$(TAG)"
+
+# cert-manager images
+.build/dashboard/cert-manager-%: .build/var/CERT_MANAGER_TAG \
+                                 .build/var/TAG \
+                                 | .build/dashboard
+	docker pull quay.io/jetstack/cert-manager-$*:$(CERT_MANAGER_TAG)
+	docker tag quay.io/jetstack/cert-manager-$*:$(CERT_MANAGER_TAG) \
+	    "$(REGISTRY)/dashboard/cert-manager-$*:$(TAG)"
+	docker push "$(REGISTRY)/dashboard/cert-manager-$*:$(TAG)"
 	@touch "$@"
 
-.build/dashboard/cert-manager-acmesolver: .build/var/CERT_MANAGER_TAG \
-                            .build/var/TAG \
-                            | .build/dashboard
-	docker pull quay.io/jetstack/cert-manager-acmesolver:$(CERT_MANAGER_TAG)
-	docker tag quay.io/jetstack/cert-manager-acmesolver:$(CERT_MANAGER_TAG) \
-	    "$(REGISTRY)/dashboard/cert-manager-acmesolver:$(TAG)"
-	docker push "$(REGISTRY)/dashboard/cert-manager-acmesolver:$(TAG)"
-	@touch "$@"
 
-.build/dashboard/dashboard: .build/var/REGISTRY \
-                            .build/var/TAG \
-                            | .build/dashboard
-	docker pull marketplace.gcr.io/google/dashboard5-php7-apache:$(TAG)
-	docker tag marketplace.gcr.io/google/dashboard5-php7-apache:$(TAG) \
-	    "$(REGISTRY)/dashboard:$(TAG)"
-	docker push "$(REGISTRY)/dashboard:$(TAG)"
-	@touch "$@"
+## Build the manifests
+
+.build/manifest: | .build
+	mkdir "$@"
+
+.build/charts: | .build
+	mkdir "$@"
+
+.build/charts/stack: .build/var/STACK_CHART_VERSION | .build/charts
+	# https://github.com/helm/helm/issues/5773
+	cd .build/charts && \
+	helm fetch presslabs/stack --version $(STACK_CHART_VERSION) --untar
+
+
+.build/manifest/charts: | .build/manifest
+	mkdir "$@"
+
+
+.build/manifest/charts/stack: manifest/values.yaml \
+                              .build/charts/stack \
+                              | .build/manifest/charts
+	helm template .build/charts/stack -f manifest/values.yaml \
+			--name '$${name}' --namespace '$${namespace}' \
+			--output-dir .build/manifest/charts
+
+
+.build/manifest/%: $(shell find manifest -name '*.yaml') | .build/manifest
+	rm -rf "$@"
+	cp -r manifest/$* "$@"
+
+
+.build/manifest/manifest_deployer.yaml: manifest/* \
+                               .build/manifest/charts/stack \
+                               .build/manifest/kustomization.yaml \
+                               .build/manifest/deployer \
+                               .build/manifest/job \
+                               | .build/manifest
+	kustomize build .build/manifest/deployer -o "$@" \
+		--load_restrictor none
+
+
+.build/manifest/manifest_job.yaml: manifest/* \
+																	 .build/manifest/charts/stack \
+																	 .build/manifest/kustomization.yaml \
+																	 .build/manifest/deployer \
+																	 .build/manifest/job \
+                                   | .build/manifest
+	kustomize build .build/manifest/job/chart -o "$@" \
+		--load_restrictor none
+
+
+.build/manifests.yaml.template: .build/manifest/manifest_deployer.yaml \
+                                .build/manifest/manifest_job.yaml \
+                                | .build
+	rm -f "$@"
+	# this will create the config map with additional required resources (e.g. crds)
+	# and the job that applies them
+	kustomize build .build/manifest --load_restrictor none -o "$@"
+

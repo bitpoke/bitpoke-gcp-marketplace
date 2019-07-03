@@ -1,0 +1,27 @@
+# resources that will be deployed by the deploy
+resources:
+  - ../charts/stack/templates/application.yaml
+
+  # cert-manager objects
+  - ../charts/stack/charts/cert-manager/charts/webhook/templates/service.yaml
+  - ../charts/stack/charts/cert-manager/charts/webhook/templates/deployment.yaml
+  - ../charts/stack/charts/cert-manager/charts/webhook/templates/pki.yaml
+  - ../charts/stack/charts/cert-manager/charts/cainjector/templates/deployment.yaml
+  - ../charts/stack/charts/cert-manager/templates/deployment.yaml
+
+
+patchesJson6902:
+# cert-manager fix service accounts
+- target:
+    group: apps
+    version: v1beta1
+    kind: Deployment
+    name: "${name}-cert-inj"
+  path: service_account_patch.yaml
+- target:
+    group: apps
+    version: v1beta1
+    kind: Deployment
+    name: "${name}-cert-wh"
+  path: service_account_patch.yaml
+

@@ -21,15 +21,37 @@ properties:
 
   certManagerImage:
     type: string
-    default: $REGISTRY/cert-manager-controller:$TAG
+    default: $REGISTRY/cert-manager-controller
     x-google-marketplace:
       type: IMAGE
 
-  acmeSolverImage:
+  certAcmeSolverImage:
     type: string
-    default: $REGISTRY/acme-ingress-shim:$TAG
+    default: $REGISTRY/cert-manager-acmesolver
     x-google-marketplace:
       type: IMAGE
+
+  certWebhookImage:
+    type: string
+    default: $REGISTRY/cert-manager-webhook
+    x-google-marketplace:
+      type: IMAGE
+
+  certCAinjectorImage:
+    type: string
+    default: $REGISTRY/cert-manager-cainjector
+    x-google-marketplace:
+      type: IMAGE
+
+  # tag used for docker images
+  tag:
+    type: string
+    default: $TAG
+
+  appUID:
+    type: string
+    x-google-marketplace:
+      type: APPLICATION_UID
 
 required:
 - name

@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "${name}-dash-install-manifest"
+spec:
+  template:
+    spec:
+      serviceAccountName: $serviceAccount
+      restartPolicy: Never
+      containers:
+      - name: init
+        # TODO: insert a image here
+        #image: "${APP_DEPLOYER_IMAGE}"
+        image: bitnami/kubectl:latest
+        # don't validate due to: https://github.com/jetstack/cert-manager/issues/1143
+        command: ["kubectl", "apply", "-f", "/data/manifest_job.yaml", "--validate=false"]
+        volumeMounts:
+        - name: manifest-volume
+          mountPath: /data/
+      volumes:
+      - name: manifest-volume
+        configMap:
+          name: "${name}-dash-install-manifest"
+  backoffLimit: 3

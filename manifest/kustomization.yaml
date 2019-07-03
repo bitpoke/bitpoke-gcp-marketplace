@@ -1,0 +1,8 @@
+# This is a global kustomize that applies to all resources
+
+commonLabels:
+  "dashboard.presslabs.com/version": "0.0.1"
+
+resources:
+ - ./deployer
+ - ./job

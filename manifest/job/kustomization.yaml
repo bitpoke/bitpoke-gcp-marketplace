@@ -1,0 +1,9 @@
+# resources that will be in the deployer and creates the job
+resources:
+  - job.yaml
+  - namespace.yaml
+
+configMapGenerator:
+- name: "${name}-dash-install-manifest"
+  files:
+    - ../manifest_job.yaml

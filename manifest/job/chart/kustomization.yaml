@@ -1,0 +1,18 @@
+# resources that will be deployed by the job
+resources:
+  - ../../charts/stack/templates/cert-manager-crds.yaml
+  - ../../charts/stack/templates/acme-issuer.yaml
+  - ../../charts/stack/charts/cert-manager/charts/webhook/templates/apiservice.yaml
+  - ../../charts/stack/charts/cert-manager/charts/webhook/templates/validating-webhook.yaml
+
+commonLabels:
+  "dashboard.presslabs.com/version": "0.0.1"
+
+patchesJson6902:
+# cert-manager set owner reference
+- target:
+    group: admissionregistration.k8s.io
+    version: v1beta1
+    kind: ValidatingWebhookConfiguration
+    name: ${name}-cert-wh
+  path: owner_reference_patch.yaml
