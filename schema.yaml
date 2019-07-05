@@ -9,6 +9,8 @@ properties:
     type: string
     x-google-marketplace:
       type: NAMESPACE
+
+  # general
   serviceAccount:
     type: string
     x-google-marketplace:
@@ -18,7 +20,17 @@ properties:
         - type: ClusterRole
           rulesType: PREDEFINED
           rulesFromRoleName: cluster-admin
+  # tag used for docker images
+  tag:
+    type: string
+    default: $TAG
 
+  appUID:
+    type: string
+    x-google-marketplace:
+      type: APPLICATION_UID
+
+  # cert-manager
   certManagerImage:
     type: string
     default: $REGISTRY/cert-manager-controller
@@ -43,15 +55,30 @@ properties:
     x-google-marketplace:
       type: IMAGE
 
-  # tag used for docker images
-  tag:
+  # prometheus operator
+  promOperatorImage:
     type: string
-    default: $TAG
-
-  appUID:
-    type: string
+    default: $REGISTRY/prometheus-operator
     x-google-marketplace:
-      type: APPLICATION_UID
+      type: IMAGE
+  promConfigMapReloadImage:
+    type: string
+    default: $REGISTRY/prometheus-configmap-reload
+    x-google-marketplace:
+      type: IMAGE
+  promConfigReloaderImage:
+    type: string
+    default: $REGISTRY/prometheus-config-reloader
+    x-google-marketplace:
+      type: IMAGE
+  promImage:
+    type: string
+    default: $REGISTRY/prometheus-prometheus
+    x-google-marketplace:
+      type: IMAGE
+
+
+
 
 required:
 - name

@@ -12,13 +12,24 @@ spec:
         # TODO: insert a image here
         #image: "${APP_DEPLOYER_IMAGE}"
         image: bitnami/kubectl:latest
-        # don't validate due to: https://github.com/jetstack/cert-manager/issues/1143
-        command: ["kubectl", "apply", "-f", "/data/manifest_job.yaml", "--validate=false"]
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            # first install CRDs
+            cat /data/prom/manifest_job_crds.yaml.gz | base64 -d | gzip -dc | kubectl apply -f- ;
+            # don't validate due to: https://github.com/jetstack/cert-manager/issues/1143
+            kubectl apply --validate=false -f /data/manifest_job.yaml ;
         volumeMounts:
         - name: manifest-volume
           mountPath: /data/
+        - name: manifest-volume-2
+          mountPath: /data/prom/
       volumes:
       - name: manifest-volume
         configMap:
           name: "${name}-dash-install-manifest"
+      - name: manifest-volume-2
+        configMap:
+          name: "${name}-dash-install-manifest-crds"
+
   backoffLimit: 3

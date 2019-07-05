@@ -1,0 +1,14 @@
+# resources that will be deployed by the job
+resources:
+  # cert manager
+  - ../../charts/stack/templates/cert-manager-crds.yaml
+
+  # prometheus operator
+  - ../../charts/stack/charts/prometheus-operator/templates/prometheus-operator/crd-servicemonitor.yaml
+  - ../../charts/stack/charts/prometheus-operator/templates/prometheus-operator/crd-prometheus.yaml
+  - ../../charts/stack/charts/prometheus-operator/templates/prometheus-operator/crd-alertmanager.yaml
+  - ../../charts/stack/charts/prometheus-operator/templates/prometheus-operator/crd-prometheusrules.yaml
+
+
+commonLabels:
+  "dashboard.presslabs.com/version": "0.0.1"

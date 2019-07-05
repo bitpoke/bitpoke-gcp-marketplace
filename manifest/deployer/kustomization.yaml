@@ -5,10 +5,14 @@ resources:
   # cert-manager objects
   - ../charts/stack/charts/cert-manager/charts/webhook/templates/service.yaml
   - ../charts/stack/charts/cert-manager/charts/webhook/templates/deployment.yaml
-  - ../charts/stack/charts/cert-manager/charts/webhook/templates/pki.yaml
   - ../charts/stack/charts/cert-manager/charts/cainjector/templates/deployment.yaml
   - ../charts/stack/charts/cert-manager/templates/deployment.yaml
 
+  # prometheus-operator objects
+  - ../charts/stack/charts/prometheus-operator/templates/prometheus-operator/service.yaml
+  - ../charts/stack/charts/prometheus-operator/templates/prometheus-operator/deployment.yaml
+
+  - ../charts/stack/charts/prometheus-operator/templates/prometheus/service.yaml
 
 patchesJson6902:
 # cert-manager fix service accounts

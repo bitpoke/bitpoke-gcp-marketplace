@@ -1,9 +1,16 @@
 # resources that will be deployed by the job
 resources:
-  - ../../charts/stack/templates/cert-manager-crds.yaml
   - ../../charts/stack/templates/acme-issuer.yaml
+
+  # cert manager
+  - ../../charts/stack/charts/cert-manager/charts/webhook/templates/pki.yaml
   - ../../charts/stack/charts/cert-manager/charts/webhook/templates/apiservice.yaml
   - ../../charts/stack/charts/cert-manager/charts/webhook/templates/validating-webhook.yaml
+
+  # prometheus
+  - ../../charts/stack/charts/prometheus-operator/templates/prometheus-operator/servicemonitor.yaml
+  - ../../charts/stack/charts/prometheus-operator/templates/prometheus/prometheus.yaml
+  - ../../charts/stack/charts/prometheus-operator/templates/prometheus/servicemonitor.yaml
 
 commonLabels:
   "dashboard.presslabs.com/version": "0.0.1"
@@ -16,3 +23,10 @@ patchesJson6902:
     kind: ValidatingWebhookConfiguration
     name: ${name}-cert-wh
   path: owner_reference_patch.yaml
+
+- target:
+    group: monitoring.coreos.com
+    version: v1
+    kind: Prometheus
+    name: ${name}-prom-prometheus
+  path: prometheus_tag.yaml

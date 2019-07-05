@@ -7,3 +7,6 @@ configMapGenerator:
 - name: "${name}-dash-install-manifest"
   files:
     - ../manifest_job.yaml
+- name: "${name}-dash-install-manifest-crds"
+  files:
+    - ../manifest_job_crds.yaml.gz
