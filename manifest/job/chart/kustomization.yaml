@@ -12,6 +12,7 @@ resources:
   - ../../charts/stack/charts/prometheus-operator/templates/prometheus/prometheus.yaml
   - ../../charts/stack/charts/prometheus-operator/templates/prometheus/servicemonitor.yaml
 
+
 commonLabels:
   "dashboard.presslabs.com/version": "0.0.1"
 

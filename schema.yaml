@@ -77,8 +77,17 @@ properties:
     x-google-marketplace:
       type: IMAGE
 
-
-
+  # ingress controller
+  ingressImage:
+    type: string
+    default: $REGISTRY/ingress-controller
+    x-google-marketplace:
+      type: IMAGE
+  ingressDefaultBackendImage:
+    type: string
+    default: $REGISTRY/ingress-default-backend
+    x-google-marketplace:
+      type: IMAGE
 
 required:
 - name
