@@ -124,6 +124,28 @@ properties:
         includeSymbols: False
         base64: False
 
+  # wordpress operator
+  wordpressOperatorImage:
+    type: string
+    default: $REGISTRY/wordpress-operator
+    x-google-marketplace:
+      type: IMAGE
+  wordpressRuntimeImage:
+    type: string
+    default: $REGISTRY/wordpress-runtime
+    x-google-marketplace:
+      type: IMAGE
+  wordpressRcloneImage:
+    type: string
+    default: $REGISTRY/wordpress-rclone
+    x-google-marketplace:
+      type: IMAGE
+  wordpressGitCloneImage:
+    type: string
+    default: $REGISTRY/wordpress-gitclone
+    x-google-marketplace:
+      type: IMAGE
+
 
 required:
 - name

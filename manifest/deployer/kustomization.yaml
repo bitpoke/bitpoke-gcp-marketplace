@@ -27,6 +27,8 @@ resources:
   - ../charts/stack/charts/mysql-operator/templates/orc-secret.yaml
   - ../charts/stack/charts/mysql-operator/templates/orc-config.yaml
 
+  # wordpress operator
+  - ../charts/stack/charts/wordpress-operator/templates/deployment.yaml
 
 
 patchesJson6902:

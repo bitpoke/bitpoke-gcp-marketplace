@@ -12,6 +12,9 @@ resources:
   # mysql operator
   -  ../../charts/stack/charts/mysql-operator/templates/crds.yaml
 
+  # wordpress operator
+  - ../../charts/stack/charts/wordpress-operator/templates/crds.yaml
+
 
 commonLabels:
   "dashboard.presslabs.com/version": "0.0.1"

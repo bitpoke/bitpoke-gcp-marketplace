@@ -39,7 +39,8 @@ app/build:: .build/dashboard/deployer \
             .build/dashboard/cert-manager \
             .build/dashboard/prometheus-operator \
 					  .build/dashboard/ingress \
-					  .build/dashboard/mysql-operator
+					  .build/dashboard/mysql-operator \
+					  .build/dashboard/wordpress-operator
 
 ## Republish docker images to Google registry
 
@@ -105,6 +106,7 @@ endef
 	@touch "$@"
 
 
+# nginx-ingress operator images
 .build/dashboard/ingress: | .build/dashboard
 	$(call republish,\
 	       quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.24.1,\
@@ -115,6 +117,7 @@ endef
 	@touch "$@"
 
 
+# mysql-operator images
 .build/dashboard/mysql-operator: .build/dashboard/mysql-percona-5.7.26 \
                                 | .build/dashboard
 	$(call republish,\
@@ -129,11 +132,34 @@ endef
 	$(call republish,\
 	       prom/mysqld-exporter:v0.11.0,\
 	       $(REGISTRY)/dashboard/mysql-metrics:$(TAG))
+	@touch "$@"
 
 .build/dashboard/mysql-percona-%: | .build/dashboard
 	$(call republish,\
 	       percona:$*,\
 	       $(REGISTRY)/dashboard/mysql-percona:$*)
+	@touch "$@"
+
+
+# wordpress-operator images
+.build/dashboard/wordpress-operator: .build/dashboard/wordpress-runtime-5.2-7.3.4-r164 \
+                                    | .build/dashboard
+	$(call republish,\
+	       quay.io/presslabs/wordpress-operator:v0.3.7,\
+	       $(REGISTRY)/dashbaord/wordpress-operator:$(TAG))
+	$(call republish,\
+				 docker.io/library/buildpack-deps:stretch-scm,\
+	       $(REGISTRY)/dashbaord/wordpress-gitclone:$(TAG))
+	$(call republish,\
+	       quay.io/presslabs/rclone:latest,\
+	       $(REGISTRY)/dashbaord/wordpress-rclone:$(TAG))
+	@touch "$@"
+
+.build/dashboard/wordpress-runtime-%: | .build/dashboard
+	$(call republish,\
+	       quay.io/presslabs/wordpress-runtime:$*,\
+	       $(REGISTRY)/dashbaord/wordpress-operator:$*)
+	@touch "$@"
 
 ## Build the manifests
 
