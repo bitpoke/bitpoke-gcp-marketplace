@@ -9,6 +9,9 @@ resources:
   - ../../charts/stack/charts/prometheus-operator/templates/prometheus-operator/crd-alertmanager.yaml
   - ../../charts/stack/charts/prometheus-operator/templates/prometheus-operator/crd-prometheusrules.yaml
 
+  # mysql operator
+  -  ../../charts/stack/charts/mysql-operator/templates/crds.yaml
+
 
 commonLabels:
   "dashboard.presslabs.com/version": "0.0.1"

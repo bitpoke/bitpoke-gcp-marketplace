@@ -22,7 +22,11 @@ resources:
   - ../charts/stack/charts/nginx-ingress/templates/default-backend-service.yaml
 
   # mysql operator
-  #- ../charts/stack/charts/mysql-operator/templates/
+  - ../charts/stack/charts/mysql-operator/templates/statefulset.yaml
+  - ../charts/stack/charts/mysql-operator/templates/orc-service.yaml
+  - ../charts/stack/charts/mysql-operator/templates/orc-secret.yaml
+  - ../charts/stack/charts/mysql-operator/templates/orc-config.yaml
+
 
 
 patchesJson6902:

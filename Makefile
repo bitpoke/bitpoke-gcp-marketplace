@@ -38,7 +38,8 @@ TESTER_IMAGE ?= $(REGISTRY)/dashboard/tester:$(TAG)
 app/build:: .build/dashboard/deployer \
             .build/dashboard/cert-manager \
             .build/dashboard/prometheus-operator \
-					  .build/dashboard/ingress
+					  .build/dashboard/ingress \
+					  .build/dashboard/mysql-operator
 
 ## Republish docker images to Google registry
 
@@ -111,6 +112,28 @@ endef
 	$(call republish,\
 	       quay.io/presslabs/default-backend:latest,\
          $(REGISTRY)/dashboard/ingress-default-backend:$(TAG))
+	@touch "$@"
+
+
+.build/dashboard/mysql-operator: .build/dashboard/mysql-percona-5.7.26 \
+                                | .build/dashboard
+	$(call republish,\
+	       quay.io/presslabs/mysql-operator:0.3.0,\
+	       $(REGISTRY)/dashboard/mysql-operator:$(TAG))
+	$(call republish,\
+	       quay.io/presslabs/mysql-operator-orchestrator:0.3.0,\
+	       $(REGISTRY)/dashboard/mysql-orchestrator:$(TAG))
+	$(call republish,\
+	       quay.io/presslabs/mysql-operator-sidecar:0.3.0,\
+	       $(REGISTRY)/dashboard/mysql-sidecar:$(TAG))
+	$(call republish,\
+	       prom/mysqld-exporter:v0.11.0,\
+	       $(REGISTRY)/dashboard/mysql-metrics:$(TAG))
+
+.build/dashboard/mysql-percona-%: | .build/dashboard
+	$(call republish,\
+	       percona:$*,\
+	       $(REGISTRY)/dashboard/mysql-percona:$*)
 
 ## Build the manifests
 
@@ -120,21 +143,27 @@ endef
 .build/charts: | .build
 	mkdir "$@"
 
+.build/manifest/charts: | .build/manifest
+	mkdir "$@"
+
 .build/charts/stack: .build/var/STACK_CHART_VERSION | .build/charts
 	# https://github.com/helm/helm/issues/5773
 	cd .build/charts && \
 	helm fetch presslabs/stack --version $(STACK_CHART_VERSION) --untar
 
-
-.build/manifest/charts: | .build/manifest
-	mkdir "$@"
-
+# this is used in development to be able to specify a custom path to chart without the need to fetch
+# the chart from registry
+STACK_CHART_PATH ?= .build/charts/stack
+$(STACK_CHART_PATH):
+	@echo "If you set STACK_CHART_PATH then you should make sure that this path exists"
+	exit 1
 
 .build/manifest/charts/stack: manifest/values.yaml \
-                              .build/charts/stack \
+                              $(STACK_CHART_PATH) \
                               | .build/manifest/charts
-	helm template .build/charts/stack -f manifest/values.yaml \
+	helm template $(STACK_CHART_PATH) -f manifest/values.yaml \
 			--name '$${name}' --namespace '$${namespace}' \
+			--kube-version 1.9 \
 			--output-dir .build/manifest/charts
 
 

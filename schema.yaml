@@ -89,6 +89,42 @@ properties:
     x-google-marketplace:
       type: IMAGE
 
+  # mysql-operator
+  mysqlControllerImage:
+    type: string
+    default: $REGISTRY/mysql-operator
+    x-google-marketplace:
+      type: IMAGE
+  mysqlOrchestratorImage:
+    type: string
+    default: $REGISTRY/mysql-orchestrator
+    x-google-marketplace:
+      type: IMAGE
+  mysqlSidecarImage:
+    type: string
+    default: $REGISTRY/mysql-sidecar
+    x-google-marketplace:
+      type: IMAGE
+  mysqlMetricsImage:
+    type: string
+    default: $REGISTRY/mysql-metrics
+    x-google-marketplace:
+      type: IMAGE
+  mysqlPerconaImage:
+    type: string
+    default: $REGISTRY/mysql-percona
+    x-google-marketplace:
+      type: IMAGE
+  mysqlOrchestratorPassword:
+    type: string
+    x-google-marketplace:
+      type: GENERATED_PASSWORD
+      generatedPassword:
+        length: 16
+        includeSymbols: False
+        base64: False
+
+
 required:
 - name
 - namespace
