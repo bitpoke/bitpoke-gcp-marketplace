@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dashboard.fullname" . }}-controller
+  labels:
+    app: {{ include "dashboard.name" . }}
+    chart: {{ include "dashboard.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: controller
+spec:
+  replicas: {{ .Values.controller.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "dashboard.name" . }}
+      release: {{ .Release.Name }}
+      component: controller
+  template:
+    metadata:
+      labels:
+        app: {{ include "dashboard.name" . }}
+        release: {{ .Release.Name }}
+        component: controller
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/webhook.yaml") . | sha256sum }}
+    spec:
+      serviceAccount: {{ template "dashboard.controller.serviceAccountName" . }}
+      containers:
+        - name: controller
+          image: "{{ .Values.image }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/run/secrets/cloud.google.com/serviceaccount/google_application_credentials.json
+          ports:
+            - name: webhook
+              containerPort: 4433
+          args:
+            - controller-manager
+            - --webhook-port={{ .Values.webhook.service.targetPort }}
+            - --webhook-cert-dir={{ include "dashboard.webhook.certDir" . }}
+            - --webhook-service-name={{ include "dashboard.webhook.serviceName" . }}
+            - --gcloud.project-id={{ .Values.gcloud.projectID }}
+            {{- range $_, $value := .Values.controller.extraArgs }}
+            - {{ $value }}
+            {{- end }}
+          volumeMounts:
+            - name: webhook-certs
+              mountPath: {{ include "dashboard.webhook.certDir" . }}
+            - name: gcloud-serviceaccount
+              mountPath: /var/run/secrets/cloud.google.com/serviceaccount
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{ toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: webhook-certs
+          secret:
+            secretName: {{ include "dashboard.webhook.secretName" . | quote }}
+        - name: gcloud-serviceaccount
+          secret:
+            secretName: {{ include "dashboard.fullname" . }}-gcloud
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{ toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{ toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{ toYaml . | nindent 8 }}
+    {{- end }}

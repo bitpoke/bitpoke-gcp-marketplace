@@ -30,6 +30,13 @@ properties:
     x-google-marketplace:
       type: APPLICATION_UID
 
+  # dashboard
+  dashboardImage:
+    type: string
+    default: $REGISTRY/dashboard
+    x-google-marketplace:
+      type: IMAGE
+
   # cert-manager
   certManagerImage:
     type: string

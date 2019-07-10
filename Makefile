@@ -36,6 +36,7 @@ APP_TEST_PARAMETERS ?= "{}"
 TESTER_IMAGE ?= $(REGISTRY)/dashboard/tester:$(TAG)
 
 app/build:: .build/dashboard/deployer \
+            .build/dashboard/dashboard \
             .build/dashboard/cert-manager \
             .build/dashboard/prometheus-operator \
 					  .build/dashboard/ingress \
@@ -72,6 +73,12 @@ define republish
 	docker tag $(1) $(2)
 	docker push $(2)
 endef
+
+.build/dashboard/dashboard: | .build/dashboard
+	$(call republish,\
+	       gcr.io/press-labs-stack-public/dashboard:latest,\
+	       $(REGISTRY)/dashboard/dashboard:$(TAG))
+	@touch "$@"
 
 # cert-manager images
 .build/dashboard/cert-manager: .build/dashboard/cert-manager-controller \
@@ -166,28 +173,36 @@ endef
 .build/manifest: | .build
 	mkdir "$@"
 
-.build/charts: | .build
-	mkdir "$@"
-
 .build/manifest/charts: | .build/manifest
 	mkdir "$@"
 
-.build/charts/stack: .build/var/STACK_CHART_VERSION | .build/charts
+charts:
+	mkdir "$@"
+
+charts/stack: .build/var/STACK_CHART_VERSION | charts
 	# https://github.com/helm/helm/issues/5773
-	cd .build/charts && \
+	cd charts && \
 	helm fetch presslabs/stack --version $(STACK_CHART_VERSION) --untar
 
-# this is used in development to be able to specify a custom path to chart without the need to fetch
-# the chart from registry
-STACK_CHART_PATH ?= .build/charts/stack
-$(STACK_CHART_PATH):
-	@echo "If you set STACK_CHART_PATH then you should make sure that this path exists"
-	exit 1
+charts/dashboard: | charts
+	# this works only in dashbaord repository
+	cp -r ../../chart/dashboard $@
 
+# *_CHART_PATH var is used in development to be able to specify a custom path to a chart
+STACK_CHART_PATH ?= charts/stack
 .build/manifest/charts/stack: manifest/values.yaml \
                               $(STACK_CHART_PATH) \
                               | .build/manifest/charts
 	helm template $(STACK_CHART_PATH) -f manifest/values.yaml \
+			--name '$${name}' --namespace '$${namespace}' \
+			--kube-version 1.9 \
+			--output-dir .build/manifest/charts
+
+DASHBOARD_CHART_PATH ?= charts/dashboard
+.build/manifest/charts/dashboard: manifest/values_dashboard.yaml \
+                                  $(DASHBOARD_CHART_PATH) \
+                                  | .build/manifest/charts
+	helm template $(DASHBOARD_CHART_PATH) -f manifest/values_dashboard.yaml \
 			--name '$${name}' --namespace '$${namespace}' \
 			--kube-version 1.9 \
 			--output-dir .build/manifest/charts
@@ -200,6 +215,7 @@ $(STACK_CHART_PATH):
 
 .build/manifest/manifest_deployer.yaml: manifest/* \
                                .build/manifest/charts/stack \
+                               .build/manifest/charts/dashboard \
                                .build/manifest/kustomization.yaml \
                                .build/manifest/deployer \
                                .build/manifest/job \
@@ -210,6 +226,7 @@ $(STACK_CHART_PATH):
 
 .build/manifest/manifest_job.yaml: manifest/* \
 																	 .build/manifest/charts/stack \
+                                   .build/manifest/charts/dashboard \
 																	 .build/manifest/kustomization.yaml \
 																	 .build/manifest/deployer \
 																	 .build/manifest/job \

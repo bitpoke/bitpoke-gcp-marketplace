@@ -1,0 +1,19 @@
+{{- if .Values.rbac.create }}
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ template "dashboard.fullname" . }}-controller
+  labels:
+    app: '{{ include "dashboard.name" . }}'
+    chart: '{{ include "dashboard.chart" . }}'
+    release: '{{ .Release.Name }}'
+    heritage: '{{ .Release.Service }}'
+subjects:
+  - kind: ServiceAccount
+    name: {{ template "dashboard.controller.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ template "dashboard.fullname" . }}-controller
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}

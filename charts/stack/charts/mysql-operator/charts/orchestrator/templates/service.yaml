@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "orchestrator.fullname" . }}-headless
+  labels:
+    app: {{ template "orchestrator.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  clusterIP: None
+  ports:
+    - name: web
+      port: 80
+      targetPort: 3000
+    - name: raft
+      port: 10008
+      targetPort: 10008
+  selector:
+    app: {{ template "orchestrator.fullname" . }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "orchestrator.fullname" . }}
+  labels:
+    app: {{ template "orchestrator.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: {{ template "orchestrator.fullname" . }}
+  ports:
+    - name: web
+      port: {{ .Values.service.port }}
+      protocol: TCP
+      targetPort: 3000
+      {{- if .Values.service.nodePort }}
+      nodePort: {{ .Values.service.nodePort }}
+      {{- end }}

@@ -1,0 +1,31 @@
+image: $dashboardImage:${tag}
+fullNameOverride: "${name}-dashboard"
+
+defaults:
+  installRoles: true
+
+crd:
+  install: true
+
+#gcloud:
+  #serviceAccountKey: |
+  # TODO
+
+apiserver:
+  #oidc:
+    # TODO
+  #baseURL:
+  ingress:
+    # TODO
+    enabled: false
+  serviceAccount:
+    create: false
+    name: $serviceAccount
+
+controller:
+  serviceAccount:
+    create: false
+    name: $serviceAccount
+
+rbac:
+  create: false
