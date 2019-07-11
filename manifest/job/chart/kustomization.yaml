@@ -3,8 +3,6 @@ resources:
   # dashboard
   - ../../charts/dashboard/templates/webhook.yaml
   - ../../charts/dashboard/templates/default-roles.yaml
-  - ../../charts/dashboard/templates/impersontator-clusterrole.yaml
-  - ../../charts/dashboard/templates/prometheus-clusterrole.yaml
 
   # stack
   - ../../charts/stack/templates/acme-issuer.yaml
