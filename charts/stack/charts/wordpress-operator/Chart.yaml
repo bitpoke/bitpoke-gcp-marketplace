@@ -1,5 +1,0 @@
-apiVersion: v1
-appVersion: 0.3.6
-description: Presslabs WordPress Operator Helm Chart
-name: wordpress-operator
-version: 0.3.6

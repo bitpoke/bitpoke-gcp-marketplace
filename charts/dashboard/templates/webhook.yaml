@@ -24,7 +24,7 @@ metadata:
     chart: '{{ include "dashboard.chart" . }}'
     heritage: '{{ .Release.Service }}'
     release: '{{ .Release.Name }}'
-  name: '{{ include "dashboard.fullname" . }}-webhook'
+  name: '{{ include "dashboard.webhook.serviceName" . }}'
 spec:
   ports:
   - port: {{ .Values.webhook.service.port }}
@@ -52,7 +52,7 @@ webhooks:
 - clientConfig:
     caBundle: '{{ $cert.Cert | b64enc }}'
     service:
-      name: '{{ include "dashboard.fullname" . }}-webhook'
+      name: '{{ include "dashboard.webhook.serviceName" . }}'
       namespace: '{{ .Release.Namespace }}'
       path: /validating-create-organization
   failurePolicy: Fail
@@ -74,7 +74,7 @@ webhooks:
 - clientConfig:
     caBundle: '{{ $cert.Cert | b64enc }}'
     service:
-      name: '{{ include "dashboard.fullname" . }}-webhook'
+      name: '{{ include "dashboard.webhook.serviceName" . }}'
       namespace: '{{ .Release.Namespace }}'
       path: /validating-create-project
   failurePolicy: Fail
@@ -96,7 +96,7 @@ webhooks:
 - clientConfig:
     caBundle: '{{ $cert.Cert | b64enc }}'
     service:
-      name: '{{ include "dashboard.fullname" . }}-webhook'
+      name: '{{ include "dashboard.webhook.serviceName" . }}'
       namespace: '{{ .Release.Namespace }}'
       path: /validating-create-site
   failurePolicy: Fail
