@@ -1,0 +1,73 @@
+---
+# Create a selfsigned Issuer, in order to create a root CA certificate for
+# signing webhook serving certificates
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Issuer
+metadata:
+  name: {{ include "dashboard.webhook.selfSignedIssuer" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    app: {{ include "dashboard.name" . }}
+    chart: {{ include "dashboard.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  selfSigned: {}
+
+---
+# Generate a CA Certificate used to sign certificates for the webhook
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: {{ include "dashboard.webhook.rootCACertificate" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    app: {{ include "dashboard.name" . }}
+    chart: {{ include "dashboard.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  secretName: {{ include "dashboard.webhook.rootCACertificate" . }}
+  duration: 43800h # 5y
+  issuerRef:
+    name: {{ include "dashboard.webhook.selfSignedIssuer" . }}
+  commonName: "ca.dashboard.presslabs.org"
+  isCA: true
+
+---
+# Create an Issuer that uses the above generated CA certificate to issue certs
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Issuer
+metadata:
+  name: {{ include "dashboard.webhook.rootCAIssuer" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    app: {{ include "dashboard.name" . }}
+    chart: {{ include "dashboard.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  ca:
+    secretName: {{ include "dashboard.webhook.rootCACertificate" . }}
+
+---
+# Finally, generate a serving certificate for the webhook to use
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: {{ include "dashboard.webhook.secretName" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    app: {{ include "dashboard.name" . }}
+    chart: {{ include "dashboard.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  secretName: {{ include "dashboard.webhook.secretName" . }}
+  duration: 8760h # 1y
+  issuerRef:
+    name: {{ include "dashboard.webhook.rootCAIssuer" . }}
+  dnsNames:
+  - {{ include "dashboard.webhook.serviceName" . }}
+  - {{ include "dashboard.webhook.serviceName" . }}.{{ .Release.Namespace }}
+  - {{ include "dashboard.webhook.serviceName" . }}.{{ .Release.Namespace }}.svc

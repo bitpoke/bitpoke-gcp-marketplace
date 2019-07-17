@@ -31,11 +31,44 @@ properties:
       type: APPLICATION_UID
 
   # dashboard
+  dashboardDomain:
+    type: string
   dashboardImage:
     type: string
     default: $REGISTRY/dashboard
     x-google-marketplace:
       type: IMAGE
+  dashboardProjectID:
+    type: string
+    default: ""
+  dashboardServiceAccountKey:
+    type: string
+    x-google-marketplace:
+      type: STRING
+      string:
+        generatedProperties:
+          base64Encoded: explicitPasswordEncoded
+  dashboardOIDCClientID:
+    type: string
+    x-google-marketplace:
+      type: STRING
+      string:
+        generatedProperties:
+          base64Encoded: explicitPasswordEncoded
+  dashboardOIDCSecret:
+    type: string
+    x-google-marketplace:
+      type: STRING
+      string:
+        generatedProperties:
+          base64Encoded: explicitPasswordEncoded
+  dashboardOIDCIssuer:
+    type: string
+    x-google-marketplace:
+      type: STRING
+      string:
+        generatedProperties:
+          base64Encoded: explicitPasswordEncoded
 
   # cert-manager
   certManagerImage:
@@ -43,19 +76,16 @@ properties:
     default: $REGISTRY/cert-manager-controller
     x-google-marketplace:
       type: IMAGE
-
   certAcmeSolverImage:
     type: string
     default: $REGISTRY/cert-manager-acmesolver
     x-google-marketplace:
       type: IMAGE
-
   certWebhookImage:
     type: string
     default: $REGISTRY/cert-manager-webhook
     x-google-marketplace:
       type: IMAGE
-
   certCAinjectorImage:
     type: string
     default: $REGISTRY/cert-manager-cainjector
@@ -129,7 +159,7 @@ properties:
       generatedPassword:
         length: 16
         includeSymbols: False
-        base64: False
+        base64: True
 
   # wordpress operator
   wordpressOperatorImage:
@@ -157,3 +187,8 @@ properties:
 required:
 - name
 - namespace
+- dashboardDomain
+- dashboardServiceAccountKey
+- dashboardOIDCClientID
+- dashboardOIDCSecret
+- dashboardOIDCIssuer

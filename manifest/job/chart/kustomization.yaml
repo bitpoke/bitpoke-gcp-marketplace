@@ -1,8 +1,9 @@
 # resources that will be deployed by the job
 resources:
   # dashboard
-  - ../../charts/dashboard/templates/webhook.yaml
   - ../../charts/dashboard/templates/default-roles.yaml
+  - ../../charts/dashboard/templates/webhook.yaml
+  - ../../charts/dashboard/templates/webhook-pki.yaml
 
   # stack
   - ../../charts/stack/templates/acme-issuer.yaml
@@ -36,3 +37,23 @@ patchesJson6902:
     kind: Prometheus
     name: ${name}-prom-prometheus
   path: prometheus_tag.yaml
+
+# dashboard
+- target:
+    group: admissionregistration.k8s.io
+    version: v1beta1
+    kind: ValidatingWebhookConfiguration
+    name: ${name}-dashboard
+  path: owner_reference_patch.yaml
+- target:
+    group: certmanager.k8s.io
+    version: v1alpha1
+    kind: Certificate
+    name: ${name}-dashboard-webhook
+  path: owner_reference_patch.yaml
+- target:
+    group: certmanager.k8s.io
+    version: v1alpha1
+    kind: Certificate
+    name: ${name}-dashboard-ca
+  path: owner_reference_patch.yaml

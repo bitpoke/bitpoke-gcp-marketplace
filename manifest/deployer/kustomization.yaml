@@ -4,12 +4,12 @@ resources:
 
   # dashbaord
   - ../charts/dashboard/templates/apiserver-deployment.yaml
-  # TODO: uncomment when ingress is configured
-  #- ../charts/dashboard/templates/apiserver-ingress.yaml
+  - ../charts/dashboard/templates/apiserver-ingress.yaml
   - ../charts/dashboard/templates/apiserver-oidc-secret.yaml
   - ../charts/dashboard/templates/apiserver-service.yaml
   - ../charts/dashboard/templates/controller-deployment.yaml
   - ../charts/dashboard/templates/controller-gcloud-serviceaccount.yaml
+  - ../charts/dashboard/templates/webhook-service.yaml
 
   # cert-manager objects
   - ../charts/stack/charts/cert-manager/charts/webhook/templates/service.yaml
@@ -54,6 +54,7 @@ patchesJson6902:
     kind: Deployment
     name: "${name}-cert-wh"
   path: service_account_patch.yaml
+
 # nginx-ingress controller image tag patch
 - target:
     group: extensions
@@ -61,3 +62,22 @@ patchesJson6902:
     kind: Deployment
     name: ${name}-nginx-ingress-controller
   path: ingress_image_tag.yaml
+
+# mysql-operator passowrds
+- target:
+    version: v1
+    kind: Secret
+    name: ${name}-mysql-operator-orc
+  path: mysql_secret.yaml
+
+# dashboard secrets to bypass base64 encode
+- target:
+    version: v1
+    kind: Secret
+    name: ${name}-dashboard-oidc
+  path: dashboard_oidc_secret.yaml
+- target:
+    version: v1
+    kind: Secret
+    name: ${name}-dashboard-gcloud
+  path: dashboard_serviceaccount_secret.yaml

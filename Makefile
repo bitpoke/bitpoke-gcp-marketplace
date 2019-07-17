@@ -21,14 +21,16 @@ $(info ---- CERT_MANAGER_TAG = $(CERT_MANAGER_TAG))
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/dashboard/deployer:$(TAG)
 NAME ?= dashboard-1
 
-# ifdef IMAGE_DASHBOARD
-#   IMAGE_DASHBOARD_FIELD = , "dashboardImage": "$(IMAGE_DASHBOARD)"
-# endif
-
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
-  "namespace": "$(NAMESPACE)" \
-  $(IMAGE_DASHBOARD_FIELD) \
+  "namespace": "$(NAMESPACE)", \
+	"dashboardDomain": "$(DOMAIN)", \
+	"dashboardProjectID": "$(GCP_PROJECT_ID)", \
+	"dashboardServiceAccountKey": "$(SERVICE_ACCOUNT_KEY)", \
+	"dashboardOIDCClientID": "$(OIDC_CLIENT_ID)", \
+	"dashboardOIDCSecret": "$(OIDC_SECRET)", \
+	"dashboardOIDCIssuer": "$(OIDC_ISSUER)", \
+  "mysqlOrchestratorPassword": "$(ORCHESTRATOR_PASSOWRD)" \
 }
 
 APP_TEST_PARAMETERS ?= "{}"
@@ -126,7 +128,7 @@ endef
 
 # mysql-operator images
 .build/dashboard/mysql-operator: .build/dashboard/mysql-percona-5.7.26 \
-                                | .build/dashboard
+                                 | .build/dashboard
 	$(call republish,\
 	       quay.io/presslabs/mysql-operator:0.3.0,\
 	       $(REGISTRY)/dashboard/mysql-operator:$(TAG))
@@ -150,16 +152,16 @@ endef
 
 # wordpress-operator images
 .build/dashboard/wordpress-operator: .build/dashboard/wordpress-runtime-5.2-7.3.4-r164 \
-                                    | .build/dashboard
+                                     | .build/dashboard
 	$(call republish,\
 	       quay.io/presslabs/wordpress-operator:v0.3.7,\
-	       $(REGISTRY)/dashbaord/wordpress-operator:$(TAG))
+	       $(REGISTRY)/dashboard/wordpress-operator:$(TAG))
 	$(call republish,\
 				 docker.io/library/buildpack-deps:stretch-scm,\
-	       $(REGISTRY)/dashbaord/wordpress-gitclone:$(TAG))
+	       $(REGISTRY)/dashboard/wordpress-gitclone:$(TAG))
 	$(call republish,\
 	       quay.io/presslabs/rclone:latest,\
-	       $(REGISTRY)/dashbaord/wordpress-rclone:$(TAG))
+	       $(REGISTRY)/dashboard/wordpress-rclone:$(TAG))
 	@touch "$@"
 
 .build/dashboard/wordpress-runtime-%: | .build/dashboard

@@ -63,6 +63,11 @@ spec:
         - name: webhook-certs
           secret:
             secretName: {{ include "dashboard.webhook.secretName" . | quote }}
+            items:
+              - key: tls.crt
+                path: cert.pem
+              - key: tls.key
+                path: key.pem
         - name: gcloud-serviceaccount
           secret:
             secretName: {{ include "dashboard.fullname" . }}-gcloud

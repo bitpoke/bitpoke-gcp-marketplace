@@ -2,10 +2,9 @@
 fullnameOverride: "${name}"
 
 letsencrypt:
-  enabled: false
-  email: ""
+  enabled: true
+  email: ping@$dashboardDomain
   server: "https://acme-v02.api.letsencrypt.org/directory"
-  # TODO
 
 wordpress-operator:
   enabled: true
@@ -39,6 +38,7 @@ mysql-operator:
     serviceAccountName: $serviceAccount
   orchestrator:
     image: $mysqlOrchestratorImage:${tag}
+    # NOTE: this will be ovewrite by kustomize
     topologyPassword: $mysqlOrchestratorPassword
 
 nginx-ingress:
@@ -116,6 +116,8 @@ prometheus-operator:
       name: $serviceAccount
   grafana:
     enabled: false
+    serviceAccount:
+      nameTest: asd
   kubeApiServer:
     enabled: false
   kubelet:
