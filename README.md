@@ -25,7 +25,7 @@ The following operators are included in this application:
 
 ## Quick install with Google Cloud Marketplace
 
-Get up and running with a few clicks! Install this Dashbaord app to a Google
+Get up and running with a few clicks! Install this Dashboard app to a Google
 Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 [on-screen instructions](https://console.cloud.google.com/marketplace/details/google/). 
 
@@ -34,7 +34,7 @@ Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
 You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
 workstation to complete these steps.
 
-[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/presslabs/dashbaord-gcp-marketplace&cloudshell_open_in_editor=README.md)
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/presslabs/dashboard-gcp-marketplace&cloudshell_open_in_editor=README.md)
 
 ### Prerequisites
 
@@ -106,7 +106,7 @@ community. The source code can be found on
 Navigate to the cloned repo
 
 ```shell
-cd dashbaord-gcp-marketplace
+cd dashboard-gcp-marketplace
 ```
 
 #### Configure the app with environment variables
@@ -114,8 +114,19 @@ cd dashbaord-gcp-marketplace
 Choose the instance name and namespace for the app:
 
 ```shell
-export name=dashbaord-1
+export name=dashboard-1
 export namespace=default
+```
+
+Set application secrets and configuration like domain name, Google project ID and OIDC credentials:
+
+```shell
+export dashboardDomain=domain.example.com
+export dashboardProjectID=<google cloud project id>
+export dashboardServiceAccountKey=<service account key base64 encoded>
+export dashboardOIDCClientID=<oidc client id base64 encoded>
+export dashboardOIDCSecret=<oidc secret base64 encoded>
+export dashboardOIDCIssuer=<oidc issuer base64 encoded>
 ```
 
 Configure the container images:
@@ -124,6 +135,8 @@ Configure the container images:
 REGISTRY=gcr.io/presslabs/dashboard
 
 export tag=latest
+
+export dashboardImage="${REGISTRY}/dashboard:${tag}"
 
 export certManagerImage="${REGISTRY}/cert-manager-controller:${tag}"
 export certAcmeSolverImage="${REGISTRY}/cert-manager-acmesolver:${tag}"
@@ -160,7 +173,9 @@ you are ready to upgrade. To get the digest for the image, use the following
 script:
 
 ```shell
-for i in "certManagerImage" \
+for i in \
+         "dashboardImage" \
+         "certManagerImage" \
          "certAcmeSolverImage" \
          "certWebhookImage" \
          "certCAinjectorImage" \
@@ -222,7 +237,7 @@ kubectl create clusterrolebinding cluster-admin-binding \
 Define the environment variables:
 
 ```shell
-export serviceAccount="${name}-dashbaord"
+export serviceAccount="${name}-dashboard"
 ```
 
 Create the service account:
@@ -246,7 +261,7 @@ Use `envsubst` to expand the template. We recommend that you save the expanded
 manifest file for future updates to the application.
 
 ```shell
-cat .build/manifests.yaml.template | envsubst '$name $namespace $serviceAccount $tag $certManagerImage $certAcmeSolverImage $certWebhookImage $certCAinjectorImage $promOperatorImage $promConfigMapReloadImage $promConfigReloaderImage $promImage $ingressImage $ingressDefaultBackendImage $mysqlControllerImage $mysqlOrchestratorImage $mysqlSidecarImage $mysqlMetricsImage $mysqlPerconaImage $mysqlOrchestratorPassowrd $wordpressOperatorImage $wordpressRuntimeImage $wordpressRcloneImage $wordpressGitCloneImage ' \
+cat .build/manifests.yaml.template | envsubst '$name $namespace $dashboardDomain $dashboardImage $dashboardServiceAccount $dashboardProjectID $dashboardOIDCClient $dashboardOIDCSecret $dashboardOIDCIssuer $serviceAccount $tag $certManagerImage $certAcmeSolverImage $certWebhookImage $certCAinjectorImage $promOperatorImage $promConfigMapReloadImage $promConfigReloaderImage $promImage $ingressImage $ingressDefaultBackendImage $mysqlControllerImage $mysqlOrchestratorImage $mysqlSidecarImage $mysqlMetricsImage $mysqlPerconaImage $mysqlOrchestratorPassowrd $wordpressOperatorImage $wordpressRuntimeImage $wordpressRcloneImage $wordpressGitCloneImage ' \
   > "${name}_manifest.yaml"
 ```
 
