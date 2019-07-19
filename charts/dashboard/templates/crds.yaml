@@ -8,6 +8,52 @@ metadata:
     controller-tools.k8s.io: "1.0"
     heritage: '{{ .Release.Service }}'
     release: '{{ .Release.Name }}'
+  name: invites.dashboard.presslabs.com
+  annotations:
+    helm.sh/hook: crd-install
+spec:
+  group: dashboard.presslabs.com
+  names:
+    kind: Invite
+    plural: invites
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            email:
+              description: The email of the invited user (it is recommended to encrypt
+                the string)
+              type: string
+            redeemToken:
+              description: RedeemToken is the token used for verification purposes
+                when redeeming the invite. It is recommended to encrypt the string.
+              type: string
+          type: object
+  version: v1alpha1
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    app: '{{ include "dashboard.name" . }}'
+    chart: '{{ include "dashboard.chart" . }}'
+    controller-tools.k8s.io: "1.0"
+    heritage: '{{ .Release.Service }}'
+    release: '{{ .Release.Name }}'
   name: projects.dashboard.presslabs.com
   annotations:
     helm.sh/hook: crd-install

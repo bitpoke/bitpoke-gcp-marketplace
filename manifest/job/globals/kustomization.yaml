@@ -28,15 +28,21 @@ patchesJson6902:
     group: admissionregistration.k8s.io
     version: v1beta1
     kind: ValidatingWebhookConfiguration
-    name: ${name}-cert-wh
+    name: ${name}-cert-manager-webhook
+  path: owner_reference_patch.yaml
+- target:
+    group: certmanager.k8s.io
+    version: v1alpha1
+    kind: Certificate
+    name: ${name}-cert-manager-webhook-ca
+  path: owner_reference_patch.yaml
+- target:
+    group: certmanager.k8s.io
+    version: v1alpha1
+    kind: Certificate
+    name: ${name}-cert-manager-webhook-webhook-tls
   path: owner_reference_patch.yaml
 
-- target:
-    group: monitoring.coreos.com
-    version: v1
-    kind: Prometheus
-    name: ${name}-prom-prometheus
-  path: prometheus_tag.yaml
 
 # dashboard
 - target:
@@ -55,5 +61,38 @@ patchesJson6902:
     group: certmanager.k8s.io
     version: v1alpha1
     kind: Certificate
-    name: ${name}-dashboard-ca
+    name: ${name}-dashboard-webhook-ca
+  path: owner_reference_patch.yaml
+- target:
+    group: certmanager.k8s.io
+    version: v1alpha1
+    kind: Certificate
+    name: ${name}-ingress-default
+  path: owner_reference_patch.yaml
+
+
+# prometheus
+- target:
+    group: monitoring.coreos.com
+    version: v1
+    kind: Prometheus
+    name: ${name}-prometheus-prometheus
+  path: prometheus_tag.yaml
+- target:
+    group: monitoring.coreos.com
+    version: v1
+    kind: Prometheus
+    name: ${name}-prometheus-prometheus
+  path: owner_reference_patch.yaml
+- target:
+    group: monitoring.coreos.com
+    version: v1
+    kind: ServiceMonitor
+    name: ${name}-prometheus-prometheus
+  path: owner_reference_patch.yaml
+- target:
+    group: monitoring.coreos.com
+    version: v1
+    kind: ServiceMonitor
+    name: ${name}-prometheus-operator
   path: owner_reference_patch.yaml

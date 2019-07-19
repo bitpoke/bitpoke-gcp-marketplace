@@ -75,13 +75,13 @@ Create the path of the webhook certificates directory
 {{- end -}}
 
 {{- define "dashboard.webhook.selfSignedIssuer" -}}
-{{ printf "%s-selfsign" (include "dashboard.fullname" .) }}
+{{ printf "%s-webhook-ca-issuer" (include "dashboard.fullname" .) }}
 {{- end -}}
 
 {{- define "dashboard.webhook.rootCAIssuer" -}}
-{{ printf "%s-ca" (include "dashboard.fullname" .) }}
+{{ printf "%s-webhook-ca" (include "dashboard.fullname" .) }}
 {{- end -}}
 
 {{- define "dashboard.webhook.rootCACertificate" -}}
-{{ printf "%s-ca" (include "dashboard.fullname" .) }}
+{{ printf "%s-webhook-ca" (include "dashboard.fullname" .) }}
 {{- end -}}

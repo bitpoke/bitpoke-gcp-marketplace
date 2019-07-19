@@ -7,6 +7,7 @@ resources:
   - ../charts/dashboard/templates/apiserver-ingress.yaml
   - ../charts/dashboard/templates/apiserver-oidc-secret.yaml
   - ../charts/dashboard/templates/apiserver-service.yaml
+  - ../charts/dashboard/templates/apiserver-sentry-secret.yaml
   - ../charts/dashboard/templates/controller-deployment.yaml
   - ../charts/dashboard/templates/controller-gcloud-serviceaccount.yaml
   - ../charts/dashboard/templates/webhook-service.yaml
@@ -46,13 +47,13 @@ patchesJson6902:
     group: apps
     version: v1beta1
     kind: Deployment
-    name: "${name}-cert-inj"
+    name: ${name}-cert-manager-cainjector
   path: service_account_patch.yaml
 - target:
     group: apps
     version: v1beta1
     kind: Deployment
-    name: "${name}-cert-wh"
+    name: ${name}-cert-manager-webhook
   path: service_account_patch.yaml
 
 # nginx-ingress controller image tag patch

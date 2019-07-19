@@ -21,13 +21,16 @@ apiserver:
 
   baseURL: //$dashboardDomain
 
+  sentryDSN: $dashboardSentryDSN
+
   ingress:
     enabled: true
     hosts:
       - $dashboardDomain
     tls:
-      hosts:
-        - $dashboardDomain
+      - secretName: dashboard-domain-tls
+        hosts:
+          - $dashboardDomain
   serviceAccount:
     create: false
     name: $serviceAccount

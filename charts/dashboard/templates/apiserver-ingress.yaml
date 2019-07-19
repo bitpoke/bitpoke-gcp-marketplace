@@ -10,10 +10,10 @@ metadata:
     chart: {{ include "dashboard.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-{{- with .Values.apiserver.ingress.annotations }}
+  {{- with .Values.apiserver.ingress.annotations }}
   annotations:
-{{ toYaml . | indent 4 }}
-{{- end }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
 {{- if .Values.apiserver.ingress.tls }}
   tls:

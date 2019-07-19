@@ -20,6 +20,14 @@ rules:
   - get
   - list
   - watch
+- apiGroups:
+  - "dashboard.presslabs.com"
+  resources:
+  - invites
+  verbs:
+  - get
+  - list
+  - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -31,6 +39,9 @@ rules:
   resources:
   - namespaces
   verbs:
+  - get
+  - list
+  - watch
   - delete
   - update
   - patch
@@ -39,10 +50,23 @@ rules:
   resources:
   - projects
   verbs:
+  - get
+  - list
+  - watch
   - create
   - delete
   - update
   - patch
+- apiGroups:
+  - "dashboard.presslabs.com"
+  resources:
+  - invites
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - delete
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -85,6 +109,9 @@ rules:
   resources:
   - wordpresses
   verbs:
+  - get
+  - list
+  - watch
   - create
   - delete
   - update

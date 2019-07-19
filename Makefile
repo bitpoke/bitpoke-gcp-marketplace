@@ -30,7 +30,8 @@ APP_PARAMETERS ?= { \
 	"dashboardOIDCClientID": "$(OIDC_CLIENT_ID)", \
 	"dashboardOIDCSecret": "$(OIDC_SECRET)", \
 	"dashboardOIDCIssuer": "$(OIDC_ISSUER)", \
-  "mysqlOrchestratorPassword": "$(ORCHESTRATOR_PASSOWRD)" \
+  "mysqlOrchestratorPassword": "$(ORCHESTRATOR_PASSOWRD)", \
+	"letsEncryptEmail": "$(LETS_ENCRYPT_EMAIL)" \
 }
 
 APP_TEST_PARAMETERS ?= "{}"
@@ -80,6 +81,9 @@ endef
 	$(call republish,\
 	       gcr.io/press-labs-stack-public/dashboard:latest,\
 	       $(REGISTRY)/dashboard/dashboard:$(TAG))
+	$(call republish,\
+	       bitnami/kubectl:latest,\
+	       $(REGISTRY)/dashboard/kubectl:$(TAG))
 	@touch "$@"
 
 # cert-manager images
@@ -192,10 +196,10 @@ charts/dashboard: | charts
 
 # *_CHART_PATH var is used in development to be able to specify a custom path to a chart
 STACK_CHART_PATH ?= charts/stack
-.build/manifest/charts/stack: manifest/values.yaml \
+.build/manifest/charts/stack: manifest/values_stack.yaml \
                               $(STACK_CHART_PATH) \
                               | .build/manifest/charts
-	helm template $(STACK_CHART_PATH) -f manifest/values.yaml \
+	helm template $(STACK_CHART_PATH) -f manifest/values_stack.yaml \
 			--name '$${name}' --namespace '$${namespace}' \
 			--kube-version 1.9 \
 			--output-dir .build/manifest/charts
@@ -226,17 +230,17 @@ DASHBOARD_CHART_PATH ?= charts/dashboard
 		--load_restrictor none
 
 
-.build/manifest/manifest_job.yaml: manifest/* \
+.build/manifest/manifest_globals.yaml: manifest/* \
 																	 .build/manifest/charts/stack \
                                    .build/manifest/charts/dashboard \
 																	 .build/manifest/kustomization.yaml \
 																	 .build/manifest/deployer \
 																	 .build/manifest/job \
                                    | .build/manifest
-	kustomize build .build/manifest/job/chart -o "$@" \
+	kustomize build .build/manifest/job/globals -o "$@" \
 		--load_restrictor none
 
-.build/manifest/manifest_job_crds.yaml.gz: manifest/* \
+.build/manifest/manifest_crds.yaml.gz.b64enc: manifest/* \
 																	 .build/manifest/job \
                                    | .build/manifest
 	kustomize build .build/manifest/job/crds \
@@ -244,8 +248,8 @@ DASHBOARD_CHART_PATH ?= charts/dashboard
 
 
 .build/manifests.yaml.template: .build/manifest/manifest_deployer.yaml \
-                                .build/manifest/manifest_job.yaml \
-                                .build/manifest/manifest_job_crds.yaml.gz \
+                                .build/manifest/manifest_globals.yaml \
+                                .build/manifest/manifest_crds.yaml.gz.b64enc \
                                 | .build
 	rm -f "$@"
 	# this will create the config map with additional required resources (e.g. crds)

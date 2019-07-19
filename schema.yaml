@@ -20,6 +20,7 @@ properties:
         - type: ClusterRole
           rulesType: PREDEFINED
           rulesFromRoleName: cluster-admin
+
   # tag used for docker images
   tag:
     type: string
@@ -69,6 +70,9 @@ properties:
       string:
         generatedProperties:
           base64Encoded: explicitPasswordEncoded
+  dashboardSentryDSN:
+    type: string
+    default: ''
 
   # cert-manager
   certManagerImage:
@@ -183,6 +187,25 @@ properties:
     x-google-marketplace:
       type: IMAGE
 
+  # let's encrypt
+  letsEncryptEmail:
+    type: string
+    default: 'ping@example.com'
+
+  letsEncryptServer:
+    type: string
+    default: 'https://acme-v02.api.letsencrypt.org/directory'
+    enum:
+      - 'https://acme-v02.api.letsencrypt.org/directory'
+      - 'https://acme-staging-v02.api.letsencrypt.org/directory'
+
+  # miscellaneous
+  kubectlImage:
+    type: string
+    default: $REGISTRY/kubectl:$TAG
+    x-google-marketplace:
+      type: IMAGE
+
 
 required:
 - name
@@ -192,3 +215,4 @@ required:
 - dashboardOIDCClientID
 - dashboardOIDCSecret
 - dashboardOIDCIssuer
+- dashboardProjectID

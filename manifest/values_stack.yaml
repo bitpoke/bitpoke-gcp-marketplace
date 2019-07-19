@@ -3,8 +3,8 @@ fullnameOverride: "${name}"
 
 letsencrypt:
   enabled: true
-  email: ping@$dashboardDomain
-  server: "https://acme-v02.api.letsencrypt.org/directory"
+  email: $letsEncryptEmail
+  server: $letsEncryptServer
 
 wordpress-operator:
   enabled: true
@@ -61,13 +61,13 @@ nginx-ingress:
 
 cert-manager:
   enabled: true
-  fullnameOverride: ${name}-cert-mgr
+  fullnameOverride: ${name}-cert-manager
   global:
     rbac:
       create: false
 
   webhook:
-    fullnameOverride: ${name}-cert-wh
+    fullnameOverride: ${name}-cert-manager-webhook
     image:
       repository: $certWebhookImage
       tag: ${tag}
@@ -79,7 +79,7 @@ cert-manager:
       name: $serviceAccount
 
   cainjector:
-    fullnameOverride: ${name}-cert-inj
+    fullnameOverride: ${name}-cert-manager-cainjector
     image:
       repository: $certCAinjectorImage
       tag: ${tag}
@@ -102,7 +102,7 @@ cert-manager:
 
 prometheus-operator:
   enabled: true
-  fullnameOverride: ${name}-prom
+  fullnameOverride: ${name}-prometheus
   defaultRules:
     create: false
   global:
@@ -116,8 +116,6 @@ prometheus-operator:
       name: $serviceAccount
   grafana:
     enabled: false
-    serviceAccount:
-      nameTest: asd
   kubeApiServer:
     enabled: false
   kubelet:

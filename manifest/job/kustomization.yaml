@@ -4,9 +4,9 @@ resources:
   - namespace.yaml
 
 configMapGenerator:
-- name: "${name}-dash-install-manifest"
+- name: "${name}-dash-globals-manifests"
   files:
-    - ../manifest_job.yaml
-- name: "${name}-dash-install-manifest-crds"
+    - ../manifest_globals.yaml
+- name: "${name}-dash-crds-manifests"
   files:
-    - ../manifest_job_crds.yaml.gz
+    - ../manifest_crds.yaml.gz.b64enc

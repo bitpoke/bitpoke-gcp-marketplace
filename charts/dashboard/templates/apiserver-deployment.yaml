@@ -33,6 +33,9 @@ spec:
             - secretRef:
                 name: {{ include "dashboard.fullname" . }}-oidc
               prefix: OIDC_
+            - secretRef:
+                name: {{ include "dashboard.fullname" . }}-sentry
+              prefix: SENTRY_
           args:
             - apiserver
             - --http-addr=:8080

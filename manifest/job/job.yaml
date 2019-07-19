@@ -9,27 +9,25 @@ spec:
       restartPolicy: Never
       containers:
       - name: init
-        # TODO: insert a image here
-        #image: "${APP_DEPLOYER_IMAGE}"
-        image: bitnami/kubectl:latest
+        image: $kubectlImage
         command: ["/bin/sh", "-c"]
         args:
           - |
             # first install CRDs
-            cat /data/prom/manifest_job_crds.yaml.gz | base64 -d | gzip -dc | kubectl apply -f- ;
+            cat /data/crds/manifest_crds.yaml.gz | base64 -d | gzip -dc | kubectl apply -f- ;
             # don't validate due to: https://github.com/jetstack/cert-manager/issues/1143
-            kubectl apply --validate=false -f /data/manifest_job.yaml ;
+            kubectl apply --validate=false -f /data/globals/manifest_globals.yaml ;
         volumeMounts:
-        - name: manifest-volume
-          mountPath: /data/
-        - name: manifest-volume-2
-          mountPath: /data/prom/
+        - name: globals-manifests
+          mountPath: /data/globals/
+        - name: crd-manifests
+          mountPath: /data/crds/
       volumes:
-      - name: manifest-volume
+      - name: globals-manifests
         configMap:
-          name: "${name}-dash-install-manifest"
-      - name: manifest-volume-2
+          name: "${name}-dash-globals-manifests"
+      - name: crd-manifests
         configMap:
-          name: "${name}-dash-install-manifest-crds"
+          name: "${name}-dash-crds-manifests"
 
   backoffLimit: 3
