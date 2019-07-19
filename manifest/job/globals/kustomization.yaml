@@ -3,24 +3,18 @@ resources:
   # dashboard
   - ../../charts/dashboard/templates/default-roles.yaml
   - ../../charts/dashboard/templates/webhook.yaml
-  - ../../charts/dashboard/templates/webhook-pki.yaml
 
   # stack
   - ../../charts/stack/templates/acme-issuer.yaml
 
   # cert manager
-  - ../../charts/stack/charts/cert-manager/charts/webhook/templates/pki.yaml
   - ../../charts/stack/charts/cert-manager/charts/webhook/templates/apiservice.yaml
   - ../../charts/stack/charts/cert-manager/charts/webhook/templates/validating-webhook.yaml
-
-  # prometheus
-  - ../../charts/stack/charts/prometheus-operator/templates/prometheus-operator/servicemonitor.yaml
-  - ../../charts/stack/charts/prometheus-operator/templates/prometheus/prometheus.yaml
-  - ../../charts/stack/charts/prometheus-operator/templates/prometheus/servicemonitor.yaml
 
 
 commonLabels:
   "dashboard.presslabs.com/version": "0.0.1"
+
 
 patchesJson6902:
 # cert-manager set owner reference
@@ -30,19 +24,6 @@ patchesJson6902:
     kind: ValidatingWebhookConfiguration
     name: ${name}-cert-manager-webhook
   path: owner_reference_patch.yaml
-- target:
-    group: certmanager.k8s.io
-    version: v1alpha1
-    kind: Certificate
-    name: ${name}-cert-manager-webhook-ca
-  path: owner_reference_patch.yaml
-- target:
-    group: certmanager.k8s.io
-    version: v1alpha1
-    kind: Certificate
-    name: ${name}-cert-manager-webhook-webhook-tls
-  path: owner_reference_patch.yaml
-
 
 # dashboard
 - target:
@@ -51,48 +32,11 @@ patchesJson6902:
     kind: ValidatingWebhookConfiguration
     name: ${name}-dashboard
   path: owner_reference_patch.yaml
-- target:
-    group: certmanager.k8s.io
-    version: v1alpha1
-    kind: Certificate
-    name: ${name}-dashboard-webhook
-  path: owner_reference_patch.yaml
-- target:
-    group: certmanager.k8s.io
-    version: v1alpha1
-    kind: Certificate
-    name: ${name}-dashboard-webhook-ca
-  path: owner_reference_patch.yaml
-- target:
-    group: certmanager.k8s.io
-    version: v1alpha1
-    kind: Certificate
-    name: ${name}-ingress-default
-  path: owner_reference_patch.yaml
 
-
-# prometheus
+# stack
 - target:
-    group: monitoring.coreos.com
-    version: v1
-    kind: Prometheus
-    name: ${name}-prometheus-prometheus
-  path: prometheus_tag.yaml
-- target:
-    group: monitoring.coreos.com
-    version: v1
-    kind: Prometheus
-    name: ${name}-prometheus-prometheus
-  path: owner_reference_patch.yaml
-- target:
-    group: monitoring.coreos.com
-    version: v1
-    kind: ServiceMonitor
-    name: ${name}-prometheus-prometheus
-  path: owner_reference_patch.yaml
-- target:
-    group: monitoring.coreos.com
-    version: v1
-    kind: ServiceMonitor
-    name: ${name}-prometheus-operator
+    group: certmanager.k8s.io
+    version: v1alpha1
+    kind: ClusterIssuer
+    name: ${name}-default
   path: owner_reference_patch.yaml

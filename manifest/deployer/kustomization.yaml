@@ -11,18 +11,24 @@ resources:
   - ../charts/dashboard/templates/controller-deployment.yaml
   - ../charts/dashboard/templates/controller-gcloud-serviceaccount.yaml
   - ../charts/dashboard/templates/webhook-service.yaml
+  - ../charts/dashboard/templates/webhook-pki.yaml
 
   # cert-manager objects
   - ../charts/stack/charts/cert-manager/charts/webhook/templates/service.yaml
   - ../charts/stack/charts/cert-manager/charts/webhook/templates/deployment.yaml
   - ../charts/stack/charts/cert-manager/charts/cainjector/templates/deployment.yaml
   - ../charts/stack/charts/cert-manager/templates/deployment.yaml
+  - ../charts/stack/charts/cert-manager/charts/webhook/templates/pki.yaml
 
   # prometheus-operator objects
   - ../charts/stack/charts/prometheus-operator/templates/prometheus-operator/service.yaml
   - ../charts/stack/charts/prometheus-operator/templates/prometheus-operator/deployment.yaml
-
+  - ../charts/stack/charts/prometheus-operator/templates/prometheus-operator/servicemonitor.yaml
   - ../charts/stack/charts/prometheus-operator/templates/prometheus/service.yaml
+  - ../charts/stack/charts/prometheus-operator/templates/prometheus/prometheus.yaml
+  - ../charts/stack/charts/prometheus-operator/templates/prometheus/servicemonitor.yaml
+
+
 
   # nginx-ingress controller
   - ../charts/stack/charts/nginx-ingress/templates/controller-deployment.yaml
@@ -82,3 +88,11 @@ patchesJson6902:
     kind: Secret
     name: ${name}-dashboard-gcloud
   path: dashboard_serviceaccount_secret.yaml
+
+# prometheus
+- target:
+    group: monitoring.coreos.com
+    version: v1
+    kind: Prometheus
+    name: ${name}-prometheus-prometheus
+  path: prometheus_tag.yaml
