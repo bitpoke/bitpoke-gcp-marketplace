@@ -28,8 +28,6 @@ resources:
   - ../charts/stack/charts/prometheus-operator/templates/prometheus/prometheus.yaml
   - ../charts/stack/charts/prometheus-operator/templates/prometheus/servicemonitor.yaml
 
-
-
   # nginx-ingress controller
   - ../charts/stack/charts/nginx-ingress/templates/controller-deployment.yaml
   - ../charts/stack/charts/nginx-ingress/templates/controller-configmap.yaml

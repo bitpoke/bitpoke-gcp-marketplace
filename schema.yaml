@@ -21,11 +21,6 @@ properties:
           rulesType: PREDEFINED
           rulesFromRoleName: cluster-admin
 
-  # tag used for docker images
-  tag:
-    type: string
-    default: $TAG
-
   appUID:
     type: string
     x-google-marketplace:
@@ -36,7 +31,7 @@ properties:
     type: string
   dashboardImage:
     type: string
-    default: $REGISTRY/dashboard
+    default: $REGISTRY/dashboard:$TAG
     x-google-marketplace:
       type: IMAGE
   dashboardProjectID:
@@ -77,81 +72,126 @@ properties:
   # cert-manager
   certManagerImage:
     type: string
-    default: $REGISTRY/cert-manager-controller
+    default: $REGISTRY/cert-manager-controller:$TAG
     x-google-marketplace:
       type: IMAGE
+      image:
+        generatedProperties:
+          splitByColon:
+            before: certManagerImageRegistry
+            after: certManagerImageTag
   certAcmeSolverImage:
     type: string
-    default: $REGISTRY/cert-manager-acmesolver
+    default: $REGISTRY/cert-manager-acmesolver:$TAG
     x-google-marketplace:
       type: IMAGE
   certWebhookImage:
     type: string
-    default: $REGISTRY/cert-manager-webhook
+    default: $REGISTRY/cert-manager-webhook:$TAG
     x-google-marketplace:
       type: IMAGE
+      image:
+        generatedProperties:
+          splitByColon:
+            before: certWebhookImageRegistry
+            after: certWebhookImageTag
   certCAinjectorImage:
     type: string
-    default: $REGISTRY/cert-manager-cainjector
+    default: $REGISTRY/cert-manager-cainjector:$TAG
     x-google-marketplace:
       type: IMAGE
+      image:
+        generatedProperties:
+          splitByColon:
+            before: certCAinjectorImageRegistry
+            after: certCAinjectorImageTag
 
   # prometheus operator
   promOperatorImage:
     type: string
-    default: $REGISTRY/prometheus-operator
+    default: $REGISTRY/prometheus-operator:$TAG
     x-google-marketplace:
       type: IMAGE
+      image:
+        generatedProperties:
+          splitByColon:
+            before: promOperatorImageRegistry
+            after: promOperatorImageTag
   promConfigMapReloadImage:
     type: string
-    default: $REGISTRY/prometheus-configmap-reload
+    default: $REGISTRY/prometheus-configmap-reload:$TAG
     x-google-marketplace:
       type: IMAGE
+      image:
+        generatedProperties:
+          splitByColon:
+            before: promConfigMapReloadImageRegistry
+            after: promConfigMapReloadImageTag
   promConfigReloaderImage:
     type: string
-    default: $REGISTRY/prometheus-config-reloader
+    default: $REGISTRY/prometheus-config-reloader:$TAG
     x-google-marketplace:
       type: IMAGE
+      image:
+        generatedProperties:
+          splitByColon:
+            before: promConfigReloaderImageRegistry
+            after: promConfigReloaderImageTag
   promImage:
     type: string
-    default: $REGISTRY/prometheus-prometheus
+    default: $REGISTRY/prometheus-prometheus:$TAG
     x-google-marketplace:
       type: IMAGE
+      image:
+        generatedProperties:
+          splitByColon:
+            before: promImageRegistry
+            after: promImageTag
 
   # ingress controller
   ingressImage:
     type: string
-    default: $REGISTRY/ingress-controller
+    default: $REGISTRY/ingress-controller:$TAG
     x-google-marketplace:
       type: IMAGE
+      image:
+        generatedProperties:
+          splitByColon:
+            before: ingressImageRegistry
+            after: ingressImageTag
   ingressDefaultBackendImage:
     type: string
-    default: $REGISTRY/ingress-default-backend
+    default: $REGISTRY/ingress-default-backend:$TAG
     x-google-marketplace:
       type: IMAGE
+      image:
+        generatedProperties:
+          splitByColon:
+            before: ingressDefaultBackendImageRegistry
+            after: ingressDefaultBackendImageTag
 
   # mysql-operator
   mysqlControllerImage:
     type: string
-    default: $REGISTRY/mysql-operator
+    default: $REGISTRY/mysql-operator:$TAG
     x-google-marketplace:
       type: IMAGE
   mysqlOrchestratorImage:
     type: string
-    default: $REGISTRY/mysql-orchestrator
+    default: $REGISTRY/mysql-orchestrator:$TAG
     x-google-marketplace:
       type: IMAGE
   mysqlSidecarImage:
     type: string
-    default: $REGISTRY/mysql-sidecar
+    default: $REGISTRY/mysql-sidecar:$TAG
     x-google-marketplace:
       type: IMAGE
   mysqlMetricsImage:
     type: string
-    default: $REGISTRY/mysql-metrics
+    default: $REGISTRY/mysql-metrics:$TAG
     x-google-marketplace:
       type: IMAGE
-  mysqlPerconaImage:
+  mysqlPerconaImageRegistry:
     type: string
     default: $REGISTRY/mysql-percona
     x-google-marketplace:
@@ -168,22 +208,22 @@ properties:
   # wordpress operator
   wordpressOperatorImage:
     type: string
-    default: $REGISTRY/wordpress-operator
+    default: $REGISTRY/wordpress-operator:$TAG
     x-google-marketplace:
       type: IMAGE
-  wordpressRuntimeImage:
+  wordpressRuntimeImageRegistry:
     type: string
     default: $REGISTRY/wordpress-runtime
     x-google-marketplace:
       type: IMAGE
   wordpressRcloneImage:
     type: string
-    default: $REGISTRY/wordpress-rclone
+    default: $REGISTRY/wordpress-rclone:$TAG
     x-google-marketplace:
       type: IMAGE
   wordpressGitCloneImage:
     type: string
-    default: $REGISTRY/wordpress-gitclone
+    default: $REGISTRY/wordpress-gitclone:$TAG
     x-google-marketplace:
       type: IMAGE
 

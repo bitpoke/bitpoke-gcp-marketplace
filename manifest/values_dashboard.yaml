@@ -1,4 +1,4 @@
-image: $dashboardImage:${tag}
+image: $dashboardImage
 fullNameOverride: "${name}-dashboard"
 
 defaults:

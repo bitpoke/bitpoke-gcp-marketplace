@@ -8,11 +8,11 @@ letsencrypt:
 
 wordpress-operator:
   enabled: true
-  image: $wordpressOperatorImage:${tag}
+  image: $wordpressOperatorImage
   extraArgs:
-    - --git-clone-image=$wordpressGitCloneImage:${tag}
-    - --rclone-image=$wordpressRcloneImage:${tag}
-    - --wordpress-runtime-image=$wordpressRuntimeImage
+    - --git-clone-image=$wordpressGitCloneImage
+    - --rclone-image=$wordpressRcloneImage
+    - --wordpress-runtime-image=$wordpressRuntimeImageRegistry
   crd:
     install: true
   rbac:
@@ -23,21 +23,21 @@ wordpress-operator:
 
 mysql-operator:
   enabled: true
-  image: $mysqlControllerImage:${tag}
-  sidecarImage: $mysqlSidecarImage:${tag}
+  image: $mysqlControllerImage
+  sidecarImage: $mysqlSidecarImage
   installCRDs: true
   extraArgs:
-    - --metrics-exporter-image=$mysqlMetricsImage:${tag}
+    - --metrics-exporter-image=$mysqlMetricsImage
     # this list should be keept in sync Makefile image versions and with
     # https://github.com/presslabs/mysql-operator/blob/master/pkg/util/constants/constants.go#L87
-    - --mysql-versions-to-image=5.7.26=$mysqlPerconaImage:5.7.26
+    - --mysql-versions-to-image=5.7.26=$mysqlPerconaImageRegistry:5.7.26
     # this is set to avoid id collision because of a mysql-operator bug #368
     - --leader-election-id=mysql-operator-leader-election
   rbac:
     create: false
     serviceAccountName: $serviceAccount
   orchestrator:
-    image: $mysqlOrchestratorImage:${tag}
+    image: $mysqlOrchestratorImage
     # NOTE: this will be ovewrite by kustomize
     topologyPassword: $mysqlOrchestratorPassword
 
@@ -50,13 +50,13 @@ nginx-ingress:
     name: $serviceAccount
   controller:
     image:
-      repository: $ingressImage
+      repository: $ingressImageRegistry
       # pin version here because it uses comparSemver in chart, patch it later with kustomize
       tag: v0.24.1
   defaultBackend:
     image:
-      repository: $ingressDefaultBackendImage
-      tag: ${tag}
+      repository: $ingressDefaultBackendImageRegistry
+      tag: $ingressDefaultBackendImageTag
       pullPolicy: Always
 
 cert-manager:
@@ -69,8 +69,8 @@ cert-manager:
   webhook:
     fullnameOverride: ${name}-cert-manager-webhook
     image:
-      repository: $certWebhookImage
-      tag: ${tag}
+      repository: $certWebhookImageRegistry
+      tag: $certWebhookImageTag
     global:
       rbac:
         create: false
@@ -81,8 +81,8 @@ cert-manager:
   cainjector:
     fullnameOverride: ${name}-cert-manager-cainjector
     image:
-      repository: $certCAinjectorImage
-      tag: ${tag}
+      repository: $certCAinjectorImageRegistry
+      tag: $certCAinjectorImageTag
     global:
       rbac:
         create: false
@@ -91,10 +91,10 @@ cert-manager:
       name: $serviceAccount
 
   image:
-    repository: $certManagerImage
-    tag: ${tag}
+    repository: $certManagerImageRegistry
+    tag: $certManagerImageTag
   extraArgs:
-    - --acme-http01-solver-image=$certAcmeSolverImage:${tag}
+    - --acme-http01-solver-image=$certAcmeSolverImage
   serviceAccount:
     create: false
     name: $serviceAccount
@@ -145,14 +145,14 @@ prometheus-operator:
       name: $serviceAccount
     createCustomResource: true
     image:
-      repository: $promOperatorImage
-      tag: ${tag}
+      repository: $promOperatorImageRegistry
+      tag: $promOperatorImageTag
     configmapReloadImage:
-      repository: $promConfigMapReloadImage
-      tag: ${tag}
+      repository: $promConfigMapReloadImageRegistry
+      tag: $promConfigMapReloadImageTag
     prometheusConfigReloaderImage:
-      repository: $promConfigReloaderImage
-      tag: ${tag}
+      repository: $promConfigReloaderImageRegistry
+      tag: $promConfigReloaderImageTag
 
   prometheus:
     serviceAccount:
@@ -160,6 +160,6 @@ prometheus-operator:
       name: $serviceAccount
     prometheusSpec:
       image:
-        repository: $promImage
+        repository: $promImageRegistry
         # pin version here because it is used as version and patch with kustomize tag field
         tag: v2.9.1

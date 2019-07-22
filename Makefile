@@ -77,7 +77,9 @@ define republish
 	docker push $(2)
 endef
 
-.build/dashboard/dashboard: | .build/dashboard
+.build/dashboard/dashboard: .build/var/TAG \
+                            .build/var/REGISTRY \
+                            | .build/dashboard
 	$(call republish,\
 	       gcr.io/press-labs-stack-public/dashboard:latest,\
 	       $(REGISTRY)/dashboard/dashboard:$(TAG))
@@ -94,6 +96,7 @@ endef
 	@touch "$@"
 
 .build/dashboard/cert-manager-%: .build/var/TAG \
+                                 .build/var/REGISTRY \
                                  .build/var/CERT_MANAGER_TAG \
                                  | .build/dashboard
 	$(call republish,\
@@ -103,7 +106,9 @@ endef
 
 
 # prometheus operator images
-.build/dashboard/prometheus-operator: | .build/dashboard
+.build/dashboard/prometheus-operator: .build/var/TAG \
+                                      .build/var/REGISTRY \
+                                      | .build/dashboard
 	$(call republish,\
          quay.io/coreos/prometheus-operator:v0.30.1,\
          $(REGISTRY)/dashboard/prometheus-operator:$(TAG))
@@ -120,7 +125,9 @@ endef
 
 
 # nginx-ingress operator images
-.build/dashboard/ingress: | .build/dashboard
+.build/dashboard/ingress: .build/var/TAG \
+                          .build/var/REGISTRY \
+                          | .build/dashboard
 	$(call republish,\
 	       quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.24.1,\
          $(REGISTRY)/dashboard/ingress-controller:$(TAG))
@@ -131,7 +138,9 @@ endef
 
 
 # mysql-operator images
-.build/dashboard/mysql-operator: .build/dashboard/mysql-percona-5.7.26 \
+.build/dashboard/mysql-operator: .build/var/TAG \
+                                 .build/var/REGISTRY \
+                                 .build/dashboard/mysql-percona-5.7.26 \
                                  | .build/dashboard
 	$(call republish,\
 	       quay.io/presslabs/mysql-operator:0.3.0,\
@@ -155,7 +164,9 @@ endef
 
 
 # wordpress-operator images
-.build/dashboard/wordpress-operator: .build/dashboard/wordpress-runtime-5.2-7.3.4-r164 \
+.build/dashboard/wordpress-operator: .build/var/TAG \
+                                     .build/var/REGISTRY \
+                                     .build/dashboard/wordpress-runtime-5.2-7.3.4-r164 \
                                      | .build/dashboard
 	$(call republish,\
 	       quay.io/presslabs/wordpress-operator:v0.3.7,\
@@ -220,29 +231,29 @@ DASHBOARD_CHART_PATH ?= charts/dashboard
 
 
 .build/manifest/manifest_deployer.yaml: manifest/* \
-                               .build/manifest/charts/stack \
-                               .build/manifest/charts/dashboard \
-                               .build/manifest/kustomization.yaml \
-                               .build/manifest/deployer \
-                               .build/manifest/job \
-                               | .build/manifest
+                                        .build/manifest/charts/stack \
+                                        .build/manifest/charts/dashboard \
+                                        .build/manifest/kustomization.yaml \
+                                        .build/manifest/deployer \
+                                        .build/manifest/job \
+                                        | .build/manifest
 	kustomize build .build/manifest/deployer -o "$@" \
 		--load_restrictor none
 
 
 .build/manifest/manifest_globals.yaml: manifest/* \
-																	 .build/manifest/charts/stack \
-                                   .build/manifest/charts/dashboard \
-																	 .build/manifest/kustomization.yaml \
-																	 .build/manifest/deployer \
-																	 .build/manifest/job \
-                                   | .build/manifest
+																	     .build/manifest/charts/stack \
+                                       .build/manifest/charts/dashboard \
+																	     .build/manifest/kustomization.yaml \
+																	     .build/manifest/deployer \
+																	     .build/manifest/job \
+                                       | .build/manifest
 	kustomize build .build/manifest/job/globals -o "$@" \
 		--load_restrictor none
 
 .build/manifest/manifest_crds.yaml.gz.b64enc: manifest/* \
-																	 .build/manifest/job \
-                                   | .build/manifest
+																	            .build/manifest/job \
+                                              | .build/manifest
 	kustomize build .build/manifest/job/crds \
 		--load_restrictor none | name=$(NAME) envsubst | gzip | base64 > "$@"
 
