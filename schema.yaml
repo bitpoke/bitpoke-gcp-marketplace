@@ -67,7 +67,7 @@ properties:
           base64Encoded: explicitPasswordEncoded
   dashboardSentryDSN:
     type: string
-    default: ''
+    default: '""'
 
   # cert-manager
   certManagerImage:
