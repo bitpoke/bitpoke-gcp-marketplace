@@ -133,35 +133,52 @@ Configure the container images:
 
 ```shell
 REGISTRY=gcr.io/presslabs/dashboard
+TAG=latest
 
-export tag=latest
+export dashboardImage="${REGISTRY}/dashboard:${TAG}"
 
-export dashboardImage="${REGISTRY}/dashboard:${tag}"
+export certManagerImage="${REGISTRY}/cert-manager-controller:${TAG}"
+export certManagerImageRegistry="${REGISTRY}/cert-manager-controller"
+export certManagerImageTag="${TAG}"
+export certAcmeSolverImage="${REGISTRY}/cert-manager-acmesolver:${TAG}"
+export certWebhookImage="${REGISTRY}/cert-manager-webhook:${TAG}"
+export certWebhookImageRegistry="${REGISTRY}/cert-manager-webhook"
+export certWebhookImageTag="${TAG}"
+export certCAinjectorImage="${REGISTRY}/cert-manager-cainjector:${TAG}"
+export certCAinjectorImageRegistry="${REGISTRY}/cert-manager-cainjector"
+export certCAinjectorImageTag="${TAG}"
 
-export certManagerImage="${REGISTRY}/cert-manager-controller:${tag}"
-export certAcmeSolverImage="${REGISTRY}/cert-manager-acmesolver:${tag}"
-export certWebhookImage="${REGISTRY}/cert-manager-webhook:${tag}"
-export certCAinjectorImage="${REGISTRY}/cert-manager-cainjector:${tag}"
+export promOperatorImage="${REGISTRY}/prometheus-operator:${TAG}"
+export promOperatorImageRegistry="${REGISTRY}/prometheus-operator"
+export promOperatorImageTag="${TAG}"
+export promConfigMapReloadImage="${REGISTRY}/prometheus-configmap-reload:${TAG}"
+export promConfigMapReloadImageRegistry="${REGISTRY}/prometheus-configmap-reload"
+export promConfigMapReloadImageTag="${TAG}"
+export promConfigReloaderImage="${REGISTRY}/prometheus-config-reloader:${TAG}"
+export promConfigReloaderImageRegistry="${REGISTRY}/prometheus-config-reloader"
+export promConfigReloaderImageTag="${TAG}"
+export promImage="${REGISTRY}/prometheus-prometheus:${TAG}"
+export promImageRegistry="${REGISTRY}/prometheus-prometheus"
+export promImageTag="${TAG}"
 
-export promOperatorImage="${REGISTRY}/prometheus-operator:${tag}"
-export promConfigMapReloadImage="${REGISTRY}/prometheus-configmap-reload:${tag}"
-export promConfigReloaderImage="${REGISTRY}/prometheus-config-reloader:${tag}"
-export promImage="${REGISTRY}/prometheus-prometheus:${tag}"
+export ingressImage="${REGISTRY}/ingress-controller:${TAG}"
+export ingressImageRegstry="${REGISTRY}/ingress-controller"
+export ingressImageTag="${TAG}"
+export ingressDefaultBackendImage="${REGISTRY}/ingress-default-backend:${TAG}"
+export ingressDefaultBackendImageRegistry="${REGISTRY}/ingress-default-backend"
+export ingressDefaultBackendImageTag="${TAG}"
 
-export ingressImage="${REGISTRY}/ingress-controller:${tag}"
-export ingressDefaultBackendImage="${REGISTRY}/ingress-default-backend:${tag}"
-
-export mysqlControllerImage="${REGISTRY}/mysql-operator:${tag}"
-export mysqlOrchestratorImage="${REGISTRY}/mysql-orchestrator:${tag}"
-export mysqlSidecarImage="${REGISTRY}/mysql-sidecar:${tag}"
-export mysqlMetricsImage="${REGISTRY}/mysql-metrics:${tag}"
+export mysqlControllerImage="${REGISTRY}/mysql-operator:${TAG}"
+export mysqlOrchestratorImage="${REGISTRY}/mysql-orchestrator:${TAG}"
+export mysqlSidecarImage="${REGISTRY}/mysql-sidecar:${TAG}"
+export mysqlMetricsImage="${REGISTRY}/mysql-metrics:${TAG}"
 # all Percona docker images versions that are used by MySQL clusters
 export mysqlPerconaImage="${REGISTRY}/mysql-percona:5.7.26"
 
-export wordpressOperatorImage="${REGISTRY}/wordpress-operator:${tag}"
-export wordpressRuntimeImage="${REGISTRY}/wordpress-runtime:${tag}"
-export wordpressRcloneImage="${REGISTRY}/wordpress-rclone:${tag}"
-export wordpressGitCloneImage="${REGISTRY}/wordpress-gitclone:${tag}"
+export wordpressOperatorImage="${REGISTRY}/wordpress-operator:${TAG}"
+export wordpressRuntimeImage="${REGISTRY}/wordpress-runtime:${TAG}"
+export wordpressRcloneImage="${REGISTRY}/wordpress-rclone:${TAG}"
+export wordpressGitCloneImage="${REGISTRY}/wordpress-gitclone:${TAG}"
 ```
 
 The images above are referenced by
@@ -261,7 +278,7 @@ Use `envsubst` to expand the template. We recommend that you save the expanded
 manifest file for future updates to the application.
 
 ```shell
-cat .build/manifests.yaml.template | envsubst '$name $namespace $dashboardDomain $dashboardImage $dashboardServiceAccount $dashboardProjectID $dashboardOIDCClient $dashboardOIDCSecret $dashboardOIDCIssuer $serviceAccount $tag $certManagerImage $certAcmeSolverImage $certWebhookImage $certCAinjectorImage $promOperatorImage $promConfigMapReloadImage $promConfigReloaderImage $promImage $ingressImage $ingressDefaultBackendImage $mysqlControllerImage $mysqlOrchestratorImage $mysqlSidecarImage $mysqlMetricsImage $mysqlPerconaImage $mysqlOrchestratorPassowrd $wordpressOperatorImage $wordpressRuntimeImage $wordpressRcloneImage $wordpressGitCloneImage ' \
+cat .build/manifests.yaml.template | envsubst '$name $namespace $dashboardDomain $dashboardImage $dashboardServiceAccount $dashboardProjectID $dashboardOIDCClient $dashboardOIDCSecret $dashboardOIDCIssuer $serviceAccount $certManagerImageRegistry $certManagerImageTag $certAcmeSolverImageRegistry $certAcmeSolverImageTag  $certWebhookImageRegistry $certWebhookImageTag $certCAinjectorImageRegistry $certCAinjectorImageTag $promOperatorImageRegistry $promOperatorImageTag $promConfigMapReloadImageRegistry $promConfigMapReloadImageTag $promConfigReloaderImageRegistry $promConfigReloaderImageTag $promImageRegistry $promImageTag $ingressImageRegistry $ingressImageTag $ingressDefaultBackendImageRegistry $ingressDefaultBackendImageTag $mysqlControllerImage $mysqlOrchestratorImage $mysqlSidecarImage $mysqlMetricsImage $mysqlPerconaImage $mysqlOrchestratorPassowrd $wordpressOperatorImage $wordpressRuntimeImage $wordpressRcloneImage $wordpressGitCloneImage ' \
   > "${name}_manifest.yaml"
 ```
 
