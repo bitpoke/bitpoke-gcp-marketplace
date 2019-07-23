@@ -267,3 +267,11 @@ DASHBOARD_CHART_PATH ?= charts/dashboard
 	# and the job that applies them
 	kustomize build .build/manifest --load_restrictor none -o "$@"
 
+
+
+# a simple rule to test if the generated manifests are ok
+.PHONY: test-gen-manifest
+test-gen-manifest: .build/manifests.yaml.template
+# test if the kustomize replace all fields that needs to be replaced
+	[ "$(shell grep SET_IN_KUSTOMIZE $^ )" = "" ] || exit 1
+	[ "$(shell grep U0VUX0lOX0tVU1RPTUlaRQ== $^ )" = "" ] || exit 1

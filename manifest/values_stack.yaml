@@ -39,7 +39,7 @@ mysql-operator:
   orchestrator:
     image: $mysqlOrchestratorImage
     # NOTE: this will be ovewrite by kustomize
-    topologyPassword: $mysqlOrchestratorPassword
+    topologyPassword: SET_IN_KUSTOMIZE
 
 nginx-ingress:
   enabled: true

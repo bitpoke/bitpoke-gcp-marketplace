@@ -86,6 +86,11 @@ patchesJson6902:
     kind: Secret
     name: ${name}-dashboard-gcloud
   path: dashboard_serviceaccount_secret.yaml
+- target:
+    version: v1
+    kind: Secret
+    name: ${name}-dashboard-sentry
+  path: dashboard_sentry_secret.yaml
 
 # prometheus
 - target:

@@ -10,18 +10,18 @@ crd:
 gcloud:
   projectID: $dashboardProjectID
   # NOTE: those valus is patched by kustomize
-  serviceAccountKey: $dashboardServiceAccountKey
+  serviceAccountKey: SET_IN_KUSTOMIZE
 
 apiserver:
   oidc:
     # NOTE: those valuse are patched by kustomize
-    client_id: $dashboardOIDCClientID ..will be set
-    client_secret: $dashboardOIDCSecret ..will be set
-    client_issuer: $dashboardOIDCIssuer ..will be set
+    client_id: SET_IN_KUSTOMIZE
+    client_secret: SET_IN_KUSTOMIZE
+    client_issuer: SET_IN_KUSTOMIZE
 
   baseURL: //$dashboardDomain
 
-  sentryDSN: $dashboardSentryDSN
+  sentryDSN: SET_IN_KUSTOMIZE
 
   ingress:
     enabled: true
