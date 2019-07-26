@@ -1,0 +1,1215 @@
+apiVersion: v1
+data:
+  orc-topology.cnf: |
+    [client]
+    user = {{ .Env.ORC_TOPOLOGY_USER }}
+    password = {{ .Env.ORC_TOPOLOGY_PASSWORD }}
+  orchestrator.conf.json: |-
+    {
+      "ApplyMySQLPromotionAfterMasterFailover": false,
+      "BackendDB": "sqlite",
+      "Debug": false,
+      "DetachLostReplicasAfterMasterFailover": true,
+      "DetectClusterAliasQuery": "SELECT CONCAT(SUBSTRING(@@hostname, 1, LENGTH(@@hostname) - 1 - LENGTH(SUBSTRING_INDEX(@@hostname,'-',-2))),'.',SUBSTRING_INDEX(@@report_host,'.',-1))",
+      "DetectInstanceAliasQuery": "SELECT @@hostname",
+      "DiscoverByShowSlaveHosts": false,
+      "FailMasterPromotionIfSQLThreadNotUpToDate": true,
+      "HTTPAdvertise": "http://{{ .Env.HOSTNAME }}-svc:80",
+      "HostnameResolveMethod": "none",
+      "InstancePollSeconds": 5,
+      "ListenAddress": ":3000",
+      "MasterFailoverDetachReplicaMasterHost": true,
+      "MySQLHostnameResolveMethod": "@@report_host",
+      "MySQLTopologyCredentialsConfigFile": "/etc/orchestrator/orc-topology.cnf",
+      "OnFailureDetectionProcesses": [
+        "/usr/local/bin/orc-helper event -w '{failureClusterAlias}' 'OrcFailureDetection' 'Failure: {failureType}, failed host: {failedHost}, lost replcas: {lostReplicas}' || true",
+        "/usr/local/bin/orc-helper failover-in-progress '{failureClusterAlias}' '{failureDescription}' || true"
+      ],
+      "PostIntermediateMasterFailoverProcesses": [
+        "/usr/local/bin/orc-helper event '{failureClusterAlias}' 'OrcPostIntermediateMasterFailover' 'Failure type: {failureType}, failed hosts: {failedHost}, slaves: {countSlaves}' || true"
+      ],
+      "PostMasterFailoverProcesses": [
+        "/usr/local/bin/orc-helper event '{failureClusterAlias}' 'OrcPostMasterFailover' 'Failure type: {failureType}, new master: {successorHost}, slaves: {slaveHosts}' || true"
+      ],
+      "PostUnsuccessfulFailoverProcesses": [
+        "/usr/local/bin/orc-helper event -w '{failureClusterAlias}' 'OrcPostUnsuccessfulFailover' 'Failure: {failureType}, failed host: {failedHost} with {countSlaves} slaves' || true"
+      ],
+      "PreFailoverProcesses": [
+        "/usr/local/bin/orc-helper failover-in-progress '{failureClusterAlias}' '{failureDescription}' || true"
+      ],
+      "ProcessesShellCommand": "sh",
+      "RaftAdvertise": "{{ .Env.HOSTNAME }}-svc",
+      "RaftBind": "{{ .Env.HOSTNAME }}",
+      "RaftDataDir": "/var/lib/orchestrator",
+      "RaftEnabled": true,
+      "RaftNodes": [],
+      "RecoverIntermediateMasterClusterFilters": [
+        ".*"
+      ],
+      "RecoverMasterClusterFilters": [
+        ".*"
+      ],
+      "RecoveryIgnoreHostnameFilters": [],
+      "RecoveryPeriodBlockSeconds": 300,
+      "RemoveTextFromHostnameDisplay": ":3306",
+      "SQLite3DataFile": "/var/lib/orchestrator/orc.db",
+      "SlaveLagQuery": "SELECT TIMESTAMPDIFF(SECOND,ts,NOW()) as drift FROM sys_operator.heartbeat ORDER BY drift ASC LIMIT 1",
+      "UnseenInstanceForgetHours": 1
+    }
+kind: ConfigMap
+metadata:
+  labels:
+    app: mysql-operator
+    chart: mysql-operator-0.3.2
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-mysql-operator-orc
+---
+apiVersion: v1
+data:
+  custom-http-errors: 502,503,504
+kind: ConfigMap
+metadata:
+  labels:
+    app: nginx-ingress
+    chart: nginx-ingress-1.6.19
+    component: controller
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-nginx-ingress-controller
+---
+apiVersion: v1
+data:
+  google_application_credentials.json: $dashboardServiceAccountKey
+kind: Secret
+metadata:
+  labels:
+    app: dashboard
+    chart: dashboard-0.1.0_master
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-gcloud
+type: Opaque
+---
+apiVersion: v1
+data:
+  CLIENT_ID: $dashboardOIDCClientID
+  CLIENT_SECRET: $dashboardOIDCSecret
+  ISSUER: $dashboardOIDCIssuer
+kind: Secret
+metadata:
+  labels:
+    app: dashboard
+    chart: dashboard-0.1.0_master
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-oidc
+type: Opaque
+---
+apiVersion: v1
+data:
+  DSN: $dashboardSentryDSN
+kind: Secret
+metadata:
+  labels:
+    app: dashboard
+    chart: dashboard-0.1.0_master
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-sentry
+type: Opaque
+---
+apiVersion: v1
+data:
+  TOPOLOGY_PASSWORD: $mysqlOrchestratorPassword
+  TOPOLOGY_USER: b3JjaGVzdHJhdG9y
+kind: Secret
+metadata:
+  labels:
+    app: mysql-operator
+    chart: mysql-operator-0.3.2
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-mysql-operator-orc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: webhook
+    chart: webhook-v0.8.1
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-cert-manager-webhook
+  namespace: ${namespace}
+spec:
+  ports:
+  - name: https
+    port: 443
+    targetPort: 6443
+  selector:
+    app: webhook
+    release: ${name}
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: dashboard
+    chart: dashboard-0.1.0_master
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-apiserver
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  - name: grpc
+    port: 9000
+    protocol: TCP
+    targetPort: grpc
+  selector:
+    app: dashboard
+    component: apiserver
+    release: ${name}
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: dashboard
+    chart: dashboard-0.1.0_master
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-webhook
+spec:
+  ports:
+  - name: http
+    port: 443
+    protocol: TCP
+    targetPort: 4433
+  selector:
+    app: dashboard
+    component: controller
+    release: ${name}
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mysql-operator
+    chart: mysql-operator-0.3.2
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-mysql-operator
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: mysql-operator
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+  labels:
+    app: ${name}-mysql-operator
+    chart: mysql-operator-0.3.2
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-mysql-operator-0-svc
+spec:
+  ports:
+  - name: web
+    port: 80
+    targetPort: 3000
+  - name: raft
+    port: 10008
+    targetPort: 10008
+  selector:
+    statefulset.kubernetes.io/pod-name: ${name}-mysql-operator-0
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nginx-ingress
+    chart: nginx-ingress-1.6.19
+    component: controller
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-nginx-ingress-controller
+spec:
+  clusterIP: ""
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: https
+  selector:
+    app: nginx-ingress
+    component: controller
+    release: ${name}
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nginx-ingress
+    chart: nginx-ingress-1.6.19
+    component: default-backend
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-nginx-ingress-default-backend
+spec:
+  clusterIP: ""
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: nginx-ingress
+    component: default-backend
+    release: ${name}
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: prometheus-operator-operator
+    chart: prometheus-operator-5.12.5
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-prometheus-operator
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: http
+  selector:
+    app: prometheus-operator-operator
+    release: ${name}
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: prometheus-operator-prometheus
+    chart: prometheus-operator-5.12.5
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-prometheus-prometheus
+spec:
+  ports:
+  - name: web
+    port: 9090
+    targetPort: 9090
+  selector:
+    app: prometheus
+    prometheus: ${name}-prometheus-prometheus
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dashboard
+    chart: dashboard-0.1.0_master
+    component: apiserver
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-apiserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard
+      component: apiserver
+      release: ${name}
+  template:
+    metadata:
+      annotations:
+        checksum/oidc-config: be5488c7d968d695b9525e59e3490e60cf672c6a58d9a4f0aac897df19445f30
+      labels:
+        app: dashboard
+        component: apiserver
+        release: ${name}
+    spec:
+      containers:
+      - args:
+        - apiserver
+        - --http-addr=:8080
+        - --grpc-addr=:9000
+        - --base-url=//$dashboardDomain
+        envFrom:
+        - prefix: OIDC_
+          secretRef:
+            name: ${name}-dashboard-oidc
+        - prefix: SENTRY_
+          secretRef:
+            name: ${name}-dashboard-sentry
+        image: $dashboardImage
+        imagePullPolicy: IfNotPresent
+        name: apiserver
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 9000
+          name: grpc
+          protocol: TCP
+        resources: null
+      serviceAccount: $serviceAccount
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dashboard
+    chart: dashboard-0.1.0_master
+    component: controller
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard
+      component: controller
+      release: ${name}
+  template:
+    metadata:
+      annotations:
+        checksum/config: 2cf039100268addb524a3a29d7b9afe11db26d87417a22d10788a32c467d93d8
+      labels:
+        app: dashboard
+        component: controller
+        release: ${name}
+    spec:
+      containers:
+      - args:
+        - controller-manager
+        - --webhook-port=4433
+        - --webhook-cert-dir=/tmp/${name}-dashboard-webhook-cert-dir
+        - --webhook-service-name=${name}-dashboard-webhook
+        - --gcloud.project-id=$dashboardProjectID
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/run/secrets/cloud.google.com/serviceaccount/google_application_credentials.json
+        image: $dashboardImage
+        imagePullPolicy: IfNotPresent
+        name: controller
+        ports:
+        - containerPort: 4433
+          name: webhook
+        resources: null
+        volumeMounts:
+        - mountPath: /tmp/${name}-dashboard-webhook-cert-dir
+          name: webhook-certs
+        - mountPath: /var/run/secrets/cloud.google.com/serviceaccount
+          name: gcloud-serviceaccount
+      serviceAccount: $serviceAccount
+      volumes:
+      - name: webhook-certs
+        secret:
+          items:
+          - key: tls.crt
+            path: cert.pem
+          - key: tls.key
+            path: key.pem
+          secretName: ${name}-dashboard-webhook
+      - name: gcloud-serviceaccount
+        secret:
+          secretName: ${name}-dashboard-gcloud
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: prometheus-operator-operator
+    chart: prometheus-operator-5.12.5
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-prometheus-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus-operator-operator
+      release: ${name}
+  template:
+    metadata:
+      labels:
+        app: prometheus-operator-operator
+        chart: prometheus-operator-5.12.5
+        heritage: Tiller
+        release: ${name}
+    spec:
+      containers:
+      - args:
+        - --kubelet-service=kube-system/${name}-prometheus-kubelet
+        - --logtostderr=true
+        - --crd-apigroup=monitoring.coreos.com
+        - --localhost=127.0.0.1
+        - --prometheus-config-reloader=$promConfigReloaderImageRegistry:$promConfigReloaderImageTag
+        - --config-reloader-image=$promConfigMapReloadImageRegistry:$promConfigMapReloadImageTag
+        image: $promOperatorImageRegistry:$promOperatorImageTag
+        imagePullPolicy: IfNotPresent
+        name: prometheus-operator
+        ports:
+        - containerPort: 8080
+          name: http
+        resources: {}
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+      serviceAccountName: $serviceAccount
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: cert-manager
+    chart: cert-manager-v0.8.1
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-cert-manager
+  namespace: ${namespace}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cert-manager
+      release: ${name}
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "9402"
+        prometheus.io/scrape: "true"
+      labels:
+        app: cert-manager
+        release: ${name}
+    spec:
+      containers:
+      - args:
+        - --v=2
+        - --cluster-resource-namespace=$(POD_NAMESPACE)
+        - --leader-election-namespace=$(POD_NAMESPACE)
+        - --acme-http01-solver-image=$certAcmeSolverImage
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        image: $certManagerImageRegistry:$certManagerImageTag
+        imagePullPolicy: IfNotPresent
+        name: cert-manager
+        ports:
+        - containerPort: 9402
+        resources: {}
+      serviceAccountName: $serviceAccount
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: cainjector
+    chart: cainjector-v0.8.1
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-cert-manager-cainjector
+  namespace: ${namespace}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cainjector
+      release: ${name}
+  template:
+    metadata:
+      annotations: null
+      labels:
+        app: cainjector
+        release: ${name}
+    spec:
+      containers:
+      - args:
+        - --v=2
+        - --leader-election-namespace=$(POD_NAMESPACE)
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        image: $certCAinjectorImageRegistry:$certCAinjectorImageTag
+        imagePullPolicy: IfNotPresent
+        name: cainjector
+        resources: {}
+      serviceAccountName: $serviceAccount
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: webhook
+    chart: webhook-v0.8.1
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-cert-manager-webhook
+  namespace: ${namespace}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webhook
+      release: ${name}
+  template:
+    metadata:
+      annotations: null
+      labels:
+        app: webhook
+        release: ${name}
+    spec:
+      containers:
+      - args:
+        - --v=2
+        - --secure-port=6443
+        - --tls-cert-file=/certs/tls.crt
+        - --tls-private-key-file=/certs/tls.key
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        image: $certWebhookImageRegistry:$certWebhookImageTag
+        imagePullPolicy: IfNotPresent
+        name: webhook
+        resources: {}
+        volumeMounts:
+        - mountPath: /certs
+          name: certs
+      serviceAccountName: $serviceAccount
+      volumes:
+      - name: certs
+        secret:
+          secretName: ${name}-cert-manager-webhook-webhook-tls
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  labels:
+    app: wordpress-operator
+    chart: wordpress-operator-v0.3.7
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-wordpress-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordpress-operator
+      release: ${name}
+  template:
+    metadata:
+      labels:
+        app: wordpress-operator
+        release: ${name}
+    spec:
+      containers:
+      - image: $wordpressOperatorImage
+        imagePullPolicy: IfNotPresent
+        name: wordpress-operator
+        resources: {}
+      serviceAccount: $serviceAccount
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx-ingress
+    chart: nginx-ingress-1.6.19
+    component: controller
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-nginx-ingress-controller
+spec:
+  minReadySeconds: 0
+  replicas: 1
+  revisionHistoryLimit: 10
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: nginx-ingress
+        component: controller
+        release: ${name}
+    spec:
+      containers:
+      - args:
+        - /nginx-ingress-controller
+        - --default-backend-service=${namespace}/${name}-nginx-ingress-default-backend
+        - --publish-service=${namespace}/${name}-nginx-ingress-controller
+        - --election-id=ingress-controller-leader
+        - --ingress-class=nginx
+        - --configmap=${namespace}/${name}-nginx-ingress-controller
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        image: $ingressImageRegistry:$ingressImageTag
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 10254
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: nginx-ingress-controller
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        - containerPort: 443
+          name: https
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 10254
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources: {}
+        securityContext:
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
+            drop:
+            - ALL
+          runAsUser: 33
+      dnsPolicy: ClusterFirst
+      hostNetwork: false
+      serviceAccountName: $serviceAccount
+      terminationGracePeriodSeconds: 60
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx-ingress
+    chart: nginx-ingress-1.6.19
+    component: default-backend
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-nginx-ingress-default-backend
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  template:
+    metadata:
+      labels:
+        app: nginx-ingress
+        component: default-backend
+        release: ${name}
+    spec:
+      containers:
+      - args: null
+        image: $ingressDefaultBackendImageRegistry:$ingressDefaultBackendImageTag
+        imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        name: nginx-ingress-default-backend
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        resources: {}
+        securityContext:
+          runAsUser: 65534
+      terminationGracePeriodSeconds: 60
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: mysql-operator
+    chart: mysql-operator-0.3.2
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-mysql-operator
+spec:
+  podManagementPolicy: Parallel
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-operator
+      release: ${name}
+  serviceName: ${name}-mysql-operator-orc
+  template:
+    metadata:
+      annotations:
+        checksum/config: 4265093ce94072ce6236e6c15521e9390f70c360c750fb4b2200c622debfc920
+        checksum/secret: b5c1dd0b9d552c5e50c30ec27f4ff4a4d74d058d20f4fbfdbec7d94aeb419fff
+      labels:
+        app: mysql-operator
+        release: ${name}
+    spec:
+      affinity: null
+      containers:
+      - args:
+        - --leader-election-namespace=${namespace}
+        - --orchestrator-uri=http://127.0.0.1:3000/api
+        - --sidecar-image=$mysqlSidecarImage
+        - --metrics-exporter-image=$mysqlMetricsImage
+        - --mysql-versions-to-image=5.7.26=$mysqlPerconaImageRegistry:5.7.26
+        - --leader-election-id=mysql-operator-leader-election
+        env:
+        - name: ORC_TOPOLOGY_USER
+          valueFrom:
+            secretKeyRef:
+              key: TOPOLOGY_USER
+              name: ${name}-mysql-operator-orc
+        - name: ORC_TOPOLOGY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: TOPOLOGY_PASSWORD
+              name: ${name}-mysql-operator-orc
+        image: $mysqlControllerImage
+        imagePullPolicy: IfNotPresent
+        name: operator
+        resources: {}
+      - env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        envFrom:
+        - prefix: ORC_
+          secretRef:
+            name: ${name}-mysql-operator-orc
+        image: $mysqlOrchestratorImage
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /api/lb-check
+            port: 3000
+          initialDelaySeconds: 200
+          timeoutSeconds: 10
+        name: orchestrator
+        ports:
+        - containerPort: 3000
+          name: web
+          protocol: TCP
+        - containerPort: 10008
+          name: raft
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /api/raft-health
+            port: 3000
+          timeoutSeconds: 10
+        resources: null
+        volumeMounts:
+        - mountPath: /var/lib/orchestrator/
+          name: data
+        - mountPath: /templates/
+          name: config
+      securityContext:
+        fsGroup: 777
+      serviceAccountName: $serviceAccount
+      volumes:
+      - configMap:
+          name: ${name}-mysql-operator-orc
+        name: config
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  annotations:
+    kubernetes-engine.cloud.google.com/icon: data:image/png;base64,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
+  labels:
+    app: stack
+    chart: stack-v0.3.10
+    heritage: Tiller
+    release: ${name}
+  name: ${name}
+spec:
+  componentKinds:
+  - group: v1
+    kind: Secret
+  - group: v1
+    kind: ConfigMap
+  - group: v1
+    kind: PersistentVolumeClaim
+  - group: v1
+    kind: Service
+  - group: apps
+    kind: Deployment
+  - group: apps
+    kind: StatefulSet
+  - group: batch
+    kind: Job
+  - group: batch
+    kind: CronJob
+  - group: certmanager.k8s.io
+    kind: Certificate
+  - group: certmanager.k8s.io
+    kind: Issuer
+  - group: certmanager.k8s.io
+    kind: ClusterIssuer
+  - group: monitoring.coreos.com
+    kind: Prometheus
+  - group: monitoring.coreos.com
+    kind: ServiceMonitor
+  - group: monitoring.coreos.com
+    kind: PrometheusRule
+  - group: monitoring.coreos.com
+    kind: AlertManager
+  - group: extensions/v1beta1
+    kind: Ingress
+  descriptor:
+    description: Open-Source WordPress Infrastructure on Kubernetes
+    links:
+    - description: Presslabs Stack
+      url: https://presslabs.com/stack
+    - description: Presslabs Stack Github
+      url: https://github.com/presslabs/stack
+    maintainers:
+    - name: Presslabs
+      url: https://presslabs.com/stack
+    notes: |-
+      In order to deploy a site, you just need to:
+
+      1. Deploy the site using helm
+          ```
+          helm install -n example presslabs/wordpress-site \
+              --set site.domains[0]=www.example.com
+          ```
+      2. Point `www.example.com` DNS to the `Ingress IP`. You can find the ingress ip
+         either in the Google Cloud Console under `Kubernetes Engine > Applications`
+         or by issuing:
+         ```
+          kubectl get ingress example \
+              -o jsonpath='{.status.loadBalancer.ingress[*].ip}{"\n"}'
+         ```
+    type: Presslabs Stack
+    version: v0.3.10
+  info:
+  - name: Ingress IP
+    type: Reference
+    valueFrom:
+      serviceRef:
+        name: ${name}-nginx-ingress-controller
+  - name: Ingress Let's Encrypt configured email
+    value: $letsEncryptEmail
+  - name: Ingress Let's Encrypt configured URL
+    value: $letsEncryptServer
+  - name: Grafana Port Forward
+    value: kubectl port-forward --namespace ${namespace} svc/${name}-grafana 3000:80
+  - name: Grafana UI URL
+    value: http://localhost:3000
+  - name: Grafana Admin User
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: admin-user
+        name: ${name}-grafana
+      type: SecretKeyRef
+  - name: Grafana Admin Password
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: admin-password
+        name: ${name}-grafana
+      type: SecretKeyRef
+  selector:
+    matchLabels:
+      release: ${name}
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  labels:
+    app: webhook
+    chart: webhook-v0.8.1
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-cert-manager-webhook-ca
+  namespace: ${namespace}
+spec:
+  commonName: ca.webhook.cert-manager
+  duration: 43800h
+  isCA: true
+  issuerRef:
+    name: ${name}-cert-manager-webhook-selfsign
+  secretName: ${name}-cert-manager-webhook-ca
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  labels:
+    app: webhook
+    chart: webhook-v0.8.1
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-cert-manager-webhook-webhook-tls
+  namespace: ${namespace}
+spec:
+  dnsNames:
+  - ${name}-cert-manager-webhook
+  - ${name}-cert-manager-webhook.${namespace}
+  - ${name}-cert-manager-webhook.${namespace}.svc
+  duration: 8760h
+  issuerRef:
+    name: ${name}-cert-manager-webhook-ca
+  secretName: ${name}-cert-manager-webhook-webhook-tls
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  labels:
+    app: dashboard
+    chart: dashboard-0.1.0_master
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-webhook
+  namespace: ${namespace}
+spec:
+  dnsNames:
+  - ${name}-dashboard-webhook
+  - ${name}-dashboard-webhook.${namespace}
+  - ${name}-dashboard-webhook.${namespace}.svc
+  duration: 8760h
+  issuerRef:
+    name: ${name}-dashboard-webhook-ca
+  secretName: ${name}-dashboard-webhook
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  labels:
+    app: dashboard
+    chart: dashboard-0.1.0_master
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-webhook-ca
+  namespace: ${namespace}
+spec:
+  commonName: ca.dashboard.presslabs.org
+  duration: 43800h
+  isCA: true
+  issuerRef:
+    name: ${name}-dashboard-webhook-ca-issuer
+  secretName: ${name}-dashboard-webhook-ca
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Issuer
+metadata:
+  labels:
+    app: webhook
+    chart: webhook-v0.8.1
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-cert-manager-webhook-ca
+  namespace: ${namespace}
+spec:
+  ca:
+    secretName: ${name}-cert-manager-webhook-ca
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Issuer
+metadata:
+  labels:
+    app: webhook
+    chart: webhook-v0.8.1
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-cert-manager-webhook-selfsign
+  namespace: ${namespace}
+spec:
+  selfSigned: {}
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Issuer
+metadata:
+  labels:
+    app: dashboard
+    chart: dashboard-0.1.0_master
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-webhook-ca
+  namespace: ${namespace}
+spec:
+  ca:
+    secretName: ${name}-dashboard-webhook-ca
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Issuer
+metadata:
+  labels:
+    app: dashboard
+    chart: dashboard-0.1.0_master
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-webhook-ca-issuer
+  namespace: ${namespace}
+spec:
+  selfSigned: {}
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    app: dashboard
+    chart: dashboard-0.1.0_master
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-apiserver
+spec:
+  rules:
+  - host: $dashboardDomain
+    http:
+      paths:
+      - backend:
+          serviceName: ${name}-dashboard-apiserver
+          servicePort: http
+        path: /
+  tls:
+  - hosts:
+    - $dashboardDomain
+    secretName: dashboard-domain-tls
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  labels:
+    app: prometheus-operator-prometheus
+    chart: prometheus-operator-5.12.5
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-prometheus-prometheus
+spec:
+  alerting:
+    alertmanagers:
+    - name: ${name}-prometheus-alertmanager
+      namespace: ${namespace}
+      pathPrefix: /
+      port: web
+  baseImage: $promImageRegistry
+  enableAdminAPI: false
+  externalUrl: http://${name}-prometheus-prometheus.${namespace}:9090
+  listenLocal: false
+  logFormat: logfmt
+  logLevel: info
+  paused: false
+  replicas: 1
+  retention: 10d
+  routePrefix: /
+  ruleNamespaceSelector: {}
+  ruleSelector:
+    matchLabels:
+      app: prometheus-operator
+      release: ${name}
+  securityContext:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
+  serviceAccountName: $serviceAccount
+  serviceMonitorNamespaceSelector: {}
+  serviceMonitorSelector:
+    matchLabels:
+      release: ${name}
+  tag: $promImageTag
+  version: v2.9.1
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: prometheus-operator-operator
+    chart: prometheus-operator-5.12.5
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-prometheus-operator
+spec:
+  endpoints:
+  - honorLabels: true
+    port: http
+  namespaceSelector:
+    matchNames:
+    - ${namespace}
+  selector:
+    matchLabels:
+      app: prometheus-operator-operator
+      release: ${name}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: prometheus-operator-prometheus
+    chart: prometheus-operator-5.12.5
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-prometheus-prometheus
+spec:
+  endpoints:
+  - path: /metrics
+    port: web
+  namespaceSelector:
+    matchNames:
+    - ${namespace}
+  selector:
+    matchLabels:
+      app: prometheus-operator-prometheus
+      release: ${name}
