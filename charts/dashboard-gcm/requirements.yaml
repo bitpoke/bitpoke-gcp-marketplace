@@ -1,0 +1,7 @@
+dependencies:
+  - name: dashboard
+    repository: file://../../../../chart/dashboard
+    version: ~0.1.0
+  - name: stack
+    repository: https://presslabs.github.io/charts/
+    version: ~0.3.10
