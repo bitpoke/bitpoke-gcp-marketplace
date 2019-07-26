@@ -2,6 +2,7 @@
 resources:
   # dashboard
   - ../charts/dashboard-gcm/charts/dashboard/templates/default-roles.yaml
+  - ../charts/dashboard-gcm/charts/dashboard/templates/prometheus-clusterrole.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/webhook.yaml
 
   # stack

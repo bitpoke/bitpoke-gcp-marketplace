@@ -8,7 +8,7 @@ metadata:
 apiVersion: v1
 data:
   manifest_crds.yaml.gz.b64enc: |
-    H4sIAGTuOl0AA+y9a3fkxpEg+l2/Aoeac9jtZRW7JXvuuMfjvRSbLXPdD16Sktc7Z44EVoFFLKuA
+    H4sIAE8NO10AA+y9a3fkxpEg+l2/Aoeac9jtZRW7JXvuuMfjvRSbLXPdD16Sktc7Z44EVoFFLKuA
     GgBFdvnx32+88oFHJhLFaqllI/dhdREIZEZGRsY74nX6fVKUaZ69iuJ1mnyskgz/VU7v/62cpvnx
     w8ubpIpffnGfZvNX0emmrPLVZVLmm2KWvE5u0yyt4PEvVvDQPK7iV19EUZxleRXjzyX+M4rukuVq
     Wt4d3+X5/atoVswnaVZW8XIJf13GN8lSnovX61fRPC7vbvK4mNNPs7u4qKwfJy+mL6cvfljFZZUU
@@ -1114,7 +1114,7 @@ data:
     Q4z0YgH5s6o5ZMvZL2pm64bq0AYA
 kind: ConfigMap
 metadata:
-  name: ${name}-dash-crds-manifests-9gg545d7mm
+  name: ${name}-dash-crds-manifests-cg675d465g
 ---
 apiVersion: v1
 data:
@@ -1244,6 +1244,36 @@ data:
       - delete
       - update
       - patch
+    ---
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      labels:
+        dashboard.presslabs.com/version: 0.0.1
+        rbac.dashboard.presslabs.com/aggregate-to-controller: "true"
+      name: dashboard.presslabs.com:project::prometheus
+    rules:
+    - apiGroups:
+      - ""
+      resources:
+      - nodes
+      - services
+      - endpoints
+      - pods
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
+      - ""
+      resources:
+      - configmaps
+      verbs:
+      - get
+    - nonResourceURLs:
+      - /metrics
+      verbs:
+      - get
     ---
     apiVersion: apiregistration.k8s.io/v1beta1
     kind: APIService
@@ -1489,7 +1519,7 @@ data:
         - wordpresses
 kind: ConfigMap
 metadata:
-  name: ${name}-dash-globals-manifests-h22g5kc98f
+  name: ${name}-dash-globals-manifests-cgctck9hh8
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1503,7 +1533,7 @@ spec:
       - args:
         - |
           # first install CRDs
-          cat /data/crds/manifest_crds.yaml.gz | base64 -d | gzip -dc | kubectl apply -f- ;
+          cat /data/crds/manifest_crds.yaml.gz.b64enc | base64 -d | gzip -dc | kubectl apply -f- ;
           # don't validate due to: https://github.com/jetstack/cert-manager/issues/1143
           kubectl apply --validate=false -f /data/globals/manifest_globals.yaml ;
         command:
@@ -1520,8 +1550,8 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-h22g5kc98f
+          name: ${name}-dash-globals-manifests-cgctck9hh8
         name: globals-manifests
       - configMap:
-          name: ${name}-dash-crds-manifests-9gg545d7mm
+          name: ${name}-dash-crds-manifests-cg675d465g
         name: crd-manifests

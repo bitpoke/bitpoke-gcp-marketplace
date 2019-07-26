@@ -21,8 +21,10 @@ stack:
   mysql-operator:
     enabled: true
     image: $mysqlControllerImage
-    sidecarImage: $mysqlSidecarImage
     installCRDs: true
+    extraArgs:
+      # this is set to avoid id collision because of a mysql-operator bug #368
+      - --leader-election-id=mysql-operator-leader-election
     rbac:
       create: false
       serviceAccountName: $serviceAccount

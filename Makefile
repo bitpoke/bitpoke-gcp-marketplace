@@ -31,14 +31,14 @@ NAME ?= dashboard-1
 APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)", \
-	"dashboardDomain": "$(DOMAIN)", \
-	"dashboardProjectID": "$(GCP_PROJECT_ID)", \
-	"dashboardServiceAccountKey": "$(SERVICE_ACCOUNT_KEY)", \
-	"dashboardOIDCClientID": "$(OIDC_CLIENT_ID)", \
-	"dashboardOIDCSecret": "$(OIDC_SECRET)", \
-	"dashboardOIDCIssuer": "$(OIDC_ISSUER)", \
+  "dashboardDomain": "$(DOMAIN)", \
+  "dashboardProjectID": "$(GCP_PROJECT_ID)", \
+  "dashboardServiceAccountKey": "$(SERVICE_ACCOUNT_KEY)", \
+  "dashboardOIDCClientID": "$(OIDC_CLIENT_ID)", \
+  "dashboardOIDCSecret": "$(OIDC_SECRET)", \
+  "dashboardOIDCIssuer": "$(OIDC_ISSUER)", \
   "mysqlOrchestratorPassword": "$(ORCHESTRATOR_PASSOWRD)", \
-	"letsEncryptEmail": "$(LETS_ENCRYPT_EMAIL)" \
+  "letsEncryptEmail": "$(LETS_ENCRYPT_EMAIL)" \
 }
 
 APP_TEST_PARAMETERS ?= "{}"
@@ -60,7 +60,8 @@ app/build:: .build/dashboard/deployer \
 
 # build deployer image
 .build/dashboard/deployer: deployer/* \
-                           .build/manifests.yaml.template \
+                           manifest/manifest_deployer.yaml.template \
+                           manifest/manifest_job.yaml.template \
                            schema.yaml \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/MARKETPLACE_TOOLS_TAG \
@@ -89,7 +90,7 @@ endef
                             | .build/dashboard
 	$(call republish,\
 	       gcr.io/press-labs-stack-public/dashboard:latest,\
-	       $(REGISTRY)/dashboard/dashboard:$(TAG))
+	       $(REGISTRY)/dashboard:$(TAG))
 	$(call republish,\
 	       bitnami/kubectl:latest,\
 	       $(REGISTRY)/dashboard/kubectl:$(TAG))
@@ -184,11 +185,11 @@ DASHBOARD_CHART_PATH ?= charts/dashboard-gcm
 	cp -r manifest/$* "$@"
 
 
-
 .build/manifest/manifest_globals.yaml: manifest/*.yaml \
                                        .build/manifest/charts/dashboard-gcm \
                                        .build/manifest/globals \
                                        | .build/manifest
+
 	kustomize build .build/manifest/globals -o "$@" \
 		--load_restrictor none
 
@@ -197,6 +198,7 @@ DASHBOARD_CHART_PATH ?= charts/dashboard-gcm
                                               .build/manifest/charts/dashboard-gcm \
                                               .build/manifest/crds \
                                               | .build/manifest
+
 	kustomize build .build/manifest/crds \
 		--load_restrictor none | name=$(NAME) envsubst | gzip | base64 > "$@"
 

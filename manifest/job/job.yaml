@@ -14,7 +14,7 @@ spec:
         args:
           - |
             # first install CRDs
-            cat /data/crds/manifest_crds.yaml.gz | base64 -d | gzip -dc | kubectl apply -f- ;
+            cat /data/crds/manifest_crds.yaml.gz.b64enc | base64 -d | gzip -dc | kubectl apply -f- ;
             # don't validate due to: https://github.com/jetstack/cert-manager/issues/1143
             kubectl apply --validate=false -f /data/globals/manifest_globals.yaml ;
         volumeMounts:

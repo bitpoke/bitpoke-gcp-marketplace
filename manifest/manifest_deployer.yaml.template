@@ -800,7 +800,8 @@ spec:
       - args:
         - --leader-election-namespace=${namespace}
         - --orchestrator-uri=http://127.0.0.1:3000/api
-        - --sidecar-image=$mysqlSidecarImage
+        - --sidecar-image=quay.io/presslabs/mysql-operator-sidecar:0.3.2
+        - --leader-election-id=mysql-operator-leader-election
         env:
         - name: ORC_TOPOLOGY_USER
           valueFrom:

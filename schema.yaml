@@ -31,7 +31,7 @@ properties:
     type: string
   dashboardImage:
     type: string
-    default: $REGISTRY/dashboard:$TAG
+    default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
   dashboardProjectID:
