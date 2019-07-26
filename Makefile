@@ -42,9 +42,9 @@ app/build:: .build/dashboard/deployer \
             .build/dashboard/dashboard \
             .build/dashboard/cert-manager \
             .build/dashboard/prometheus-operator \
-					  .build/dashboard/ingress \
-					  .build/dashboard/mysql-operator \
-					  .build/dashboard/wordpress-operator
+            .build/dashboard/ingress \
+            .build/dashboard/mysql-operator \
+            .build/dashboard/wordpress-operator
 
 ## Republish docker images to Google registry
 
@@ -90,9 +90,9 @@ endef
 
 # cert-manager images
 .build/dashboard/cert-manager: .build/dashboard/cert-manager-controller \
-															 .build/dashboard/cert-manager-acmesolver \
-															 .build/dashboard/cert-manager-webhook \
-															 .build/dashboard/cert-manager-cainjector
+                               .build/dashboard/cert-manager-acmesolver \
+                               .build/dashboard/cert-manager-webhook \
+                               .build/dashboard/cert-manager-cainjector
 	@touch "$@"
 
 .build/dashboard/cert-manager-%: .build/var/TAG \
@@ -193,35 +193,14 @@ endef
 .build/manifest/charts: | .build/manifest
 	mkdir "$@"
 
-charts:
-	mkdir "$@"
-
-charts/stack: .build/var/STACK_CHART_VERSION | charts
-	# https://github.com/helm/helm/issues/5773
-	cd charts && \
-	helm fetch presslabs/stack --version $(STACK_CHART_VERSION) --untar
-
-charts/dashboard: | charts
-	# this works only in dashbaord repository
-	cp -r ../../chart/dashboard $@
-
-# *_CHART_PATH var is used in development to be able to specify a custom path to a chart
-STACK_CHART_PATH ?= charts/stack
-.build/manifest/charts/stack: manifest/values_stack.yaml \
-                              $(STACK_CHART_PATH) \
-                              | .build/manifest/charts
-	helm template $(STACK_CHART_PATH) -f manifest/values_stack.yaml \
-			--name '$${name}' --namespace '$${namespace}' \
-			--kube-version 1.9 \
-			--output-dir .build/manifest/charts
-
-DASHBOARD_CHART_PATH ?= charts/dashboard
-.build/manifest/charts/dashboard: manifest/values_dashboard.yaml \
+DASHBOARD_CHART_PATH ?= charts/dashboard-gcm
+.build/manifest/charts/dashboard-gcm: manifest/values.yaml \
                                   $(DASHBOARD_CHART_PATH) \
                                   | .build/manifest/charts
-	helm template $(DASHBOARD_CHART_PATH) -f manifest/values_dashboard.yaml \
+	helm dependency update $(DASHBOARD_CHART_PATH)
+	helm template $(DASHBOARD_CHART_PATH) -f manifest/values.yaml \
 			--name '$${name}' --namespace '$${namespace}' \
-			--kube-version 1.9 \
+			--kube-version 1.10 \
 			--output-dir .build/manifest/charts
 
 
@@ -230,48 +209,43 @@ DASHBOARD_CHART_PATH ?= charts/dashboard
 	cp -r manifest/$* "$@"
 
 
-.build/manifest/manifest_deployer.yaml: manifest/* \
-                                        .build/manifest/charts/stack \
-                                        .build/manifest/charts/dashboard \
-                                        .build/manifest/kustomization.yaml \
-                                        .build/manifest/deployer \
-                                        .build/manifest/job \
-                                        | .build/manifest
+
+.build/manifest/manifest_globals.yaml: manifest/*.yaml \
+                                       .build/manifest/charts/dashboard-gcm \
+                                       .build/manifest/globals \
+                                       | .build/manifest
+	kustomize build .build/manifest/globals -o "$@" \
+		--load_restrictor none
+
+
+.build/manifest/manifest_crds.yaml.gz.b64enc: manifest/*.yaml \
+                                              .build/manifest/charts/dashboard-gcm \
+                                              .build/manifest/crds \
+                                              | .build/manifest
+	kustomize build .build/manifest/crds \
+		--load_restrictor none | name=$(NAME) envsubst | gzip | base64 > "$@"
+
+
+manifest/manifest_deployer.yaml.template: manifest/*.yaml \
+                                 .build/manifest/charts/dashboard-gcm \
+                                 .build/manifest/deployer
+
 	kustomize build .build/manifest/deployer -o "$@" \
 		--load_restrictor none
 
 
-.build/manifest/manifest_globals.yaml: manifest/* \
-																	     .build/manifest/charts/stack \
-                                       .build/manifest/charts/dashboard \
-																	     .build/manifest/kustomization.yaml \
-																	     .build/manifest/deployer \
-																	     .build/manifest/job \
-                                       | .build/manifest
-	kustomize build .build/manifest/job/globals -o "$@" \
+manifest/manifest_job.yaml.template: manifest/*.yaml \
+                                 .build/manifest/job \
+                                 .build/manifest/manifest_globals.yaml \
+                                 .build/manifest/manifest_crds.yaml.gz.b64enc
+
+	kustomize build .build/manifest/job -o "$@" \
 		--load_restrictor none
-
-.build/manifest/manifest_crds.yaml.gz.b64enc: manifest/* \
-																	            .build/manifest/job \
-                                              | .build/manifest
-	kustomize build .build/manifest/job/crds \
-		--load_restrictor none | name=$(NAME) envsubst | gzip | base64 > "$@"
-
-
-.build/manifests.yaml.template: .build/manifest/manifest_deployer.yaml \
-                                .build/manifest/manifest_globals.yaml \
-                                .build/manifest/manifest_crds.yaml.gz.b64enc \
-                                | .build
-	rm -f "$@"
-	# this will create the config map with additional required resources (e.g. crds)
-	# and the job that applies them
-	kustomize build .build/manifest --load_restrictor none -o "$@"
-
 
 
 # a simple rule to test if the generated manifests are ok
-.PHONY: test-gen-manifest
-test-gen-manifest: .build/manifests.yaml.template
+.PHONY: verify-manifest
+verify-manifest: manifest/manifest_deployer.yaml.template manifest/manifest_job.yaml.template
 # test if the kustomize replace all fields that needs to be replaced
 	[ "$(shell grep SET_IN_KUSTOMIZE $^ )" = "" ] || exit 1
 	[ "$(shell grep U0VUX0lOX0tVU1RPTUlaRQ== $^ )" = "" ] || exit 1

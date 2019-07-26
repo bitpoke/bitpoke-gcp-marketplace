@@ -1,48 +1,48 @@
 # resources that will be deployed by the deploy
 resources:
-  - ../charts/stack/templates/application.yaml
+  - ../charts/dashboard-gcm/charts/stack/templates/application.yaml
 
   # dashbaord
-  - ../charts/dashboard/templates/apiserver-deployment.yaml
-  - ../charts/dashboard/templates/apiserver-ingress.yaml
-  - ../charts/dashboard/templates/apiserver-oidc-secret.yaml
-  - ../charts/dashboard/templates/apiserver-service.yaml
-  - ../charts/dashboard/templates/apiserver-sentry-secret.yaml
-  - ../charts/dashboard/templates/controller-deployment.yaml
-  - ../charts/dashboard/templates/controller-gcloud-serviceaccount.yaml
-  - ../charts/dashboard/templates/webhook-service.yaml
-  - ../charts/dashboard/templates/webhook-pki.yaml
+  - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-deployment.yaml
+  - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-ingress.yaml
+  - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-oidc-secret.yaml
+  - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-service.yaml
+  - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-sentry-secret.yaml
+  - ../charts/dashboard-gcm/charts/dashboard/templates/controller-deployment.yaml
+  - ../charts/dashboard-gcm/charts/dashboard/templates/controller-gcloud-serviceaccount.yaml
+  - ../charts/dashboard-gcm/charts/dashboard/templates/webhook-service.yaml
+  - ../charts/dashboard-gcm/charts/dashboard/templates/webhook-pki.yaml
 
   # cert-manager objects
-  - ../charts/stack/charts/cert-manager/charts/webhook/templates/service.yaml
-  - ../charts/stack/charts/cert-manager/charts/webhook/templates/deployment.yaml
-  - ../charts/stack/charts/cert-manager/charts/cainjector/templates/deployment.yaml
-  - ../charts/stack/charts/cert-manager/templates/deployment.yaml
-  - ../charts/stack/charts/cert-manager/charts/webhook/templates/pki.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/webhook/templates/service.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/webhook/templates/deployment.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/cainjector/templates/deployment.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/templates/deployment.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/webhook/templates/pki.yaml
 
   # prometheus-operator objects
-  - ../charts/stack/charts/prometheus-operator/templates/prometheus-operator/service.yaml
-  - ../charts/stack/charts/prometheus-operator/templates/prometheus-operator/deployment.yaml
-  - ../charts/stack/charts/prometheus-operator/templates/prometheus-operator/servicemonitor.yaml
-  - ../charts/stack/charts/prometheus-operator/templates/prometheus/service.yaml
-  - ../charts/stack/charts/prometheus-operator/templates/prometheus/prometheus.yaml
-  - ../charts/stack/charts/prometheus-operator/templates/prometheus/servicemonitor.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus-operator/service.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus-operator/deployment.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus-operator/servicemonitor.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus/service.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus/prometheus.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus/servicemonitor.yaml
 
   # nginx-ingress controller
-  - ../charts/stack/charts/nginx-ingress/templates/controller-deployment.yaml
-  - ../charts/stack/charts/nginx-ingress/templates/controller-configmap.yaml
-  - ../charts/stack/charts/nginx-ingress/templates/controller-service.yaml
-  - ../charts/stack/charts/nginx-ingress/templates/default-backend-deployment.yaml
-  - ../charts/stack/charts/nginx-ingress/templates/default-backend-service.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/nginx-ingress/templates/controller-deployment.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/nginx-ingress/templates/controller-configmap.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/nginx-ingress/templates/controller-service.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/nginx-ingress/templates/default-backend-deployment.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/nginx-ingress/templates/default-backend-service.yaml
 
   # mysql operator
-  - ../charts/stack/charts/mysql-operator/templates/statefulset.yaml
-  - ../charts/stack/charts/mysql-operator/templates/orc-service.yaml
-  - ../charts/stack/charts/mysql-operator/templates/orc-secret.yaml
-  - ../charts/stack/charts/mysql-operator/templates/orc-config.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/mysql-operator/templates/statefulset.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/mysql-operator/templates/orc-service.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/mysql-operator/templates/orc-secret.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/mysql-operator/templates/orc-config.yaml
 
   # wordpress operator
-  - ../charts/stack/charts/wordpress-operator/templates/deployment.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/wordpress-operator/templates/deployment.yaml
 
 
 patchesJson6902:

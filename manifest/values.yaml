@@ -1,0 +1,212 @@
+stack:
+  # override chart name
+  fullnameOverride: "${name}"
+
+  letsencrypt:
+    enabled: true
+    email: $letsEncryptEmail
+    server: $letsEncryptServer
+
+  wordpress-operator:
+    enabled: true
+    image: $wordpressOperatorImage
+    extraArgs:
+      - --git-clone-image=$wordpressGitCloneImage
+      - --rclone-image=$wordpressRcloneImage
+      - --wordpress-runtime-image=$wordpressRuntimeImageRegistry
+    crd:
+      install: true
+    rbac:
+      create: false
+    serviceAccount:
+      create: false
+      name: $serviceAccount
+
+  mysql-operator:
+    enabled: true
+    image: $mysqlControllerImage
+    sidecarImage: $mysqlSidecarImage
+    installCRDs: true
+    extraArgs:
+      - --metrics-exporter-image=$mysqlMetricsImage
+      # this list should be keept in sync Makefile image versions and with
+      # https://github.com/presslabs/mysql-operator/blob/master/pkg/util/constants/constants.go#L87
+      - --mysql-versions-to-image=5.7.26=$mysqlPerconaImageRegistry:5.7.26
+      # this is set to avoid id collision because of a mysql-operator bug #368
+      - --leader-election-id=mysql-operator-leader-election
+    rbac:
+      create: false
+      serviceAccountName: $serviceAccount
+    orchestrator:
+      image: $mysqlOrchestratorImage
+      # NOTE: this will be ovewrite by kustomize
+      topologyPassword: SET_IN_KUSTOMIZE
+
+  nginx-ingress:
+    enabled: true
+    rbac:
+      create: false
+    serviceAccount:
+      create: false
+      name: $serviceAccount
+    controller:
+      image:
+        repository: $ingressImageRegistry
+        # pin version here because it uses comparSemver in chart, patch it later with kustomize
+        tag: v0.24.1
+    defaultBackend:
+      image:
+        repository: $ingressDefaultBackendImageRegistry
+        tag: $ingressDefaultBackendImageTag
+        pullPolicy: Always
+
+  cert-manager:
+    enabled: true
+    fullnameOverride: ${name}-cert-manager
+    global:
+      rbac:
+        create: false
+
+    webhook:
+      fullnameOverride: ${name}-cert-manager-webhook
+      image:
+        repository: $certWebhookImageRegistry
+        tag: $certWebhookImageTag
+      global:
+        rbac:
+          create: false
+      serviceAccount:
+        create: false
+        name: $serviceAccount
+
+    cainjector:
+      fullnameOverride: ${name}-cert-manager-cainjector
+      image:
+        repository: $certCAinjectorImageRegistry
+        tag: $certCAinjectorImageTag
+      global:
+        rbac:
+          create: false
+      serviceAccount:
+        create: false
+        name: $serviceAccount
+
+    image:
+      repository: $certManagerImageRegistry
+      tag: $certManagerImageTag
+    extraArgs:
+      - --acme-http01-solver-image=$certAcmeSolverImage
+    serviceAccount:
+      create: false
+      name: $serviceAccount
+
+
+  prometheus-operator:
+    enabled: true
+    fullnameOverride: ${name}-prometheus
+    defaultRules:
+      create: false
+    global:
+      rbac:
+        create: false
+        pspEnabled: false
+    alertmanager:
+      enabled: false
+      serviceAccount:
+        create: false
+        name: $serviceAccount
+    grafana:
+      enabled: false
+    kubeApiServer:
+      enabled: false
+    kubelet:
+      enabled: false
+    kubeControllerManger:
+      enabled: false
+    coreDns:
+      enabled: false
+    kubeDns:
+      enabled: false
+    kubeEtcd:
+      enabled: false
+    kubeScheduler:
+      enabled: false
+    kubeStateMetrics:
+      enabled: false
+    kube-state-metrics:
+      rbac:
+        create: false
+      podSecurityPolicy:
+        enabled: false
+    nodeExporter:
+      enabled: false
+    prometheusOperator:
+      serviceAccount:
+        create: false
+        name: $serviceAccount
+      createCustomResource: true
+      image:
+        repository: $promOperatorImageRegistry
+        tag: $promOperatorImageTag
+      configmapReloadImage:
+        repository: $promConfigMapReloadImageRegistry
+        tag: $promConfigMapReloadImageTag
+      prometheusConfigReloaderImage:
+        repository: $promConfigReloaderImageRegistry
+        tag: $promConfigReloaderImageTag
+
+    prometheus:
+      serviceAccount:
+        create: false
+        name: $serviceAccount
+      prometheusSpec:
+        image:
+          repository: $promImageRegistry
+          # pin version here because it is used as version and patch with kustomize tag field
+          tag: v2.9.1
+
+dashboard:
+  image: $dashboardImage
+  fullNameOverride: "${name}-dashboard"
+
+  defaults:
+    installRoles: true
+
+  crd:
+    install: true
+
+  gcloud:
+    projectID: $dashboardProjectID
+    # NOTE: those valus is patched by kustomize
+    serviceAccountKey: SET_IN_KUSTOMIZE
+
+  apiserver:
+    oidc:
+      # NOTE: those valuse are patched by kustomize
+      client_id: SET_IN_KUSTOMIZE
+      client_secret: SET_IN_KUSTOMIZE
+      client_issuer: SET_IN_KUSTOMIZE
+
+    baseURL: //$dashboardDomain
+
+    sentryDSN: SET_IN_KUSTOMIZE
+
+    ingress:
+      enabled: true
+      hosts:
+        - $dashboardDomain
+      tls:
+        - secretName: dashboard-domain-tls
+          hosts:
+            - $dashboardDomain
+    serviceAccount:
+      create: false
+      name: $serviceAccount
+
+  controller:
+    serviceAccount:
+      create: false
+      name: $serviceAccount
+
+  rbac:
+    create: false

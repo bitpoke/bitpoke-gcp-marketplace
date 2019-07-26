@@ -17,6 +17,7 @@ RUN cat /tmp/schema.yaml \
 
 FROM gcr.io/cloud-marketplace-tools/k8s/deployer_envsubst:$MARKETPLACE_TOOLS_TAG
 
-COPY .build/manifests.yaml.template /data/manifest/
-# COPY apptest/deployer /data-test/
+COPY manifest/manifest_deployer.yaml.template /data/manifest/
+COPY manifest/manifest_job.yaml.template /data/manifest/
 COPY --from=build /tmp/schema.yaml /data/
+# COPY apptest/deployer /data-test/
