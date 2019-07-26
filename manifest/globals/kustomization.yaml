@@ -4,6 +4,7 @@ resources:
   - ../charts/dashboard-gcm/charts/dashboard/templates/default-roles.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/prometheus-clusterrole.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/webhook.yaml
+  - ../charts/dashboard-gcm/charts/dashboard/templates/webhook-pki.yaml
 
   # stack
   - ../charts/dashboard-gcm/charts/stack/templates/acme-issuer.yaml
@@ -11,6 +12,7 @@ resources:
   # cert manager
   - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/webhook/templates/apiservice.yaml
   - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/webhook/templates/validating-webhook.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/webhook/templates/pki.yaml
 
 
 commonLabels:

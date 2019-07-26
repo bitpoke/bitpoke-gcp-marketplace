@@ -11,22 +11,17 @@ resources:
   - ../charts/dashboard-gcm/charts/dashboard/templates/controller-deployment.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/controller-gcloud-serviceaccount.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/webhook-service.yaml
-  - ../charts/dashboard-gcm/charts/dashboard/templates/webhook-pki.yaml
 
   # cert-manager objects
   - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/webhook/templates/service.yaml
   - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/webhook/templates/deployment.yaml
   - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/cainjector/templates/deployment.yaml
   - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/templates/deployment.yaml
-  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/webhook/templates/pki.yaml
 
   # prometheus-operator objects
   - ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus-operator/service.yaml
   - ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus-operator/deployment.yaml
-  - ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus-operator/servicemonitor.yaml
-  - ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus/service.yaml
-  - ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus/prometheus.yaml
-  - ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus/servicemonitor.yaml
+  #- ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus-operator/servicemonitor.yaml
 
   # nginx-ingress controller
   - ../charts/dashboard-gcm/charts/stack/charts/nginx-ingress/templates/controller-deployment.yaml
