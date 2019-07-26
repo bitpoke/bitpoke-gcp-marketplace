@@ -91,11 +91,3 @@ patchesJson6902:
     kind: Secret
     name: ${name}-dashboard-sentry
   path: dashboard_sentry_secret.yaml
-
-# prometheus
-- target:
-    group: monitoring.coreos.com
-    version: v1
-    kind: Prometheus
-    name: ${name}-prometheus-prometheus
-  path: prometheus_tag.yaml

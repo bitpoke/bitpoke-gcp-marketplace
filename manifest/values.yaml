@@ -10,10 +10,6 @@ stack:
   wordpress-operator:
     enabled: true
     image: $wordpressOperatorImage
-    extraArgs:
-      - --git-clone-image=$wordpressGitCloneImage
-      - --rclone-image=$wordpressRcloneImage
-      - --wordpress-runtime-image=$wordpressRuntimeImageRegistry
     crd:
       install: true
     rbac:
@@ -27,13 +23,6 @@ stack:
     image: $mysqlControllerImage
     sidecarImage: $mysqlSidecarImage
     installCRDs: true
-    extraArgs:
-      - --metrics-exporter-image=$mysqlMetricsImage
-      # this list should be keept in sync Makefile image versions and with
-      # https://github.com/presslabs/mysql-operator/blob/master/pkg/util/constants/constants.go#L87
-      - --mysql-versions-to-image=5.7.26=$mysqlPerconaImageRegistry:5.7.26
-      # this is set to avoid id collision because of a mysql-operator bug #368
-      - --leader-election-id=mysql-operator-leader-election
     rbac:
       create: false
       serviceAccountName: $serviceAccount
@@ -148,22 +137,11 @@ stack:
       image:
         repository: $promOperatorImageRegistry
         tag: $promOperatorImageTag
-      configmapReloadImage:
-        repository: $promConfigMapReloadImageRegistry
-        tag: $promConfigMapReloadImageTag
-      prometheusConfigReloaderImage:
-        repository: $promConfigReloaderImageRegistry
-        tag: $promConfigReloaderImageTag
-
     prometheus:
       serviceAccount:
         create: false
         name: $serviceAccount
-      prometheusSpec:
-        image:
-          repository: $promImageRegistry
-          # pin version here because it is used as version and patch with kustomize tag field
-          tag: v2.9.1
+
 
 dashboard:
   image: $dashboardImage

@@ -8,7 +8,7 @@ metadata:
 apiVersion: v1
 data:
   manifest_crds.yaml.gz.b64enc: |
-    H4sIAJXpOl0AA+y9a3fkxpEg+l2/Aoeac9jtZRW7JXvuuMfjvRSbLXPdD16Sktc7Z44EVoFFLKuA
+    H4sIAGTuOl0AA+y9a3fkxpEg+l2/Aoeac9jtZRW7JXvuuMfjvRSbLXPdD16Sktc7Z44EVoFFLKuA
     GgBFdvnx32+88oFHJhLFaqllI/dhdREIZEZGRsY74nX6fVKUaZ69iuJ1mnyskgz/VU7v/62cpvnx
     w8ubpIpffnGfZvNX0emmrPLVZVLmm2KWvE5u0yyt4PEvVvDQPK7iV19EUZxleRXjzyX+M4rukuVq
     Wt4d3+X5/atoVswnaVZW8XIJf13GN8lSnovX61fRPC7vbvK4mNNPs7u4qKwfJy+mL6cvfljFZZUU
@@ -1114,7 +1114,7 @@ data:
     Q4z0YgH5s6o5ZMvZL2pm64bq0AYA
 kind: ConfigMap
 metadata:
-  name: ${name}-dash-crds-manifests-c69fbcf466
+  name: ${name}-dash-crds-manifests-9gg545d7mm
 ---
 apiVersion: v1
 data:
@@ -1523,5 +1523,5 @@ spec:
           name: ${name}-dash-globals-manifests-h22g5kc98f
         name: globals-manifests
       - configMap:
-          name: ${name}-dash-crds-manifests-c69fbcf466
+          name: ${name}-dash-crds-manifests-9gg545d7mm
         name: crd-manifests

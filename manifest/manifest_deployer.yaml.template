@@ -471,8 +471,8 @@ spec:
         - --logtostderr=true
         - --crd-apigroup=monitoring.coreos.com
         - --localhost=127.0.0.1
-        - --prometheus-config-reloader=$promConfigReloaderImageRegistry:$promConfigReloaderImageTag
-        - --config-reloader-image=$promConfigMapReloadImageRegistry:$promConfigMapReloadImageTag
+        - --prometheus-config-reloader=quay.io/coreos/prometheus-config-reloader:v0.30.1
+        - --config-reloader-image=quay.io/coreos/configmap-reload:v0.0.1
         image: $promOperatorImageRegistry:$promOperatorImageTag
         imagePullPolicy: IfNotPresent
         name: prometheus-operator
@@ -801,9 +801,6 @@ spec:
         - --leader-election-namespace=${namespace}
         - --orchestrator-uri=http://127.0.0.1:3000/api
         - --sidecar-image=$mysqlSidecarImage
-        - --metrics-exporter-image=$mysqlMetricsImage
-        - --mysql-versions-to-image=5.7.26=$mysqlPerconaImageRegistry:5.7.26
-        - --leader-election-id=mysql-operator-leader-election
         env:
         - name: ORC_TOPOLOGY_USER
           valueFrom:
@@ -1145,7 +1142,7 @@ spec:
       namespace: ${namespace}
       pathPrefix: /
       port: web
-  baseImage: $promImageRegistry
+  baseImage: quay.io/prometheus/prometheus
   enableAdminAPI: false
   externalUrl: http://${name}-prometheus-prometheus.${namespace}:9090
   listenLocal: false
@@ -1169,7 +1166,6 @@ spec:
   serviceMonitorSelector:
     matchLabels:
       release: ${name}
-  tag: $promImageTag
   version: v2.9.1
 ---
 apiVersion: monitoring.coreos.com/v1

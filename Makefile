@@ -9,13 +9,20 @@ include crd.Makefile
 include app.Makefile
 
 TAG ?= latest
-STACK_CHART_VERSION ?= v0.3.7
+
 CERT_MANAGER_TAG ?= v0.8.1
-METRICS_EXPORTER_TAG ?= v0.5.1
+PROMETHEUS_OPERATOR_TAG ?= v0.30.1
+INGRESS_OPERATOR_TAG ?= 0.24.1
+WORDPRESS_OPERATOR_TAG ?= v0.3.7
+MYSQL_OPERATOR_TAG ?= 0.3.2
 
 $(info ---- TAG = $(TAG))
-$(info ---- STACK_CHART_VERSION = $(STACK_CHART_VERSION))
+
 $(info ---- CERT_MANAGER_TAG = $(CERT_MANAGER_TAG))
+$(info ---- PROMETHEUS_OPERATOR_TAG = $(PROMETHEUS_OPERATOR_TAG))
+$(info ---- INGRESS_OPERATOR_TAG = $(INGRESS_OPERATOR_TAG))
+$(info ---- WORDPRESS_OPERATOR_TAG = $(WORDPRESS_OPERATOR_TAG))
+$(info ---- MYSQL_OPERATOR_TAG = $(MYSQL_OPERATOR_TAG))
 
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/dashboard/deployer:$(TAG)
@@ -108,28 +115,21 @@ endef
 # prometheus operator images
 .build/dashboard/prometheus-operator: .build/var/TAG \
                                       .build/var/REGISTRY \
+                                      .build/var/PROMETHEUS_OPERATOR_TAG \
                                       | .build/dashboard
 	$(call republish,\
-         quay.io/coreos/prometheus-operator:v0.30.1,\
+         quay.io/coreos/prometheus-operator:$(PROMETHEUS_OPERATOR_TAG),\
          $(REGISTRY)/dashboard/prometheus-operator:$(TAG))
-	$(call republish,\
-         quay.io/coreos/prometheus-config-reloader:v0.30.1,\
-         $(REGISTRY)/dashboard/prometheus-config-reloader:$(TAG))
-	$(call republish,\
-         quay.io/coreos/configmap-reload:v0.0.1,\
-         $(REGISTRY)/dashboard/prometheus-configmap-reload:$(TAG))
-	$(call republish,\
-         quay.io/prometheus/prometheus:v2.9.1,\
-         $(REGISTRY)/dashboard/prometheus-prometheus:$(TAG))
 	@touch "$@"
 
 
 # nginx-ingress operator images
 .build/dashboard/ingress: .build/var/TAG \
                           .build/var/REGISTRY \
+                          .build/var/INGRESS_OPERATOR_TAG \
                           | .build/dashboard
 	$(call republish,\
-	       quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.24.1,\
+	       quay.io/kubernetes-ingress-controller/nginx-ingress-controller:$(INGRESS_OPERATOR_TAG),\
          $(REGISTRY)/dashboard/ingress-controller:$(TAG))
 	$(call republish,\
 	       quay.io/presslabs/default-backend:latest,\
@@ -140,49 +140,24 @@ endef
 # mysql-operator images
 .build/dashboard/mysql-operator: .build/var/TAG \
                                  .build/var/REGISTRY \
-                                 .build/dashboard/mysql-percona-5.7.26 \
+                                 .build/var/MYSQL_OPERATOR_TAG \
                                  | .build/dashboard
 	$(call republish,\
-	       quay.io/presslabs/mysql-operator:0.3.0,\
+	       quay.io/presslabs/mysql-operator:$(MYSQL_OPERATOR_TAG),\
 	       $(REGISTRY)/dashboard/mysql-operator:$(TAG))
 	$(call republish,\
-	       quay.io/presslabs/mysql-operator-orchestrator:0.3.0,\
+	       quay.io/presslabs/mysql-operator-orchestrator:$(MYSQL_OPERATOR_TAG),\
 	       $(REGISTRY)/dashboard/mysql-orchestrator:$(TAG))
-	$(call republish,\
-	       quay.io/presslabs/mysql-operator-sidecar:0.3.0,\
-	       $(REGISTRY)/dashboard/mysql-sidecar:$(TAG))
-	$(call republish,\
-	       prom/mysqld-exporter:v0.11.0,\
-	       $(REGISTRY)/dashboard/mysql-metrics:$(TAG))
 	@touch "$@"
-
-.build/dashboard/mysql-percona-%: | .build/dashboard
-	$(call republish,\
-	       percona:$*,\
-	       $(REGISTRY)/dashboard/mysql-percona:$*)
-	@touch "$@"
-
 
 # wordpress-operator images
 .build/dashboard/wordpress-operator: .build/var/TAG \
                                      .build/var/REGISTRY \
-                                     .build/dashboard/wordpress-runtime-5.2-7.3.4-r164 \
+                                     .build/var/WORDPRESS_OPERATOR_TAG \
                                      | .build/dashboard
 	$(call republish,\
-	       quay.io/presslabs/wordpress-operator:v0.3.7,\
+	       quay.io/presslabs/wordpress-operator:$(WORDPRESS_OPERATOR_TAG),\
 	       $(REGISTRY)/dashboard/wordpress-operator:$(TAG))
-	$(call republish,\
-				 docker.io/library/buildpack-deps:stretch-scm,\
-	       $(REGISTRY)/dashboard/wordpress-gitclone:$(TAG))
-	$(call republish,\
-	       quay.io/presslabs/rclone:latest,\
-	       $(REGISTRY)/dashboard/wordpress-rclone:$(TAG))
-	@touch "$@"
-
-.build/dashboard/wordpress-runtime-%: | .build/dashboard
-	$(call republish,\
-	       quay.io/presslabs/wordpress-runtime:$*,\
-	       $(REGISTRY)/dashbaord/wordpress-operator:$*)
 	@touch "$@"
 
 ## Build the manifests
@@ -242,6 +217,9 @@ manifest/manifest_job.yaml.template: manifest/*.yaml \
 	kustomize build .build/manifest/job -o "$@" \
 		--load_restrictor none
 
+
+.PHONY: manifest
+manifest: manifest/manifest_deployer.yaml.template manifest/manifest_job.yaml.template
 
 # a simple rule to test if the generated manifests are ok
 .PHONY: verify-manifest

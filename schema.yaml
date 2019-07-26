@@ -117,36 +117,6 @@ properties:
           splitByColon:
             before: promOperatorImageRegistry
             after: promOperatorImageTag
-  promConfigMapReloadImage:
-    type: string
-    default: $REGISTRY/prometheus-configmap-reload:$TAG
-    x-google-marketplace:
-      type: IMAGE
-      image:
-        generatedProperties:
-          splitByColon:
-            before: promConfigMapReloadImageRegistry
-            after: promConfigMapReloadImageTag
-  promConfigReloaderImage:
-    type: string
-    default: $REGISTRY/prometheus-config-reloader:$TAG
-    x-google-marketplace:
-      type: IMAGE
-      image:
-        generatedProperties:
-          splitByColon:
-            before: promConfigReloaderImageRegistry
-            after: promConfigReloaderImageTag
-  promImage:
-    type: string
-    default: $REGISTRY/prometheus-prometheus:$TAG
-    x-google-marketplace:
-      type: IMAGE
-      image:
-        generatedProperties:
-          splitByColon:
-            before: promImageRegistry
-            after: promImageTag
 
   # ingress controller
   ingressImage:
@@ -181,21 +151,7 @@ properties:
     default: $REGISTRY/mysql-orchestrator:$TAG
     x-google-marketplace:
       type: IMAGE
-  mysqlSidecarImage:
-    type: string
-    default: $REGISTRY/mysql-sidecar:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  mysqlMetricsImage:
-    type: string
-    default: $REGISTRY/mysql-metrics:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  mysqlPerconaImageRegistry:
-    type: string
-    default: $REGISTRY/mysql-percona
-    x-google-marketplace:
-      type: IMAGE
+
   mysqlOrchestratorPassword:
     type: string
     x-google-marketplace:
@@ -209,21 +165,6 @@ properties:
   wordpressOperatorImage:
     type: string
     default: $REGISTRY/wordpress-operator:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  wordpressRuntimeImageRegistry:
-    type: string
-    default: $REGISTRY/wordpress-runtime
-    x-google-marketplace:
-      type: IMAGE
-  wordpressRcloneImage:
-    type: string
-    default: $REGISTRY/wordpress-rclone:$TAG
-    x-google-marketplace:
-      type: IMAGE
-  wordpressGitCloneImage:
-    type: string
-    default: $REGISTRY/wordpress-gitclone:$TAG
     x-google-marketplace:
       type: IMAGE
 
