@@ -5,8 +5,10 @@ resources:
 
 configMapGenerator:
 - name: "${name}-dash-globals-manifests"
+  behavior: create
   files:
     - ../manifest_globals.yaml
 - name: "${name}-dash-crds-manifests"
+  behavior: create
   files:
     - ../manifest_crds.yaml.gz.b64enc

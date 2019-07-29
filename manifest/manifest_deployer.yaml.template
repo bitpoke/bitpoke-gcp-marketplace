@@ -958,6 +958,10 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
+  annotations:
+    certmanager.k8s.io/acme-challenge-type: http01
+    certmanager.k8s.io/cluster-issuer: ${name}-default
+    kubernetes.io/ingress.class: nginx
   labels:
     app: dashboard
     chart: dashboard-0.1.0_master
@@ -976,4 +980,4 @@ spec:
   tls:
   - hosts:
     - $dashboardDomain
-    secretName: dashboard-domain-tls
+    secretName: ${name}-dashboard-tls

@@ -38,7 +38,8 @@ APP_PARAMETERS ?= { \
   "dashboardOIDCSecret": "$(OIDC_SECRET)", \
   "dashboardOIDCIssuer": "$(OIDC_ISSUER)", \
   "mysqlOrchestratorPassword": "$(ORCHESTRATOR_PASSOWRD)", \
-  "letsEncryptEmail": "$(LETS_ENCRYPT_EMAIL)" \
+  "letsEncryptEmail": "$(LETS_ENCRYPT_EMAIL)", \
+  "letsEncryptServer": "$(LETS_ENCRYPT_SERVER)" \
 }
 
 APP_TEST_PARAMETERS ?= "{}"
@@ -199,8 +200,11 @@ DASHBOARD_CHART_PATH ?= charts/dashboard-gcm
                                               .build/manifest/crds \
                                               | .build/manifest
 
+# the CRDs are too long to sore them in a configmap so we achieve them before set in a config map.
+# NOTE that gzip -n is used to make zipping idempotent, else the timestamp gets updated every time
+# the file is created.
 	kustomize build .build/manifest/crds \
-		--load_restrictor none | name=$(NAME) envsubst | gzip | base64 > "$@"
+		--load_restrictor none | name=$(NAME) envsubst | gzip -n | base64 > "$@"
 
 
 manifest/manifest_deployer.yaml.template: manifest/*.yaml \
