@@ -394,6 +394,7 @@ spec:
         - --webhook-cert-dir=/tmp/${name}-dashboard-webhook-cert-dir
         - --webhook-service-name=${name}-dashboard-webhook
         - --gcloud.project-id=$dashboardProjectID
+        - --site-certificate-issuer=${name}-default
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /var/run/secrets/cloud.google.com/serviceaccount/google_application_credentials.json

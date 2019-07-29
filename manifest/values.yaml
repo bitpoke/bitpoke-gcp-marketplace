@@ -191,6 +191,8 @@ dashboard:
     serviceAccount:
       create: false
       name: $serviceAccount
+    extraArgs:
+      - --site-certificate-issuer=${name}-default
 
   rbac:
     create: false
