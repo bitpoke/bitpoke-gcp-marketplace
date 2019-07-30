@@ -224,12 +224,26 @@ manifest/manifest_job.yaml.template: manifest/*.yaml \
 		--load_restrictor none
 
 
-.PHONY: manifest
-manifest: manifest/manifest_deployer.yaml.template manifest/manifest_job.yaml.template
+.PHONY: clean-manifests
+clean-manifests:
+	rm -rf .build/manifest*
+	rm -f manifest/manifest_*
+
+.PHONY: manifests
+manifests: manifest/manifest_deployer.yaml.template manifest/manifest_job.yaml.template
 
 # a simple rule to test if the generated manifests are ok
 .PHONY: verify-manifest
-verify-manifest: manifest/manifest_deployer.yaml.template manifest/manifest_job.yaml.template
+verify-manifest: clean-manifests manifests
 # test if the kustomize replace all fields that needs to be replaced
 	[ "$(shell grep SET_IN_KUSTOMIZE $^ )" = "" ] || exit 1
 	[ "$(shell grep U0VUX0lOX0tVU1RPTUlaRQ== $^ )" = "" ] || exit 1
+
+# check for missing files or not used in kustomize
+	./scripts/check_files.sh .build/manifest/charts \
+	  manifest/deployer/kustomization.yaml \
+	  manifest/crds/kustomization.yaml \
+	  manifest/globals/kustomization.yaml
+
+# check for differences
+	git diff --exit-code manifest/*.template

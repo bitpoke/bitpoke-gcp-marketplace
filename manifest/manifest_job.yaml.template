@@ -1124,6 +1124,27 @@ data:
     metadata:
       labels:
         dashboard.presslabs.com/version: 0.0.1
+        rbac.dashboard.presslabs.com/aggregate-to-controller: "true"
+      name: dashboard.presslabs.com:organization::invites
+    rules:
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - invites
+      verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+    ---
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      labels:
+        dashboard.presslabs.com/version: 0.0.1
       name: dashboard.presslabs.com:organization::member
     rules:
     - apiGroups:
@@ -1146,6 +1167,14 @@ data:
       - dashboard.presslabs.com
       resources:
       - invites
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - accountbindings
       verbs:
       - get
       - list
@@ -1185,6 +1214,16 @@ data:
       - dashboard.presslabs.com
       resources:
       - invites
+      verbs:
+      - get
+      - list
+      - watch
+      - create
+      - delete
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - accountbindings
       verbs:
       - get
       - list
@@ -1657,7 +1696,7 @@ data:
         - wordpresses
 kind: ConfigMap
 metadata:
-  name: ${name}-dash-globals-manifests-b22b2t52h5
+  name: ${name}-dash-globals-manifests-f4fmchfmgb
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1688,7 +1727,7 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-b22b2t52h5
+          name: ${name}-dash-globals-manifests-f4fmchfmgb
         name: globals-manifests
       - configMap:
           name: ${name}-dash-crds-manifests-d6489fmk2c
