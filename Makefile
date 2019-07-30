@@ -10,11 +10,18 @@ include app.Makefile
 
 TAG ?= latest
 
-CERT_MANAGER_TAG ?= v0.8.1
-PROMETHEUS_OPERATOR_TAG ?= v0.30.1
-INGRESS_OPERATOR_TAG ?= 0.24.1
-WORDPRESS_OPERATOR_TAG ?= v0.3.7
-MYSQL_OPERATOR_TAG ?= 0.3.2
+DASHBOARD_CHART_PATH ?= charts/dashboard-gcm
+
+define getTagForImg
+$(shell helm template $(DASHBOARD_CHART_PATH) | grep "image: \"$(1)" | sed 's/.*://' | sed 's/"//' | sed -n '1p')
+endef
+
+CERT_MANAGER_TAG ?= $(call getTagForImg,quay.io/jetstack/cert-manager-controller)
+PROMETHEUS_OPERATOR_TAG ?= $(call getTagForImg,quay.io/coreos/prometheus-operator)
+INGRESS_OPERATOR_TAG ?= $(call getTagForImg,quay.io/kubernetes-ingress-controller/nginx-ingress-controller)
+WORDPRESS_OPERATOR_TAG ?= $(call getTagForImg,quay.io/presslabs/wordpress-operator)
+MYSQL_OPERATOR_TAG ?= $(call getTagForImg,quay.io/presslabs/mysql-operator)
+DASHBOARD_TAG ?= $(call getTagForImg,gcr.io/press-labs-stack-public/dashboard)
 
 $(info ---- TAG = $(TAG))
 
@@ -23,6 +30,7 @@ $(info ---- PROMETHEUS_OPERATOR_TAG = $(PROMETHEUS_OPERATOR_TAG))
 $(info ---- INGRESS_OPERATOR_TAG = $(INGRESS_OPERATOR_TAG))
 $(info ---- WORDPRESS_OPERATOR_TAG = $(WORDPRESS_OPERATOR_TAG))
 $(info ---- MYSQL_OPERATOR_TAG = $(MYSQL_OPERATOR_TAG))
+$(info ---- DASHBOARD_TAG = $(DASHBOARD_TAG))
 
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/dashboard/deployer:$(TAG)
@@ -88,9 +96,10 @@ endef
 
 .build/dashboard/dashboard: .build/var/TAG \
                             .build/var/REGISTRY \
+                            .build/var/DASHBOARD_TAG \
                             | .build/dashboard
 	$(call republish,\
-	       gcr.io/press-labs-stack-public/dashboard:latest,\
+	       gcr.io/press-labs-stack-public/dashboard:$(DASHBOARD_TAG),\
 	       $(REGISTRY)/dashboard:$(TAG))
 	$(call republish,\
 	       bitnami/kubectl:latest,\
@@ -170,7 +179,6 @@ endef
 .build/manifest/charts: | .build/manifest
 	mkdir "$@"
 
-DASHBOARD_CHART_PATH ?= charts/dashboard-gcm
 .build/manifest/charts/dashboard-gcm: manifest/values.yaml \
                                   $(DASHBOARD_CHART_PATH) \
                                   | .build/manifest/charts

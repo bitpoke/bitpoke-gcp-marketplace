@@ -21,6 +21,8 @@ __VAR_MAKEFILE__ := included
 # update the file.
 .build/var/%: .build/var/%-required .build/var/%-phony ;
 
+# prevent treating this target as intermidiate and let the makefile to remove them
+.PRECIOUS: .build/var/%
 
 .build/var:
 	mkdir -p .build/var
