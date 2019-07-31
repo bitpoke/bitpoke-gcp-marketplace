@@ -2,7 +2,7 @@
 resources:
   - ../charts/dashboard-gcm/charts/stack/templates/application.yaml
 
-  # dashbaord
+  # dashboard
   - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-deployment.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-ingress.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-oidc-secret.yaml
@@ -63,7 +63,7 @@ patchesJson6902:
     name: ${name}-nginx-ingress-controller
   path: ingress_image_tag.yaml
 
-# mysql-operator passowrds
+# mysql-operator passwords
 - target:
     version: v1
     kind: Secret

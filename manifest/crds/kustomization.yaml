@@ -1,6 +1,6 @@
 # resources that will be deployed by the job
 resources:
-  # dashbaord
+  # dashboard
   - ../charts/dashboard-gcm/charts/dashboard/templates/crds.yaml
 
   # cert manager
