@@ -196,3 +196,9 @@ dashboard:
 
   rbac:
     create: false
+
+  # enable metering for marketplace
+  metering:
+    gcp:
+      secretName: $reportingSecret
+      serviceName: #TODO: this should be filled in later when it's available

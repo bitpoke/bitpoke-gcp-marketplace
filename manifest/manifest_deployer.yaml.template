@@ -398,13 +398,24 @@ spec:
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /var/run/secrets/cloud.google.com/serviceaccount/google_application_credentials.json
+        - name: AGENT_ENCODED_KEY
+          valueFrom:
+            secretKeyRef:
+              key: reporting-key
+              name: $reportingSecret
+        - name: AGENT_CONSUMER_ID
+          valueFrom:
+            secretKeyRef:
+              key: consumer-id
+              name: $reportingSecret
+        - name: AGENT_SERVICE_NAME
+          value: ""
         image: $dashboardImage
         imagePullPolicy: IfNotPresent
         name: controller
         ports:
         - containerPort: 4433
           name: webhook
-        resources: null
         volumeMounts:
         - mountPath: /tmp/${name}-dashboard-webhook-cert-dir
           name: webhook-certs

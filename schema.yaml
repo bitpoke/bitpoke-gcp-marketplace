@@ -187,6 +187,11 @@ properties:
     x-google-marketplace:
       type: IMAGE
 
+  reportingSecret:
+    type: string
+    x-google-marketplace:
+      type: REPORTING_SECRET
+
 
 required:
 - name
