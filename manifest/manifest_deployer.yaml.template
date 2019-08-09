@@ -409,7 +409,7 @@ spec:
               key: consumer-id
               name: $reportingSecret
         - name: AGENT_SERVICE_NAME
-          value: ""
+          value: dummy
         image: $dashboardImage
         imagePullPolicy: IfNotPresent
         name: controller

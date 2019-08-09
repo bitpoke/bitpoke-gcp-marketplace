@@ -47,7 +47,8 @@ APP_PARAMETERS ?= { \
   "dashboardOIDCIssuer": "$(OIDC_ISSUER)", \
   "mysqlOrchestratorPassword": "$(ORCHESTRATOR_PASSOWRD)", \
   "letsEncryptEmail": "$(LETS_ENCRYPT_EMAIL)", \
-  "letsEncryptServer": "$(LETS_ENCRYPT_SERVER)" \
+  "letsEncryptServer": "$(LETS_ENCRYPT_SERVER)", \
+  "reportingSecret": "$(REPORTING_SECRET)" \
 }
 
 APP_TEST_PARAMETERS ?= "{}"

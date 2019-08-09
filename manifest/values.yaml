@@ -201,4 +201,4 @@ dashboard:
   metering:
     gcp:
       secretName: $reportingSecret
-      serviceName: #TODO: this should be filled in later when it's available
+      serviceName: dummy #TODO: this should be filled in later when it's available
