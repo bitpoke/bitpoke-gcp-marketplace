@@ -21,7 +21,7 @@ PROMETHEUS_OPERATOR_TAG ?= $(call getTagForImg,quay.io/coreos/prometheus-operato
 INGRESS_OPERATOR_TAG ?= $(call getTagForImg,quay.io/kubernetes-ingress-controller/nginx-ingress-controller)
 WORDPRESS_OPERATOR_TAG ?= $(call getTagForImg,quay.io/presslabs/wordpress-operator)
 MYSQL_OPERATOR_TAG ?= $(call getTagForImg,quay.io/presslabs/mysql-operator)
-DASHBOARD_TAG ?= $(call getTagForImg,gcr.io/press-labs-stack-public/dashboard)
+DASHBOARD_TAG ?= $(call getTagForImg,gcr.io/press-labs-dashboard/dashboard)
 
 $(info ---- TAG = $(TAG))
 
@@ -99,7 +99,7 @@ endef
                             .build/var/DASHBOARD_TAG \
                             | .build/dashboard
 	$(call republish,\
-	       gcr.io/press-labs-stack-public/dashboard-gcp-marketplace:$(DASHBOARD_TAG),\
+	       gcr.io/press-labs-stack-public/dashboard-gcp:$(DASHBOARD_TAG),\
 	       $(REGISTRY)/dashboard:$(TAG))
 	$(call republish,\
 	       bitnami/kubectl:latest,\
