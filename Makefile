@@ -100,7 +100,7 @@ endef
                             .build/var/DASHBOARD_TAG \
                             | .build/dashboard
 	$(call republish,\
-	       gcr.io/press-labs-stack-public/dashboard-gcp:$(DASHBOARD_TAG),\
+	       gcr.io/press-labs-public/dashboard:$(DASHBOARD_TAG),\
 	       $(REGISTRY)/dashboard:$(TAG))
 	$(call republish,\
 	       bitnami/kubectl:latest,\
