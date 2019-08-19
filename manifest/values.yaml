@@ -169,8 +169,6 @@ dashboard:
 
     baseURL: //$dashboardDomain
 
-    sentryDSN: SET_IN_KUSTOMIZE
-
     ingress:
       enabled: true
       annotations:
