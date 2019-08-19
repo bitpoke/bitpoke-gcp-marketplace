@@ -13,6 +13,8 @@ properties:
   # general
   serviceAccount:
     type: string
+    title: Service Account
+    description: The service account used for all application's workloads
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
@@ -23,12 +25,16 @@ properties:
 
   appUID:
     type: string
+    title: Application UID
+    description: The uuid of the created Application object. Not required
     x-google-marketplace:
       type: APPLICATION_UID
 
   # dashboard
   dashboardDomain:
     type: string
+    title: Domain
+    description: Use to connect to the dashboard interface. This host is set in the ingress
   dashboardImage:
     type: string
     default: $REGISTRY:$TAG
@@ -36,9 +42,13 @@ properties:
       type: IMAGE
   dashboardProjectID:
     type: string
+    title: Project ID
+    description: The project ID where the application will be installed. This is used for provisioning other Google services.
     default: ""
   dashboardServiceAccountKey:
     type: string
+    title: Service Account Key
+    description: A service account key in JSON format. This service account is used for provisioning other Google services.
     x-google-marketplace:
       type: STRING
       string:
@@ -46,6 +56,8 @@ properties:
           base64Encoded: explicitPasswordEncoded
   dashboardOIDCClientID:
     type: string
+    title: OpenID Connect ID
+    description: OIDC client ID
     x-google-marketplace:
       type: STRING
       string:
@@ -53,6 +65,8 @@ properties:
           base64Encoded: explicitPasswordEncoded
   dashboardOIDCSecret:
     type: string
+    title: OpenID Connect Secret
+    description: OIDC client Secret
     x-google-marketplace:
       type: STRING
       string:
@@ -60,14 +74,13 @@ properties:
           base64Encoded: explicitPasswordEncoded
   dashboardOIDCIssuer:
     type: string
+    title: OpenID Connect Issuer
+    description: OIDC Issuer
     x-google-marketplace:
       type: STRING
       string:
         generatedProperties:
           base64Encoded: explicitPasswordEncoded
-  dashboardSentryDSN:
-    type: string
-    default: '""'
 
   # cert-manager
   certManagerImage:
@@ -171,10 +184,14 @@ properties:
   # let's encrypt
   letsEncryptEmail:
     type: string
+    title: Let's Encrypt Email
+    description: The email used for the ACME account contact informations.
     default: 'ping@example.com'
 
   letsEncryptServer:
     type: string
+    title: Let's Encrypt Server
+    description: The Let's Encrypt API endpoint
     default: 'https://acme-v02.api.letsencrypt.org/directory'
     enum:
       - 'https://acme-v02.api.letsencrypt.org/directory'
