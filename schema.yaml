@@ -13,8 +13,8 @@ properties:
   # general
   serviceAccount:
     type: string
-    title: Service Account
-    description: The service account used for all application's workloads
+    title: Presslabs Dashboard Service Account
+    description: Service account that will be assigned to the Presslabs Dashboard.
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
@@ -26,22 +26,24 @@ properties:
   appUID:
     type: string
     title: Application UID
-    description: The uuid of the created Application object. Not required
+    description: The UUID of the Presslabs Dashboard application. Not required, so if not entered an UUID will be generated anyway.
     x-google-marketplace:
       type: APPLICATION_UID
 
   # dashboard
   dashboardDomain:
     type: string
-    title: Domain
-    description: Use to connect to the dashboard interface. This host is set in the ingress
+    title: Presslabs Dashboard Domain
+    description: This will be the domain used by the Presslabs Dashboard.
+    default: example.com
   dashboardIP:
     type: string
     default: ""
     title: IP Address
     description: |
-      We recommand to set a pre-allocated static IP address for ingress to prevent changing the IP.
-      More information <a href="https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address">here</a>.
+      We recommend that you get a pre-allocated static IP address for your Presslabs Dashboard to prevent IP changes.
+      You can get one from the Ingress section in the Google Kubernetes dashboard. Read more about it
+      <a href="https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address">here</a>.
   dashboardImage:
     type: string
     default: $REGISTRY:$TAG
@@ -50,7 +52,7 @@ properties:
   dashboardProjectID:
     type: string
     title: Project ID
-    description: The project ID where the application will be installed. This is used for provisioning other Google services.
+    description: Where to deploy the Presslabs Dashboard application. This will be used to provision other services such as storage.
     default: ""
   dashboardServiceAccountKey:
     type: string
@@ -63,8 +65,8 @@ properties:
           base64Encoded: explicitPasswordEncoded
   dashboardOIDCClientID:
     type: string
-    title: OpenID Connect ID
-    description: OIDC client ID
+    title: Auth0 Connect ID
+    description: This is the Auth0 client ID
     x-google-marketplace:
       type: STRING
       string:
@@ -72,8 +74,8 @@ properties:
           base64Encoded: explicitPasswordEncoded
   dashboardOIDCSecret:
     type: string
-    title: OpenID Connect Secret
-    description: OIDC client Secret
+    title: Auth0 Connect Secret
+    description: The client secret needed to connect to Auth0
     x-google-marketplace:
       type: STRING
       string:
@@ -81,8 +83,9 @@ properties:
           base64Encoded: explicitPasswordEncoded
   dashboardOIDCIssuer:
     type: string
-    title: OpenID Connect Issuer
-    description: OIDC Issuer
+    title: Auth0 issuer URL
+    description: The URL where Auth0 can find the OpenID Provider Configuration Document.
+    default: "https://example.auth0.com/"
     x-google-marketplace:
       type: STRING
       string:
@@ -192,7 +195,7 @@ properties:
   letsEncryptEmail:
     type: string
     title: Let's Encrypt Email
-    description: The email used for the ACME account contact informations.
+    description: Let's Encrypt will use this to contact you about expiring certificates, and issues related to your account.
     default: 'ping@example.com'
 
   letsEncryptServer:
