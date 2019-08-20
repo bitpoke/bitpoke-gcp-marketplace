@@ -35,6 +35,13 @@ properties:
     type: string
     title: Domain
     description: Use to connect to the dashboard interface. This host is set in the ingress
+  dashboardIP:
+    type: string
+    default: ""
+    title: IP Address
+    description: |
+      We recommand to set a pre-allocated static IP address for ingress to prevent changing the IP.
+      More information <a href="https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address">here</a>.
   dashboardImage:
     type: string
     default: $REGISTRY:$TAG

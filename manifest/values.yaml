@@ -41,6 +41,8 @@ stack:
       create: false
       name: $serviceAccount
     controller:
+      service:
+        loadBalancerIP: $dashboardIP
       image:
         repository: $ingressImageRegistry
         # pin version here because it uses comparSemver in chart, patch it later with kustomize

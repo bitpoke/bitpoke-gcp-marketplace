@@ -108,7 +108,7 @@ type: Opaque
 ---
 apiVersion: v1
 data:
-  DSN: $dashboardSentryDSN
+  DSN: ""
 kind: Secret
 metadata:
   labels:
@@ -252,6 +252,7 @@ metadata:
   name: ${name}-nginx-ingress-controller
 spec:
   clusterIP: ""
+  loadBalancerIP: $dashboardIP
   ports:
   - name: http
     port: 80
