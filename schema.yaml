@@ -229,5 +229,4 @@ required:
 - dashboardOIDCSecret
 - dashboardOIDCIssuer
 - dashboardProjectID
-- prometheusOperatorEnabled
 - gcpConfigConnectorEnabled

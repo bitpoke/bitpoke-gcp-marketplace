@@ -138,6 +138,7 @@ dashboard:
       name: $serviceAccount
 
   controller:
+    enablePrometheusIntegration: $prometheusOperatorEnabled
     serviceAccount:
       create: false
       name: $serviceAccount
