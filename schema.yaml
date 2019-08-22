@@ -129,18 +129,6 @@ properties:
             before: certCAinjectorImageRegistry
             after: certCAinjectorImageTag
 
-  # prometheus operator
-  promOperatorImage:
-    type: string
-    default: $REGISTRY/prometheus-operator:$TAG
-    x-google-marketplace:
-      type: IMAGE
-      image:
-        generatedProperties:
-          splitByColon:
-            before: promOperatorImageRegistry
-            after: promOperatorImageTag
-
   # ingress controller
   ingressImage:
     type: string
@@ -219,6 +207,18 @@ properties:
     x-google-marketplace:
       type: REPORTING_SECRET
 
+  prometheusOperatorEnabled:
+    type: boolean
+    default: false
+    title: Is Prometheus Operator Enabled in Cluster
+    description: To enable extra features of the Presslabs Dashboard it requires to have installed Prometheus Operator in cluster.
+
+  gcpConfigConnectorEnabled:
+    type: boolean
+    default: false
+    title: Is GCP Config Connector Enabled in Cluster
+    description: To run the Presslabs Dashboard it reuqres to have GCP Config Connect enabled into k8s cluster.
+
 
 required:
 - name
@@ -229,3 +229,5 @@ required:
 - dashboardOIDCSecret
 - dashboardOIDCIssuer
 - dashboardProjectID
+- prometheusOperatorEnabled
+- gcpConfigConnectorEnabled

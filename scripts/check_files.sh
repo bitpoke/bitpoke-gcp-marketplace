@@ -8,11 +8,7 @@ chartFile=.build/files_from_chart.txt
 filesinKustomizeFile=.build/files_from_kustomize.txt
 
 find $dir_path -name '*.yaml' |\
-    grep -v '/prometheus-operator/charts/' |\
-    grep -v '/prometheus-operator/templates/prometheus/' |\
-    grep -v '/prometheus-operator/templates/grafana' |\
-    grep -v '/prometheus-operator/templates/prometheus-operator/servicemonitor.yaml' |\
-    grep -ve '/prometheus-operator/.*/exporters/' |\
+    grep -v '/prometheus-operator/' |\
     grep -ve '/cert-manager/.*/serviceaccount.yaml' |\
     grep -v 'controller-clusterrole-kubebuilder.yaml' |\
     grep -v 'application-crd.yaml' |\

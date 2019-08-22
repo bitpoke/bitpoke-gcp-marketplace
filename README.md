@@ -18,7 +18,7 @@ The following operators are included in this application:
  * [**Nginx Ingress Controller**](https://github.com/kubernetes/ingress-nginx) for configuring NGINX.
  * [**Prometheus Operator**](https://github.com/coreos/prometheus-operator) used for deploying
    Prometheus for monitoring
- * [**Presslabs Dashboard**]()
+ * **Presslabs Dashboard**
  
  
 # Installation
@@ -145,10 +145,6 @@ export certCAinjectorImage="${REGISTRY}/cert-manager-cainjector:${TAG}"
 export certCAinjectorImageRegistry="${REGISTRY}/cert-manager-cainjector"
 export certCAinjectorImageTag="${TAG}"
 
-export promOperatorImage="${REGISTRY}/prometheus-operator:${TAG}"
-export promOperatorImageRegistry="${REGISTRY}/prometheus-operator"
-export promOperatorImageTag="${TAG}"
-
 export ingressImage="${REGISTRY}/ingress-controller:${TAG}"
 export ingressImageRegstry="${REGISTRY}/ingress-controller"
 export ingressImageTag="${TAG}"
@@ -177,10 +173,6 @@ for i in \
          "certAcmeSolverImage" \
          "certWebhookImage" \
          "certCAinjectorImage" \
-         "promOperatorImage" \
-         "promConfigMapReloadImage" \
-         "promConfigReloaderImage" \
-         "promImage" \
          "ingressImage" \
          "ingressDefaultBackendImage" \
          "mysqlControllerImage" \
@@ -251,7 +243,7 @@ Use `envsubst` to expand the template. We recommend that you save the expanded
 manifest file for future updates to the application.
 
 ```shell
-cat manifest/manifest_deployer.yaml.template manifest/manifest_job.yaml.template  | envsubst '$name $namespace $dashboardDomain $dashboardImage $dashboardServiceAccount $dashboardProjectID $dashboardOIDCClient $dashboardOIDCSecret $dashboardOIDCIssuer $serviceAccount $certManagerImageRegistry $certManagerImageTag $certAcmeSolverImageRegistry $certAcmeSolverImageTag  $certWebhookImageRegistry $certWebhookImageTag $certCAinjectorImageRegistry $certCAinjectorImageTag $promOperatorImageRegistry $promOperatorImageTag $ingressImageRegistry $ingressImageTag $ingressDefaultBackendImageRegistry $ingressDefaultBackendImageTag $mysqlControllerImage $mysqlOrchestratorImage $mysqlOrchestratorPassowrd $wordpressOperatorImage ' \
+cat manifest/manifest_deployer.yaml.template manifest/manifest_job.yaml.template  | envsubst '$name $namespace $dashboardDomain $dashboardImage $dashboardServiceAccount $dashboardProjectID $dashboardOIDCClient $dashboardOIDCSecret $dashboardOIDCIssuer $serviceAccount $certManagerImageRegistry $certManagerImageTag $certAcmeSolverImageRegistry $certAcmeSolverImageTag  $certWebhookImageRegistry $certWebhookImageTag $certCAinjectorImageRegistry $certCAinjectorImageTag $ingressImageRegistry $ingressImageTag $ingressDefaultBackendImageRegistry $ingressDefaultBackendImageTag $mysqlControllerImage $mysqlOrchestratorImage $mysqlOrchestratorPassowrd $wordpressOperatorImage ' \
   > "${name}_manifest.yaml"
 ```
 

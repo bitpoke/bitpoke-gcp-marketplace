@@ -17,7 +17,6 @@ $(shell helm template $(DASHBOARD_CHART_PATH) | grep "image: \"$(1)" | sed 's/.*
 endef
 
 CERT_MANAGER_TAG ?= $(call getTagForImg,quay.io/jetstack/cert-manager-controller)
-PROMETHEUS_OPERATOR_TAG ?= $(call getTagForImg,quay.io/coreos/prometheus-operator)
 INGRESS_OPERATOR_TAG ?= $(call getTagForImg,quay.io/kubernetes-ingress-controller/nginx-ingress-controller)
 WORDPRESS_OPERATOR_TAG ?= $(call getTagForImg,quay.io/presslabs/wordpress-operator)
 MYSQL_OPERATOR_TAG ?= $(call getTagForImg,quay.io/presslabs/mysql-operator)
@@ -26,7 +25,6 @@ DASHBOARD_TAG ?= $(call getTagForImg,gcr.io/press-labs-dashboard/dashboard)
 $(info ---- TAG = $(TAG))
 
 $(info ---- CERT_MANAGER_TAG = $(CERT_MANAGER_TAG))
-$(info ---- PROMETHEUS_OPERATOR_TAG = $(PROMETHEUS_OPERATOR_TAG))
 $(info ---- INGRESS_OPERATOR_TAG = $(INGRESS_OPERATOR_TAG))
 $(info ---- WORDPRESS_OPERATOR_TAG = $(WORDPRESS_OPERATOR_TAG))
 $(info ---- MYSQL_OPERATOR_TAG = $(MYSQL_OPERATOR_TAG))
@@ -58,7 +56,6 @@ TESTER_IMAGE ?= $(REGISTRY)/dashboard/tester:$(TAG)
 app/build:: .build/dashboard/deployer \
             .build/dashboard/dashboard \
             .build/dashboard/cert-manager \
-            .build/dashboard/prometheus-operator \
             .build/dashboard/ingress \
             .build/dashboard/mysql-operator \
             .build/dashboard/wordpress-operator
@@ -70,8 +67,7 @@ app/build:: .build/dashboard/deployer \
 
 # build deployer image
 .build/dashboard/deployer: deployer/* \
-                           manifest/manifest_deployer.yaml.template \
-                           manifest/manifest_job.yaml.template \
+                           manifests \
                            schema.yaml \
                            .build/var/APP_DEPLOYER_IMAGE \
                            .build/var/MARKETPLACE_TOOLS_TAG \
@@ -121,17 +117,6 @@ endef
 	$(call republish,\
          quay.io/jetstack/cert-manager-$*:$(CERT_MANAGER_TAG),\
          $(REGISTRY)/dashboard/cert-manager-$*:$(TAG))
-	@touch "$@"
-
-
-# prometheus operator images
-.build/dashboard/prometheus-operator: .build/var/TAG \
-                                      .build/var/REGISTRY \
-                                      .build/var/PROMETHEUS_OPERATOR_TAG \
-                                      | .build/dashboard
-	$(call republish,\
-         quay.io/coreos/prometheus-operator:$(PROMETHEUS_OPERATOR_TAG),\
-         $(REGISTRY)/dashboard/prometheus-operator:$(TAG))
 	@touch "$@"
 
 
@@ -233,13 +218,13 @@ manifest/manifest_job.yaml.template: manifest/*.yaml \
 		--load_restrictor none
 
 
+.PHONY: manifests
+manifests: manifest/manifest_deployer.yaml.template manifest/manifest_job.yaml.template
+
 .PHONY: clean-manifests
 clean-manifests:
 	rm -rf .build/manifest*
 	rm -f manifest/manifest_*
-
-.PHONY: manifests
-manifests: manifest/manifest_deployer.yaml.template manifest/manifest_job.yaml.template
 
 # a simple rule to test if the generated manifests are ok
 .PHONY: verify-manifest

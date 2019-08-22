@@ -6,12 +6,6 @@ resources:
   # cert manager
   - ../charts/dashboard-gcm/charts/stack/templates/cert-manager-crds.yaml
 
-  # prometheus operator
-  - ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus-operator/crd-servicemonitor.yaml
-  - ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus-operator/crd-prometheus.yaml
-  - ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus-operator/crd-alertmanager.yaml
-  - ../charts/dashboard-gcm/charts/stack/charts/prometheus-operator/templates/prometheus-operator/crd-prometheusrules.yaml
-
   # mysql operator
   -  ../charts/dashboard-gcm/charts/stack/charts/mysql-operator/templates/crds.yaml
 

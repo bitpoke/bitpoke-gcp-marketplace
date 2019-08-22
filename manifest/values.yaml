@@ -95,57 +95,7 @@ stack:
 
 
   prometheus-operator:
-    enabled: true
-    fullnameOverride: ${name}-prometheus
-    defaultRules:
-      create: false
-    global:
-      rbac:
-        create: false
-        pspEnabled: false
-    alertmanager:
-      enabled: false
-      serviceAccount:
-        create: false
-        name: $serviceAccount
-    grafana:
-      enabled: false
-    kubeApiServer:
-      enabled: false
-    kubelet:
-      enabled: false
-    kubeControllerManger:
-      enabled: false
-    coreDns:
-      enabled: false
-    kubeDns:
-      enabled: false
-    kubeEtcd:
-      enabled: false
-    kubeScheduler:
-      enabled: false
-    kubeStateMetrics:
-      enabled: false
-    kube-state-metrics:
-      rbac:
-        create: false
-      podSecurityPolicy:
-        enabled: false
-    nodeExporter:
-      enabled: false
-    prometheusOperator:
-      serviceAccount:
-        create: false
-        name: $serviceAccount
-      createCustomResource: true
-      image:
-        repository: $promOperatorImageRegistry
-        tag: $promOperatorImageTag
-    prometheus:
-      serviceAccount:
-        create: false
-        name: $serviceAccount
-
+    enabled: false
 
 dashboard:
   image: $dashboardImage
