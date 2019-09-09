@@ -526,8 +526,8 @@ spec:
         - --webhook-port=4433
         - --webhook-cert-dir=/tmp/${name}-dashboard-webhook-cert-dir
         - --webhook-service-name=${name}-dashboard-webhook
-        - --gcloud.project-id=$dashboardProjectID
         - --prometheus-operator-enabled=$prometheusOperatorEnabled
+        - --gcloud.project-id=$dashboardProjectID
         - --site-certificate-issuer=${name}-default
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
@@ -543,7 +543,7 @@ spec:
               key: consumer-id
               name: $reportingSecret
         - name: AGENT_SERVICE_NAME
-          value: dummy
+          value: presslabs-dashboard.mp-press-labs-public.appspot.com
         image: $dashboardImage
         imagePullPolicy: IfNotPresent
         name: controller

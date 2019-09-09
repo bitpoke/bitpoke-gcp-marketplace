@@ -152,4 +152,4 @@ dashboard:
   metering:
     gcp:
       secretName: $reportingSecret
-      serviceName: dummy #TODO: this should be filled in later when it's available
+      serviceName: presslabs-dashboard.mp-press-labs-public.appspot.com
