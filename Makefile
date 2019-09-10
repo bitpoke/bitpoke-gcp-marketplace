@@ -228,8 +228,8 @@ clean-manifests:
 .PHONY: verify-manifest
 verify-manifest: clean-manifests manifests
 # test if the kustomize replace all fields that needs to be replaced
-	[ "$(shell grep SET_IN_KUSTOMIZE $^ )" = "" ] || exit 1
-	[ "$(shell grep U0VUX0lOX0tVU1RPTUlaRQ== $^ )" = "" ] || exit 1
+	[ "$(shell grep SET_IN_KUSTOMIZE $(wildcard manifest/*.template))" = "" ] || exit 1
+	[ "$(shell grep U0VUX0lOX0tVU1RPTUlaRQ== $(wildcard manifest/*.template))" = "" ] || exit 1
 
 # check for missing files or not used in kustomize
 	./scripts/check_files.sh .build/manifest/charts \
