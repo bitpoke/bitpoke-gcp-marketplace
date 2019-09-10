@@ -80,19 +80,6 @@ metadata:
 ---
 apiVersion: v1
 data:
-  google_application_credentials.json: $dashboardServiceAccountKey
-kind: Secret
-metadata:
-  labels:
-    app: dashboard
-    chart: dashboard-0.1.0_master
-    heritage: Tiller
-    release: ${name}
-  name: ${name}-dashboard-gcloud
-type: Opaque
----
-apiVersion: v1
-data:
   CLIENT_ID: $dashboardOIDCClientID
   CLIENT_SECRET: $dashboardOIDCSecret
   ISSUER: $dashboardOIDCIssuer
@@ -527,7 +514,6 @@ spec:
         - --webhook-cert-dir=/tmp/${name}-dashboard-webhook-cert-dir
         - --webhook-service-name=${name}-dashboard-webhook
         - --prometheus-operator-enabled=$prometheusOperatorEnabled
-        - --gcloud.project-id=$dashboardProjectID
         - --site-certificate-issuer=${name}-default
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
@@ -553,8 +539,6 @@ spec:
         volumeMounts:
         - mountPath: /tmp/${name}-dashboard-webhook-cert-dir
           name: webhook-certs
-        - mountPath: /var/run/secrets/cloud.google.com/serviceaccount
-          name: gcloud-serviceaccount
       serviceAccount: $serviceAccount
       volumes:
       - name: webhook-certs
@@ -565,9 +549,6 @@ spec:
           - key: tls.key
             path: key.pem
           secretName: ${name}-dashboard-webhook
-      - name: gcloud-serviceaccount
-        secret:
-          secretName: ${name}-dashboard-gcloud
 ---
 apiVersion: apps/v1beta2
 kind: Deployment

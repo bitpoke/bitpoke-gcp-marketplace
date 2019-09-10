@@ -9,7 +9,6 @@ resources:
   - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-service.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-sentry-secret.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/controller-deployment.yaml
-  - ../charts/dashboard-gcm/charts/dashboard/templates/controller-gcloud-serviceaccount.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/webhook-service.yaml
 
   # cert-manager objects
@@ -71,8 +70,3 @@ patchesJson6902:
     kind: Secret
     name: ${name}-dashboard-oidc
   path: dashboard_oidc_secret.yaml
-- target:
-    version: v1
-    kind: Secret
-    name: ${name}-dashboard-gcloud
-  path: dashboard_serviceaccount_secret.yaml

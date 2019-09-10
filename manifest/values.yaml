@@ -107,11 +107,6 @@ dashboard:
   crd:
     install: true
 
-  gcloud:
-    projectID: $dashboardProjectID
-    # NOTE: those valus is patched by kustomize
-    serviceAccountKey: SET_IN_KUSTOMIZE
-
   apiserver:
     oidc:
       # NOTE: those valuse are patched by kustomize

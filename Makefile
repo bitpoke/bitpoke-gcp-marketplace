@@ -38,8 +38,6 @@ APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)", \
   "dashboardDomain": "$(DOMAIN)", \
-  "dashboardProjectID": "$(GCP_PROJECT_ID)", \
-  "dashboardServiceAccountKey": "$(SERVICE_ACCOUNT_KEY)", \
   "dashboardOIDCClientID": "$(OIDC_CLIENT_ID)", \
   "dashboardOIDCSecret": "$(OIDC_SECRET)", \
   "dashboardOIDCIssuer": "$(OIDC_ISSUER)", \
