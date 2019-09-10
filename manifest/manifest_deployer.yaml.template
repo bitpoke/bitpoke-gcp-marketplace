@@ -513,7 +513,7 @@ spec:
         - --webhook-port=4433
         - --webhook-cert-dir=/tmp/${name}-dashboard-webhook-cert-dir
         - --webhook-service-name=${name}-dashboard-webhook
-        - --prometheus-operator-enabled=$prometheusOperatorEnabled
+        - --prometheus-operator-enabled=false
         - --site-certificate-issuer=${name}-default
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
