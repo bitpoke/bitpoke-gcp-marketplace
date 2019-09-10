@@ -36,33 +36,22 @@ properties:
     title: Presslabs Dashboard Domain
     description: This will be the domain used by the Presslabs Dashboard.
     default: example.com
+
   dashboardIP:
     type: string
     default: ""
     title: IP Address
     description: |
-      We recommend that you get a pre-allocated static IP address for your Presslabs Dashboard to prevent IP changes.
-      You can get one from the Ingress section in the Google Kubernetes dashboard. Read more about it
-      <a href="https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address">here</a>.
+      We recommend that you create a pre-allocated static IP address for your Presslabs Dashboard to prevent IP changes.
+      If not specified, an ephemeral external IP will be created which you can later convert to a static one.
+      Read more about it at https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address.
+
   dashboardImage:
     type: string
     default: $REGISTRY:$TAG
     x-google-marketplace:
       type: IMAGE
-  dashboardProjectID:
-    type: string
-    title: Project ID
-    description: Where to deploy the Presslabs Dashboard application. This will be used to provision other services such as storage.
-    default: ""
-  dashboardServiceAccountKey:
-    type: string
-    title: Service Account Key
-    description: A service account key in JSON format. This service account is used for provisioning other Google services.
-    x-google-marketplace:
-      type: STRING
-      string:
-        generatedProperties:
-          base64Encoded: explicitPasswordEncoded
+
   dashboardOIDCClientID:
     type: string
     title: Auth0 Connect ID
@@ -72,6 +61,7 @@ properties:
       string:
         generatedProperties:
           base64Encoded: explicitPasswordEncoded
+
   dashboardOIDCSecret:
     type: string
     title: Auth0 Connect Secret
@@ -81,6 +71,7 @@ properties:
       string:
         generatedProperties:
           base64Encoded: explicitPasswordEncoded
+
   dashboardOIDCIssuer:
     type: string
     title: Auth0 issuer URL
@@ -91,6 +82,43 @@ properties:
       string:
         generatedProperties:
           base64Encoded: explicitPasswordEncoded
+
+  # let's encrypt
+  letsEncryptServer:
+    type: string
+    title: Let's Encrypt Server
+    description: The Let's Encrypt API endpoint
+    default: 'https://acme-v02.api.letsencrypt.org/directory'
+    enum:
+      - 'https://acme-v02.api.letsencrypt.org/directory'
+      - 'https://acme-staging-v02.api.letsencrypt.org/directory'
+
+  letsEncryptEmail:
+    type: string
+    title: Let's Encrypt Account Email
+    description: Let's Encrypt will use this to contact you about expiring certificates, and issues related to your account.
+    default: 'ping@example.com'
+
+  gcpConfigConnectorEnabled:
+    type: boolean
+    default: false
+    title: I acknowledge that Config Connector must be installed for Presslabs Dashboard to function properly
+    description: Presslabs Dashboard requires that Config Connector is installed in order to function properly.
+
+  gcpWorkloadIdentityEnabled:
+    type: boolean
+    default: false
+    title: I acknowledge that Workload Identity must be enabled for Presslabs Dashboard to function properly
+    description: Presslabs Dashboard requires Workload Identity to be enabled for nodes running it's workloads.
+
+  reportingSecret:
+    type: string
+    x-google-marketplace:
+      type: REPORTING_SECRET
+
+  #
+  # Container Images
+  #
 
   # cert-manager
   certManagerImage:
@@ -103,11 +131,13 @@ properties:
           splitByColon:
             before: certManagerImageRegistry
             after: certManagerImageTag
+
   certAcmeSolverImage:
     type: string
     default: $REGISTRY/cert-manager-acmesolver:$TAG
     x-google-marketplace:
       type: IMAGE
+
   certWebhookImage:
     type: string
     default: $REGISTRY/cert-manager-webhook:$TAG
@@ -118,6 +148,7 @@ properties:
           splitByColon:
             before: certWebhookImageRegistry
             after: certWebhookImageTag
+
   certCAinjectorImage:
     type: string
     default: $REGISTRY/cert-manager-cainjector:$TAG
@@ -140,6 +171,7 @@ properties:
           splitByColon:
             before: ingressImageRegistry
             after: ingressImageTag
+
   ingressDefaultBackendImage:
     type: string
     default: $REGISTRY/ingress-default-backend:$TAG
@@ -157,6 +189,7 @@ properties:
     default: $REGISTRY/mysql-operator:$TAG
     x-google-marketplace:
       type: IMAGE
+
   mysqlOrchestratorImage:
     type: string
     default: $REGISTRY/mysql-orchestrator:$TAG
@@ -179,22 +212,6 @@ properties:
     x-google-marketplace:
       type: IMAGE
 
-  # let's encrypt
-  letsEncryptEmail:
-    type: string
-    title: Let's Encrypt Email
-    description: Let's Encrypt will use this to contact you about expiring certificates, and issues related to your account.
-    default: 'ping@example.com'
-
-  letsEncryptServer:
-    type: string
-    title: Let's Encrypt Server
-    description: The Let's Encrypt API endpoint
-    default: 'https://acme-v02.api.letsencrypt.org/directory'
-    enum:
-      - 'https://acme-v02.api.letsencrypt.org/directory'
-      - 'https://acme-staging-v02.api.letsencrypt.org/directory'
-
   # miscellaneous
   kubectlImage:
     type: string
@@ -202,31 +219,12 @@ properties:
     x-google-marketplace:
       type: IMAGE
 
-  reportingSecret:
-    type: string
-    x-google-marketplace:
-      type: REPORTING_SECRET
-
-  prometheusOperatorEnabled:
-    type: boolean
-    default: false
-    title: Is Prometheus Operator Enabled in Cluster
-    description: To enable extra features of the Presslabs Dashboard it requires to have installed Prometheus Operator in cluster.
-
-  gcpConfigConnectorEnabled:
-    type: boolean
-    default: false
-    title: Is GCP Config Connector Enabled in Cluster
-    description: To run the Presslabs Dashboard it reuqres to have GCP Config Connect enabled into k8s cluster.
-
-
 required:
 - name
 - namespace
 - dashboardDomain
-- dashboardServiceAccountKey
 - dashboardOIDCClientID
 - dashboardOIDCSecret
 - dashboardOIDCIssuer
-- dashboardProjectID
 - gcpConfigConnectorEnabled
+- gcpWorkloadIdentityEnabled
