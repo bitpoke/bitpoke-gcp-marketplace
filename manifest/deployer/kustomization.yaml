@@ -1,6 +1,6 @@
 # resources that will be deployed by the deploy
 resources:
-  - ../charts/dashboard-gcm/charts/stack/templates/application.yaml
+  - application.yaml
 
   # dashboard
   - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-deployment.yaml
@@ -41,13 +41,13 @@ patchesJson6902:
     version: v1
     kind: Deployment
     name: ${name}-cert-manager-cainjector
-  path: service_account_patch.yaml
+  path: patches/service_account_patch.yaml
 - target:
     group: apps
     version: v1
     kind: Deployment
     name: ${name}-cert-manager-webhook
-  path: service_account_patch.yaml
+  path: patches/service_account_patch.yaml
 
 # nginx-ingress controller image tag patch
 - target:
@@ -55,18 +55,18 @@ patchesJson6902:
     version: v1beta1
     kind: Deployment
     name: ${name}-nginx-ingress-controller
-  path: ingress_image_tag.yaml
+  path: patches/ingress_image_tag.yaml
 
 # mysql-operator passwords
 - target:
     version: v1
     kind: Secret
     name: ${name}-mysql-operator-orc
-  path: mysql_secret.yaml
+  path: patches/mysql_secret.yaml
 
 # dashboard secrets to bypass base64 encode
 - target:
     version: v1
     kind: Secret
     name: ${name}-dashboard-oidc
-  path: dashboard_oidc_secret.yaml
+  path: patches/dashboard_oidc_secret.yaml

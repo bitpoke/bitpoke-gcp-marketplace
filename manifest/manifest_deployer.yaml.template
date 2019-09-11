@@ -862,7 +862,11 @@ spec:
   - group: extensions/v1beta1
     kind: Ingress
   descriptor:
-    description: Open-Source WordPress Infrastructure on Kubernetes
+    description: |
+      Presslabs is an infrastructure management software for WordPress sites, using Kubernetes. The
+      Dashboard is an elastic, scaling up and down resource usage on top of the open-source
+      Presslabs Stack for WordPress. The Dashboard integrates tools and workflows to streamline
+      development, staging and deployment at enterprise level.
     links:
     - description: Presslabs Stack
       url: https://presslabs.com/stack
@@ -871,21 +875,7 @@ spec:
     maintainers:
     - name: Presslabs
       url: https://presslabs.com/stack
-    notes: |-
-      In order to deploy a site, you just need to:
-
-      1. Deploy the site using helm
-          ```
-          helm install -n example presslabs/wordpress-site \
-              --set site.domains[0]=www.example.com
-          ```
-      2. Point `www.example.com` DNS to the `Ingress IP`. You can find the ingress ip
-         either in the Google Cloud Console under `Kubernetes Engine > Applications`
-         or by issuing:
-         ```
-          kubectl get ingress example \
-              -o jsonpath='{.status.loadBalancer.ingress[*].ip}{"\n"}'
-         ```
+    notes: Visit the dashboard.
     type: Presslabs Stack
     version: v0.5.1
   info:
@@ -894,28 +884,32 @@ spec:
     valueFrom:
       serviceRef:
         name: ${name}-nginx-ingress-controller
+  - name: Domain Name
+    valueFrom:
+      ingressRef:
+        name: ${name}-dashboard-apiserver
   - name: Ingress Let's Encrypt configured email
     value: $letsEncryptEmail
   - name: Ingress Let's Encrypt configured URL
     value: $letsEncryptServer
-  - name: Grafana Port Forward
-    value: kubectl port-forward --namespace ${namespace} svc/${name}-grafana 3000:80
-  - name: Grafana UI URL
-    value: http://localhost:3000
-  - name: Grafana Admin User
+  - name: Auth0 Connect ID
     type: Reference
     valueFrom:
       secretKeyRef:
-        key: admin-user
-        name: ${name}-grafana
-      type: SecretKeyRef
-  - name: Grafana Admin Password
+        key: CLIENT_ID
+        name: ${name}-dashboard-oidc
+  - name: Auth0 Connect Secret
     type: Reference
     valueFrom:
       secretKeyRef:
-        key: admin-password
-        name: ${name}-grafana
-      type: SecretKeyRef
+        key: CLIENT_SECRET
+        name: ${name}-dashboard-oidc
+  - name: Auth0 Connect Issuer
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: ISSUER
+        name: ${name}-dashboard-oidc
   selector:
     matchLabels:
       release: ${name}

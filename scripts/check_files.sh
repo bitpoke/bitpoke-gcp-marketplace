@@ -12,6 +12,7 @@ find $dir_path -name '*.yaml' |\
     grep -ve '/cert-manager/.*/serviceaccount.yaml' |\
     grep -v 'controller-clusterrole-kubebuilder.yaml' |\
     grep -v 'application-crd.yaml' |\
+    grep -v 'application.yaml' |\
     grep -v 'smtp-defaults.yaml' |\
     sed 's/.build\/manifest/../g' | sort > $chartFile
 
@@ -20,7 +21,7 @@ for kustomizationFile in $manifests; do
     yq r $kustomizationFile resources >> $filesinKustomizeFile.tmp
 done
 
-cat $filesinKustomizeFile.tmp | awk '{print $2}' | sort > $filesinKustomizeFile
+cat $filesinKustomizeFile.tmp | awk '{print $2}' | grep -v 'application.yaml' | sort > $filesinKustomizeFile
 rm $filesinKustomizeFile.tmp
 
 diff $chartFile $filesinKustomizeFile
