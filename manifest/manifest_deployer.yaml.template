@@ -516,8 +516,6 @@ spec:
         - --prometheus-operator-enabled=false
         - --site-certificate-issuer=${name}-default
         env:
-        - name: GOOGLE_APPLICATION_CREDENTIALS
-          value: /var/run/secrets/cloud.google.com/serviceaccount/google_application_credentials.json
         - name: AGENT_ENCODED_KEY
           valueFrom:
             secretKeyRef:
