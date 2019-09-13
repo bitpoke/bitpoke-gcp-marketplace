@@ -54,8 +54,7 @@ properties:
 
   dashboardOIDCClientID:
     type: string
-    title: Auth0 Connect ID
-    description: This is the Auth0 client ID
+    title: Auth0 Client ID
     x-google-marketplace:
       type: STRING
       string:
@@ -64,8 +63,7 @@ properties:
 
   dashboardOIDCSecret:
     type: string
-    title: Auth0 Connect Secret
-    description: The client secret needed to connect to Auth0
+    title: Auth0 Client Secret
     x-google-marketplace:
       type: STRING
       string:
@@ -74,8 +72,8 @@ properties:
 
   dashboardOIDCIssuer:
     type: string
-    title: Auth0 issuer URL
-    description: The URL where Auth0 can find the OpenID Provider Configuration Document.
+    title: Auth0 Issuer URL
+    description: The Auth0 domain, including the https:// prefix and trailing slash.
     default: "https://example.auth0.com/"
     x-google-marketplace:
       type: STRING
@@ -84,20 +82,20 @@ properties:
           base64Encoded: explicitPasswordEncoded
 
   # let's encrypt
+  letsEncryptEmail:
+    type: string
+    title: Let's Encrypt Account Email
+    description: Let's Encrypt will use this to contact you about expiring certificates and issues related to your account.
+    default: 'ping@example.com'
+
   letsEncryptServer:
     type: string
     title: Let's Encrypt Server
-    description: The Let's Encrypt API endpoint
+    description: Select between Let's Encrypt staging and live endpoints.
     default: 'https://acme-v02.api.letsencrypt.org/directory'
     enum:
       - 'https://acme-v02.api.letsencrypt.org/directory'
       - 'https://acme-staging-v02.api.letsencrypt.org/directory'
-
-  letsEncryptEmail:
-    type: string
-    title: Let's Encrypt Account Email
-    description: Let's Encrypt will use this to contact you about expiring certificates, and issues related to your account.
-    default: 'ping@example.com'
 
   gcpConfigConnectorEnabled:
     type: boolean
