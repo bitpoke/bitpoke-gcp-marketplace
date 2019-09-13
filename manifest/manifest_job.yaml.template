@@ -541,11 +541,6 @@ data:
         heritage: Tiller
         release: ${name}
       name: ${name}-default
-      ownerReferences:
-      - apiVersion: app.k8s.io/v1beta1
-        kind: Application
-        name: ${name}
-        uid: ${appUID}
     spec:
       acme:
         email: $letsEncryptEmail
@@ -627,11 +622,6 @@ data:
         dashboard.presslabs.com/version: 0.0.1
         helm.sh/chart: webhook-v0.9.1
       name: ${name}-cert-manager-webhook
-      ownerReferences:
-      - apiVersion: app.k8s.io/v1beta1
-        kind: Application
-        name: ${name}
-        uid: ${appUID}
     webhooks:
     - clientConfig:
         service:
@@ -727,11 +717,6 @@ data:
         heritage: Tiller
         release: ${name}
       name: ${name}-dashboard
-      ownerReferences:
-      - apiVersion: app.k8s.io/v1beta1
-        kind: Application
-        name: ${name}
-        uid: ${appUID}
     webhooks:
     - clientConfig:
         service:
@@ -798,7 +783,7 @@ data:
         - wordpresses
 kind: ConfigMap
 metadata:
-  name: ${name}-dash-globals-manifests-ctkc847dfk
+  name: ${name}-dash-globals-manifests-h2gkff447d
 ---
 apiVersion: batch/v1
 kind: Job
@@ -829,7 +814,7 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-ctkc847dfk
+          name: ${name}-dash-globals-manifests-h2gkff447d
         name: globals-manifests
       - configMap:
           name: ${name}-dash-crds-manifests-4gg4dhgm2h

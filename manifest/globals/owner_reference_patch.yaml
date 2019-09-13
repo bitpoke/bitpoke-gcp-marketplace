@@ -1,7 +1,0 @@
-- op: add
-  path: /metadata/ownerReferences
-  value:
-    - apiVersion: app.k8s.io/v1beta1
-      kind: Application
-      name: "${name}"
-      uid: "${appUID}"

@@ -19,29 +19,3 @@ resources:
 
 commonLabels:
   "dashboard.presslabs.com/version": "0.0.1"
-
-
-patchesJson6902:
-# cert-manager set owner reference
-- target:
-    group: admissionregistration.k8s.io
-    version: v1beta1
-    kind: ValidatingWebhookConfiguration
-    name: ${name}-cert-manager-webhook
-  path: owner_reference_patch.yaml
-
-# dashboard
-- target:
-    group: admissionregistration.k8s.io
-    version: v1beta1
-    kind: ValidatingWebhookConfiguration
-    name: ${name}-dashboard
-  path: owner_reference_patch.yaml
-
-# stack
-- target:
-    group: certmanager.k8s.io
-    version: v1alpha1
-    kind: ClusterIssuer
-    name: ${name}-default
-  path: owner_reference_patch.yaml
