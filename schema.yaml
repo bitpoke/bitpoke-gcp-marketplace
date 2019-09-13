@@ -23,13 +23,6 @@ properties:
           rulesType: PREDEFINED
           rulesFromRoleName: cluster-admin
 
-  appUID:
-    type: string
-    title: Application UID
-    description: The UUID of the Presslabs Dashboard application. Not required, so if not entered an UUID will be generated anyway.
-    x-google-marketplace:
-      type: APPLICATION_UID
-
   # dashboard
   dashboardDomain:
     type: string
