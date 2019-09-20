@@ -119,7 +119,7 @@ dashboard:
     ingress:
       enabled: true
       annotations:
-        kubernetes.io/ingress.class: nginx
+        kubernetes.io/ingress.class: presslabs-stack
         certmanager.k8s.io/cluster-issuer: ${name}-default
         certmanager.k8s.io/acme-challenge-type: http01
       hosts:
