@@ -52,7 +52,7 @@ properties:
       type: STRING
       string:
         generatedProperties:
-          base64Encoded: explicitPasswordEncoded
+          base64Encoded: dashboardOIDCClientIDEncoded
 
   dashboardOIDCSecret:
     type: string
@@ -61,7 +61,7 @@ properties:
       type: STRING
       string:
         generatedProperties:
-          base64Encoded: explicitPasswordEncoded
+          base64Encoded: dashboardOIDCSecretEncoded
 
   dashboardOIDCIssuer:
     type: string
@@ -72,7 +72,7 @@ properties:
       type: STRING
       string:
         generatedProperties:
-          base64Encoded: explicitPasswordEncoded
+          base64Encoded: dashboardOIDCIssuerEncoded
 
   # let's encrypt
   letsEncryptEmail:

@@ -80,9 +80,9 @@ metadata:
 ---
 apiVersion: v1
 data:
-  CLIENT_ID: $dashboardOIDCClientID
-  CLIENT_SECRET: $dashboardOIDCSecret
-  ISSUER: $dashboardOIDCIssuer
+  CLIENT_ID: $dashboardOIDCClientIDEncoded
+  CLIENT_SECRET: $dashboardOIDCSecretEncoded
+  ISSUER: $dashboardOIDCIssuerEncoded
 kind: Secret
 metadata:
   labels:
