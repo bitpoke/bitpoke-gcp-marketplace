@@ -4,6 +4,6 @@ dependencies:
   version: 0.1.0+master
 - name: stack
   repository: https://presslabs.github.io/charts/
-  version: v0.5.1
-digest: sha256:e4a7b59322af42d4c34506d4b2dca6336412f5161cf776a9640ec07d994a5cc7
-generated: 2019-09-10T17:43:19.117089486+03:00
+  version: v0.6.0
+digest: sha256:d0f5df040c73372dacadaad44e4b55c1311e663c9c57144c6bb0212bf1768988
+generated: 2019-10-07T18:24:58.23798044+03:00

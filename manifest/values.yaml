@@ -48,6 +48,8 @@ stack:
         # pin version here because it uses comparSemver in chart, patch it later with kustomize
         tag: v0.24.1
     defaultBackend:
+      serviceAccount:
+        create: false
       image:
         repository: $ingressDefaultBackendImageRegistry
         tag: $ingressDefaultBackendImageTag

@@ -12,10 +12,11 @@ resources:
   - ../charts/dashboard-gcm/charts/dashboard/templates/webhook-service.yaml
 
   # cert-manager objects
-  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/webhook/templates/service.yaml
-  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/webhook/templates/deployment.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/templates/webhook-service.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/templates/webhook-deployment.yaml
   - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/cainjector/templates/deployment.yaml
   - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/templates/deployment.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/templates/service.yaml
 
   # nginx-ingress controller
   - ../charts/dashboard-gcm/charts/stack/charts/nginx-ingress/templates/controller-deployment.yaml
@@ -51,8 +52,8 @@ patchesJson6902:
 
 # nginx-ingress controller image tag patch
 - target:
-    group: extensions
-    version: v1beta1
+    group: apps
+    version: v1
     kind: Deployment
     name: ${name}-nginx-ingress-controller
   path: patches/ingress_image_tag.yaml

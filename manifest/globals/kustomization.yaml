@@ -12,9 +12,9 @@ resources:
   - ../charts/dashboard-gcm/charts/stack/templates/acme-issuer.yaml
 
   # cert manager
-  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/webhook/templates/apiservice.yaml
-  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/webhook/templates/validating-webhook.yaml
-  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/charts/webhook/templates/pki.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/templates/webhook-apiservice.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/templates/webhook-validating-webhook.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/templates/webhook-mutating-webhook.yaml
 
 
 commonLabels:

@@ -60,7 +60,7 @@ kind: ConfigMap
 metadata:
   labels:
     app: mysql-operator
-    chart: mysql-operator-0.3.2
+    chart: mysql-operator-0.3.3
     heritage: Tiller
     release: ${name}
   name: ${name}-mysql-operator-orc
@@ -72,7 +72,7 @@ kind: ConfigMap
 metadata:
   labels:
     app: nginx-ingress
-    chart: nginx-ingress-1.15.1
+    chart: nginx-ingress-1.24.0
     component: controller
     heritage: Tiller
     release: ${name}
@@ -114,10 +114,31 @@ kind: Secret
 metadata:
   labels:
     app: mysql-operator
-    chart: mysql-operator-0.3.2
+    chart: mysql-operator-0.3.3
     heritage: Tiller
     release: ${name}
   name: ${name}-mysql-operator-orc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: cert-manager
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/managed-by: Tiller
+    app.kubernetes.io/name: cert-manager
+    helm.sh/chart: cert-manager-v0.10.1
+  name: ${name}-cert-manager
+  namespace: ${namespace}
+spec:
+  ports:
+  - port: 9402
+    protocol: TCP
+    targetPort: 9402
+  selector:
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: cert-manager
+  type: ClusterIP
 ---
 apiVersion: v1
 kind: Service
@@ -127,7 +148,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: webhook
-    helm.sh/chart: webhook-v0.9.1
+    helm.sh/chart: cert-manager-v0.10.1
   name: ${name}-cert-manager-webhook
   namespace: ${namespace}
 spec:
@@ -193,7 +214,7 @@ kind: Service
 metadata:
   labels:
     app: mysql-operator
-    chart: mysql-operator-0.3.2
+    chart: mysql-operator-0.3.3
     heritage: Tiller
     release: ${name}
   name: ${name}-mysql-operator
@@ -214,7 +235,7 @@ metadata:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
   labels:
     app: ${name}-mysql-operator
-    chart: mysql-operator-0.3.2
+    chart: mysql-operator-0.3.3
     heritage: Tiller
     release: ${name}
   name: ${name}-mysql-operator-0-svc
@@ -235,7 +256,7 @@ kind: Service
 metadata:
   labels:
     app: nginx-ingress
-    chart: nginx-ingress-1.15.1
+    chart: nginx-ingress-1.24.0
     component: controller
     heritage: Tiller
     release: ${name}
@@ -263,7 +284,7 @@ kind: Service
 metadata:
   labels:
     app: nginx-ingress
-    chart: nginx-ingress-1.15.1
+    chart: nginx-ingress-1.24.0
     component: default-backend
     heritage: Tiller
     release: ${name}
@@ -289,7 +310,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: cert-manager
-    helm.sh/chart: cert-manager-v0.9.1
+    helm.sh/chart: cert-manager-v0.10.1
   name: ${name}-cert-manager
   namespace: ${namespace}
 spec:
@@ -311,7 +332,7 @@ spec:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/managed-by: Tiller
         app.kubernetes.io/name: cert-manager
-        helm.sh/chart: cert-manager-v0.9.1
+        helm.sh/chart: cert-manager-v0.10.1
     spec:
       containers:
       - args:
@@ -319,6 +340,10 @@ spec:
         - --cluster-resource-namespace=$(POD_NAMESPACE)
         - --leader-election-namespace=$(POD_NAMESPACE)
         - --acme-http01-solver-image=$certAcmeSolverImage
+        - --webhook-namespace=$(POD_NAMESPACE)
+        - --webhook-ca-secret=${name}-cert-manager-webhook-ca
+        - --webhook-serving-secret=${name}-cert-manager-webhook-tls
+        - --webhook-dns-names=${name}-cert-manager-webhook,${name}-cert-manager-webhook.${namespace},${name}-cert-manager-webhook.${namespace}.svc
         env:
         - name: POD_NAMESPACE
           valueFrom:
@@ -340,7 +365,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: cainjector
-    helm.sh/chart: cainjector-v0.9.1
+    helm.sh/chart: cainjector-v0.10.1
   name: ${name}-cert-manager-cainjector
   namespace: ${namespace}
 spec:
@@ -359,7 +384,7 @@ spec:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/managed-by: Tiller
         app.kubernetes.io/name: cainjector
-        helm.sh/chart: cainjector-v0.9.1
+        helm.sh/chart: cainjector-v0.10.1
     spec:
       containers:
       - args:
@@ -384,7 +409,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: webhook
-    helm.sh/chart: webhook-v0.9.1
+    helm.sh/chart: cert-manager-v0.10.1
   name: ${name}-cert-manager-webhook
   namespace: ${namespace}
 spec:
@@ -403,7 +428,7 @@ spec:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/managed-by: Tiller
         app.kubernetes.io/name: webhook
-        helm.sh/chart: webhook-v0.9.1
+        helm.sh/chart: cert-manager-v0.10.1
     spec:
       containers:
       - args:
@@ -418,7 +443,7 @@ spec:
               fieldPath: metadata.namespace
         image: $certWebhookImageRegistry:$certWebhookImageTag
         imagePullPolicy: IfNotPresent
-        name: webhook
+        name: cert-manager
         resources: {}
         volumeMounts:
         - mountPath: /certs
@@ -427,7 +452,7 @@ spec:
       volumes:
       - name: certs
         secret:
-          secretName: ${name}-cert-manager-webhook-webhook-tls
+          secretName: ${name}-cert-manager-webhook-tls
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -548,42 +573,12 @@ spec:
             path: key.pem
           secretName: ${name}-dashboard-webhook
 ---
-apiVersion: apps/v1beta2
-kind: Deployment
-metadata:
-  labels:
-    app: wordpress-operator
-    chart: wordpress-operator-v0.5.1
-    heritage: Tiller
-    release: ${name}
-  name: ${name}-wordpress-operator
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: wordpress-operator
-      release: ${name}
-  template:
-    metadata:
-      labels:
-        app: wordpress-operator
-        release: ${name}
-    spec:
-      containers:
-      - args:
-        - --ingress-class=presslabs-stack
-        image: $wordpressOperatorImage
-        imagePullPolicy: IfNotPresent
-        name: wordpress-operator
-        resources: {}
-      serviceAccount: $serviceAccount
----
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app: nginx-ingress
-    chart: nginx-ingress-1.15.1
+    chart: nginx-ingress-1.24.0
     component: controller
     heritage: Tiller
     release: ${name}
@@ -592,6 +587,10 @@ spec:
   minReadySeconds: 0
   replicas: 1
   revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: nginx-ingress
+      release: ${name}
   strategy: {}
   template:
     metadata:
@@ -661,12 +660,12 @@ spec:
       serviceAccountName: $serviceAccount
       terminationGracePeriodSeconds: 60
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app: nginx-ingress
-    chart: nginx-ingress-1.15.1
+    chart: nginx-ingress-1.24.0
     component: default-backend
     heritage: Tiller
     release: ${name}
@@ -674,6 +673,10 @@ metadata:
 spec:
   replicas: 1
   revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: nginx-ingress
+      release: ${name}
   template:
     metadata:
       labels:
@@ -713,14 +716,45 @@ spec:
         resources: {}
         securityContext:
           runAsUser: 65534
+      serviceAccountName: default-backend
       terminationGracePeriodSeconds: 60
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  labels:
+    app: wordpress-operator
+    chart: wordpress-operator-v0.6.0
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-wordpress-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordpress-operator
+      release: ${name}
+  template:
+    metadata:
+      labels:
+        app: wordpress-operator
+        release: ${name}
+    spec:
+      containers:
+      - args:
+        - --ingress-class=presslabs-stack
+        image: $wordpressOperatorImage
+        imagePullPolicy: IfNotPresent
+        name: wordpress-operator
+        resources: {}
+      serviceAccount: $serviceAccount
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
     app: mysql-operator
-    chart: mysql-operator-0.3.2
+    chart: mysql-operator-0.3.3
     heritage: Tiller
     release: ${name}
   name: ${name}-mysql-operator
@@ -735,8 +769,8 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 4265093ce94072ce6236e6c15521e9390f70c360c750fb4b2200c622debfc920
-        checksum/secret: b5c1dd0b9d552c5e50c30ec27f4ff4a4d74d058d20f4fbfdbec7d94aeb419fff
+        checksum/config: 01834de5587dc78ce5390278247c40515283abfdbd8e97b70ced7d03a5e62adb
+        checksum/secret: ada260f8155fffd821f4ec0dd484fa3c0c516d96ff6de7c7701abd877b8473e7
       labels:
         app: mysql-operator
         release: ${name}
@@ -746,7 +780,7 @@ spec:
       - args:
         - --leader-election-namespace=${namespace}
         - --orchestrator-uri=http://127.0.0.1:3000/api
-        - --sidecar-image=quay.io/presslabs/mysql-operator-sidecar:0.3.2
+        - --sidecar-image=quay.io/presslabs/mysql-operator-sidecar:0.3.3
         - --leader-election-id=mysql-operator-leader-election
         env:
         - name: ORC_TOPOLOGY_USER

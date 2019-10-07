@@ -9,7 +9,7 @@ filesinKustomizeFile=.build/files_from_kustomize.txt
 
 find $dir_path -name '*.yaml' |\
     grep -v '/prometheus-operator/' |\
-    grep -ve '/cert-manager/.*/serviceaccount.yaml' |\
+    grep -ve '/cert-manager/.*/.*serviceaccount.yaml' |\
     grep -v 'controller-clusterrole-kubebuilder.yaml' |\
     grep -v 'application-crd.yaml' |\
     grep -v 'application.yaml' |\
