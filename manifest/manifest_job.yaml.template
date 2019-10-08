@@ -599,6 +599,26 @@ data:
     spec:
       selfSigned: {}
     ---
+    apiVersion: scheduling.k8s.io/v1beta1
+    description: This priority class is used for Presslabs Dashboard MySQL Cluster pods.
+    globalDefault: false
+    kind: PriorityClass
+    metadata:
+      labels:
+        dashboard.presslabs.com/version: 0.0.1
+      name: presslabs-dashboard-database
+    value: 50000
+    ---
+    apiVersion: scheduling.k8s.io/v1beta1
+    description: This priority class is used for Presslabs Dashboard Memcached pods.
+    globalDefault: false
+    kind: PriorityClass
+    metadata:
+      labels:
+        dashboard.presslabs.com/version: 0.0.1
+      name: presslabs-dashboard-memcached
+    value: 10000
+    ---
     apiVersion: admissionregistration.k8s.io/v1beta1
     kind: ValidatingWebhookConfiguration
     metadata:
@@ -723,7 +743,7 @@ data:
         - wordpresses
 kind: ConfigMap
 metadata:
-  name: ${name}-dash-globals-manifests-t6hdkfcgh8
+  name: ${name}-dash-globals-manifests-6g99thktbm
 ---
 apiVersion: batch/v1
 kind: Job
@@ -754,7 +774,7 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-t6hdkfcgh8
+          name: ${name}-dash-globals-manifests-6g99thktbm
         name: globals-manifests
       - configMap:
           name: ${name}-dash-crds-manifests-9hgc22mfth
