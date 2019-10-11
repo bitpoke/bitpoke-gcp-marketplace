@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: "${name}-dash-install-manifest"
+  name: "${name}-dash-install-manifests"
 spec:
   template:
     spec:
@@ -15,8 +15,14 @@ spec:
           - |
             # first install CRDs
             cat /data/crds/manifest_crds.yaml.gz.b64enc | base64 -d | gzip -dc | kubectl apply -f- ;
+
+
+            # patch with application UID and create resources
             # don't validate due to: https://github.com/jetstack/cert-manager/issues/1143
-            kubectl apply --validate=false -f /data/globals/manifest_globals.yaml ;
+            APP_UID=$(kubectl get applications.app.k8s.io ${name} -o jsonpath --template '{.metadata.uid}') ;
+            echo "\n++ Patching resources with owner reference: $name ($APP_UID)" ;
+            cat /data/globals/manifest_globals.yaml | env -i "APPLICATION_UID=$APP_UID" envsubst | kubectl apply -f- --validate=false ;
+
         volumeMounts:
         - name: globals-manifests
           mountPath: /data/globals/

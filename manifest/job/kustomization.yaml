@@ -12,3 +12,9 @@ configMapGenerator:
   behavior: create
   files:
     - ../manifest_crds.yaml.gz.b64enc
+
+
+commonLabels:
+  app.kubernetes.io/name: presslabs-dashboard
+  app.kubernetes.io/instance: ${name}
+  app.kubernetes.io/version: "0.0.1"

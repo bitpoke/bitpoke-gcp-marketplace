@@ -206,7 +206,7 @@ properties:
   # miscellaneous
   kubectlImage:
     type: string
-    default: $REGISTRY/kubectl:$TAG
+    default: $REGISTRY/k8s-deploy-tools:$TAG
     x-google-marketplace:
       type: IMAGE
 

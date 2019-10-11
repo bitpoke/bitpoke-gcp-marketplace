@@ -50,6 +50,7 @@ stack:
     defaultBackend:
       serviceAccount:
         create: false
+        name: $serviceAccount
       image:
         repository: $ingressDefaultBackendImageRegistry
         tag: $ingressDefaultBackendImageTag

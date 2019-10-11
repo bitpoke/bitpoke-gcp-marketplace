@@ -60,6 +60,9 @@ kind: ConfigMap
 metadata:
   labels:
     app: mysql-operator
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: mysql-operator-0.3.3
     heritage: Tiller
     release: ${name}
@@ -72,6 +75,9 @@ kind: ConfigMap
 metadata:
   labels:
     app: nginx-ingress
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: nginx-ingress-1.24.0
     component: controller
     heritage: Tiller
@@ -87,6 +93,9 @@ kind: Secret
 metadata:
   labels:
     app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: dashboard-0.1.0_master
     heritage: Tiller
     release: ${name}
@@ -100,6 +109,9 @@ kind: Secret
 metadata:
   labels:
     app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: dashboard-0.1.0_master
     heritage: Tiller
     release: ${name}
@@ -114,6 +126,9 @@ kind: Secret
 metadata:
   labels:
     app: mysql-operator
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: mysql-operator-0.3.3
     heritage: Tiller
     release: ${name}
@@ -126,7 +141,8 @@ metadata:
     app: cert-manager
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/managed-by: Tiller
-    app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     helm.sh/chart: cert-manager-v0.10.1
   name: ${name}-cert-manager
   namespace: ${namespace}
@@ -137,7 +153,8 @@ spec:
     targetPort: 9402
   selector:
     app.kubernetes.io/instance: ${name}
-    app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
   type: ClusterIP
 ---
 apiVersion: v1
@@ -147,7 +164,8 @@ metadata:
     app: webhook
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/managed-by: Tiller
-    app.kubernetes.io/name: webhook
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     helm.sh/chart: cert-manager-v0.10.1
   name: ${name}-cert-manager-webhook
   namespace: ${namespace}
@@ -160,7 +178,8 @@ spec:
     app: webhook
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/managed-by: Tiller
-    app.kubernetes.io/name: webhook
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
   type: ClusterIP
 ---
 apiVersion: v1
@@ -168,6 +187,9 @@ kind: Service
 metadata:
   labels:
     app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: dashboard-0.1.0_master
     heritage: Tiller
     release: ${name}
@@ -184,6 +206,9 @@ spec:
     targetPort: grpc
   selector:
     app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     component: apiserver
     release: ${name}
   type: ClusterIP
@@ -193,6 +218,9 @@ kind: Service
 metadata:
   labels:
     app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: dashboard-0.1.0_master
     heritage: Tiller
     release: ${name}
@@ -205,6 +233,9 @@ spec:
     targetPort: 4433
   selector:
     app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     component: controller
     release: ${name}
   type: ClusterIP
@@ -214,6 +245,9 @@ kind: Service
 metadata:
   labels:
     app: mysql-operator
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: mysql-operator-0.3.3
     heritage: Tiller
     release: ${name}
@@ -226,6 +260,9 @@ spec:
     targetPort: 3000
   selector:
     app: mysql-operator
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
   type: ClusterIP
 ---
 apiVersion: v1
@@ -235,6 +272,9 @@ metadata:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
   labels:
     app: ${name}-mysql-operator
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: mysql-operator-0.3.3
     heritage: Tiller
     release: ${name}
@@ -248,6 +288,9 @@ spec:
     port: 10008
     targetPort: 10008
   selector:
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     statefulset.kubernetes.io/pod-name: ${name}-mysql-operator-0
   type: ClusterIP
 ---
@@ -256,6 +299,9 @@ kind: Service
 metadata:
   labels:
     app: nginx-ingress
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: nginx-ingress-1.24.0
     component: controller
     heritage: Tiller
@@ -275,6 +321,9 @@ spec:
     targetPort: https
   selector:
     app: nginx-ingress
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     component: controller
     release: ${name}
   type: LoadBalancer
@@ -284,6 +333,9 @@ kind: Service
 metadata:
   labels:
     app: nginx-ingress
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: nginx-ingress-1.24.0
     component: default-backend
     heritage: Tiller
@@ -298,6 +350,9 @@ spec:
     targetPort: http
   selector:
     app: nginx-ingress
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     component: default-backend
     release: ${name}
   type: ClusterIP
@@ -309,7 +364,8 @@ metadata:
     app: cert-manager
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/managed-by: Tiller
-    app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     helm.sh/chart: cert-manager-v0.10.1
   name: ${name}-cert-manager
   namespace: ${namespace}
@@ -320,7 +376,8 @@ spec:
       app: cert-manager
       app.kubernetes.io/instance: ${name}
       app.kubernetes.io/managed-by: Tiller
-      app.kubernetes.io/name: cert-manager
+      app.kubernetes.io/name: presslabs-dashboard
+      app.kubernetes.io/version: 0.0.1
   template:
     metadata:
       annotations:
@@ -331,7 +388,8 @@ spec:
         app: cert-manager
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/managed-by: Tiller
-        app.kubernetes.io/name: cert-manager
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
         helm.sh/chart: cert-manager-v0.10.1
     spec:
       containers:
@@ -364,7 +422,8 @@ metadata:
     app: cainjector
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/managed-by: Tiller
-    app.kubernetes.io/name: cainjector
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     helm.sh/chart: cainjector-v0.10.1
   name: ${name}-cert-manager-cainjector
   namespace: ${namespace}
@@ -375,7 +434,8 @@ spec:
       app: cainjector
       app.kubernetes.io/instance: ${name}
       app.kubernetes.io/managed-by: Tiller
-      app.kubernetes.io/name: cainjector
+      app.kubernetes.io/name: presslabs-dashboard
+      app.kubernetes.io/version: 0.0.1
   template:
     metadata:
       annotations: null
@@ -383,7 +443,8 @@ spec:
         app: cainjector
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/managed-by: Tiller
-        app.kubernetes.io/name: cainjector
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
         helm.sh/chart: cainjector-v0.10.1
     spec:
       containers:
@@ -408,7 +469,8 @@ metadata:
     app: webhook
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/managed-by: Tiller
-    app.kubernetes.io/name: webhook
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     helm.sh/chart: cert-manager-v0.10.1
   name: ${name}-cert-manager-webhook
   namespace: ${namespace}
@@ -419,7 +481,8 @@ spec:
       app: webhook
       app.kubernetes.io/instance: ${name}
       app.kubernetes.io/managed-by: Tiller
-      app.kubernetes.io/name: webhook
+      app.kubernetes.io/name: presslabs-dashboard
+      app.kubernetes.io/version: 0.0.1
   template:
     metadata:
       annotations: null
@@ -427,7 +490,8 @@ spec:
         app: webhook
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/managed-by: Tiller
-        app.kubernetes.io/name: webhook
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
         helm.sh/chart: cert-manager-v0.10.1
     spec:
       containers:
@@ -459,6 +523,9 @@ kind: Deployment
 metadata:
   labels:
     app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: dashboard-0.1.0_master
     component: apiserver
     heritage: Tiller
@@ -469,6 +536,9 @@ spec:
   selector:
     matchLabels:
       app: dashboard
+      app.kubernetes.io/instance: ${name}
+      app.kubernetes.io/name: presslabs-dashboard
+      app.kubernetes.io/version: 0.0.1
       component: apiserver
       release: ${name}
   template:
@@ -477,6 +547,9 @@ spec:
         checksum/oidc-config: be5488c7d968d695b9525e59e3490e60cf672c6a58d9a4f0aac897df19445f30
       labels:
         app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
         component: apiserver
         release: ${name}
     spec:
@@ -511,6 +584,9 @@ kind: Deployment
 metadata:
   labels:
     app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: dashboard-0.1.0_master
     component: controller
     heritage: Tiller
@@ -521,14 +597,20 @@ spec:
   selector:
     matchLabels:
       app: dashboard
+      app.kubernetes.io/instance: ${name}
+      app.kubernetes.io/name: presslabs-dashboard
+      app.kubernetes.io/version: 0.0.1
       component: controller
       release: ${name}
   template:
     metadata:
       annotations:
-        checksum/config: 2cf039100268addb524a3a29d7b9afe11db26d87417a22d10788a32c467d93d8
+        checksum/config: 4c906345789bc22c3cdbb7299a1fd544b58fd3d6f29150f61e21d614ec799918
       labels:
         app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
         component: controller
         release: ${name}
     spec:
@@ -578,6 +660,9 @@ kind: Deployment
 metadata:
   labels:
     app: nginx-ingress
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: nginx-ingress-1.24.0
     component: controller
     heritage: Tiller
@@ -590,12 +675,18 @@ spec:
   selector:
     matchLabels:
       app: nginx-ingress
+      app.kubernetes.io/instance: ${name}
+      app.kubernetes.io/name: presslabs-dashboard
+      app.kubernetes.io/version: 0.0.1
       release: ${name}
   strategy: {}
   template:
     metadata:
       labels:
         app: nginx-ingress
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
         component: controller
         release: ${name}
     spec:
@@ -665,6 +756,9 @@ kind: Deployment
 metadata:
   labels:
     app: nginx-ingress
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: nginx-ingress-1.24.0
     component: default-backend
     heritage: Tiller
@@ -676,11 +770,17 @@ spec:
   selector:
     matchLabels:
       app: nginx-ingress
+      app.kubernetes.io/instance: ${name}
+      app.kubernetes.io/name: presslabs-dashboard
+      app.kubernetes.io/version: 0.0.1
       release: ${name}
   template:
     metadata:
       labels:
         app: nginx-ingress
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
         component: default-backend
         release: ${name}
     spec:
@@ -716,7 +816,7 @@ spec:
         resources: {}
         securityContext:
           runAsUser: 65534
-      serviceAccountName: default-backend
+      serviceAccountName: $serviceAccount
       terminationGracePeriodSeconds: 60
 ---
 apiVersion: apps/v1beta2
@@ -724,6 +824,9 @@ kind: Deployment
 metadata:
   labels:
     app: wordpress-operator
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: wordpress-operator-v0.6.0
     heritage: Tiller
     release: ${name}
@@ -733,11 +836,17 @@ spec:
   selector:
     matchLabels:
       app: wordpress-operator
+      app.kubernetes.io/instance: ${name}
+      app.kubernetes.io/name: presslabs-dashboard
+      app.kubernetes.io/version: 0.0.1
       release: ${name}
   template:
     metadata:
       labels:
         app: wordpress-operator
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
         release: ${name}
     spec:
       containers:
@@ -754,6 +863,9 @@ kind: StatefulSet
 metadata:
   labels:
     app: mysql-operator
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: mysql-operator-0.3.3
     heritage: Tiller
     release: ${name}
@@ -764,6 +876,9 @@ spec:
   selector:
     matchLabels:
       app: mysql-operator
+      app.kubernetes.io/instance: ${name}
+      app.kubernetes.io/name: presslabs-dashboard
+      app.kubernetes.io/version: 0.0.1
       release: ${name}
   serviceName: ${name}-mysql-operator-orc
   template:
@@ -773,6 +888,9 @@ spec:
         checksum/secret: ada260f8155fffd821f4ec0dd484fa3c0c516d96ff6de7c7701abd877b8473e7
       labels:
         app: mysql-operator
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
         release: ${name}
     spec:
       affinity: null
@@ -842,6 +960,10 @@ spec:
         name: config
   volumeClaimTemplates:
   - metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
       name: data
     spec:
       accessModes:
@@ -854,7 +976,11 @@ apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   annotations:
-    kubernetes-engine.cloud.google.com/icon: data:image/png;base64,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
+    kubernetes-engine.cloud.google.com/icon: data:image/png;base64,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
+  labels:
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
   name: ${name}
 spec:
   componentKinds:
@@ -941,7 +1067,8 @@ spec:
         name: ${name}-dashboard-oidc
   selector:
     matchLabels:
-      release: ${name}
+      app.kubernetes.io/instance: ${name}
+      app.kubernetes.io/name: presslabs-dashboard
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -952,6 +1079,9 @@ metadata:
     kubernetes.io/ingress.class: presslabs-stack
   labels:
     app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     chart: dashboard-0.1.0_master
     heritage: Tiller
     release: ${name}

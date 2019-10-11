@@ -14,4 +14,6 @@ resources:
 
 
 commonLabels:
-  "dashboard.presslabs.com/version": "0.0.1"
+  app.kubernetes.io/name: presslabs-dashboard
+  app.kubernetes.io/instance: ${name}
+  app.kubernetes.io/version: "0.0.1"

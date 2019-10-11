@@ -18,5 +18,94 @@ resources:
   - ../charts/dashboard-gcm/charts/stack/charts/cert-manager/templates/webhook-mutating-webhook.yaml
 
 
+patchesJson6902:
+# cert-manager set owner reference
+- target:
+    group: admissionregistration.k8s.io
+    version: v1beta1
+    kind: ValidatingWebhookConfiguration
+    name: ${name}-cert-manager-webhook
+  path: owner_reference_patch.yaml
+- target:
+    group: admissionregistration.k8s.io
+    version: v1beta1
+    kind: MutatingWebhookConfiguration
+    name: ${name}-cert-manager-webhook
+  path: owner_reference_patch.yaml
+- target:
+    group: apiregistration.k8s.io
+    version: v1beta1
+    kind: APIService
+    name: v1beta1.webhook.certmanager.k8s.io
+  path: owner_reference_patch.yaml
+
+# dashboard
+- target:
+    group: admissionregistration.k8s.io
+    version: v1beta1
+    kind: ValidatingWebhookConfiguration
+    name: ${name}-dashboard
+  path: owner_reference_patch.yaml
+
+- target:
+    group: scheduling.k8s.io
+    version: v1beta1
+    kind: PriorityClass
+    name: presslabs-dashboard-memcached
+  path: owner_reference_patch.yaml
+
+- target:
+    group: scheduling.k8s.io
+    version: v1beta1
+    kind: PriorityClass
+    name: presslabs-dashboard-database
+  path: owner_reference_patch.yaml
+
+# stack
+- target:
+    group: certmanager.k8s.io
+    version: v1alpha1
+    kind: ClusterIssuer
+    name: ${name}-default
+  path: owner_reference_patch.yaml
+
+# certificates
+- target:
+    group: certmanager.k8s.io
+    version: v1alpha1
+    kind: Certificate
+    name: ${name}-ingress-default
+  path: owner_reference_patch.yaml
+- target:
+    group: certmanager.k8s.io
+    version: v1alpha1
+    kind: Certificate
+    name: ${name}-dashboard-webhook
+  path: owner_reference_patch.yaml
+
+- target:
+    group: certmanager.k8s.io
+    version: v1alpha1
+    kind: Issuer
+    name: ${name}-dashboard-webhook-ca
+  path: owner_reference_patch.yaml
+
+- target:
+    group: certmanager.k8s.io
+    version: v1alpha1
+    kind: Certificate
+    name: ${name}-dashboard-webhook-ca
+  path: owner_reference_patch.yaml
+
+- target:
+    group: certmanager.k8s.io
+    version: v1alpha1
+    kind: Issuer
+    name: ${name}-dashboard-webhook-ca-issuer
+  path: owner_reference_patch.yaml
+
+
 commonLabels:
-  "dashboard.presslabs.com/version": "0.0.1"
+  app.kubernetes.io/name: presslabs-dashboard
+  app.kubernetes.io/instance: ${name}
+  app.kubernetes.io/version: "0.0.1"

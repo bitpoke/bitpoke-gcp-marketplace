@@ -97,8 +97,8 @@ endef
 	       gcr.io/press-labs-public/dashboard:$(DASHBOARD_TAG),\
 	       $(REGISTRY)/dashboard:$(TAG))
 	$(call republish,\
-	       bitnami/kubectl:latest,\
-	       $(REGISTRY)/dashboard/kubectl:$(TAG))
+				 spaceonfire/k8s-deploy-tools,\
+	       $(REGISTRY)/dashboard/k8s-deploy-tools:$(TAG))
 	@touch "$@"
 
 # cert-manager images
@@ -184,7 +184,7 @@ endef
                                        | .build/manifest
 
 	kustomize build .build/manifest/globals -o "$@" \
-		--load_restrictor none
+		--load_restrictor none --reorder none
 
 
 .build/manifest/manifest_crds.yaml.gz.b64enc: manifest/*.yaml \

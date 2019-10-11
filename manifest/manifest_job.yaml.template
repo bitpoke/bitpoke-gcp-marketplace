@@ -2,283 +2,235 @@ apiVersion: v1
 kind: Namespace
 metadata:
   labels:
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
     certmanager.k8s.io/disable-validation: "true"
   name: ${namespace}
 ---
 apiVersion: v1
 data:
   manifest_crds.yaml.gz.b64enc: |
-    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
+    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
+    EnTAqVMzzXfuhexjjvaeXvz/aX/8+rRzAQA=
 kind: ConfigMap
 metadata:
-  name: ${name}-dash-crds-manifests-9hgc22mfth
+  labels:
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
+  name: ${name}-dash-crds-manifests-65d4668hfc
 ---
 apiVersion: v1
 data:
   manifest_globals.yaml: |
-    apiVersion: admissionregistration.k8s.io/v1beta1
-    kind: MutatingWebhookConfiguration
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
     metadata:
-      annotations:
-        certmanager.k8s.io/inject-apiserver-ca: "true"
       labels:
-        app: webhook
         app.kubernetes.io/instance: ${name}
-        app.kubernetes.io/managed-by: Tiller
-        app.kubernetes.io/name: webhook
-        dashboard.presslabs.com/version: 0.0.1
-        helm.sh/chart: cert-manager-v0.10.1
-      name: ${name}-cert-manager-webhook
-    webhooks:
-    - clientConfig:
-        service:
-          name: kubernetes
-          namespace: default
-          path: /apis/webhook.certmanager.k8s.io/v1beta1/mutations
-      failurePolicy: Fail
-      name: webhook.certmanager.k8s.io
-      rules:
-      - apiGroups:
-        - certmanager.k8s.io
-        apiVersions:
-        - v1alpha1
-        operations:
-        - CREATE
-        - UPDATE
-        resources:
-        - certificates
-        - issuers
-        - clusterissuers
-        - orders
-        - challenges
-        - certificaterequests
-    ---
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRole
-    metadata:
-      labels:
-        dashboard.presslabs.com/version: 0.0.1
-        rbac.dashboard.presslabs.com/aggregate-to-controller: "true"
-      name: dashboard.presslabs.com:organization::invites
-    rules:
-    - apiGroups:
-      - dashboard.presslabs.com
-      resources:
-      - invites
-      verbs:
-      - get
-      - list
-      - watch
-      - create
-      - update
-      - patch
-      - delete
-    ---
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRole
-    metadata:
-      labels:
-        dashboard.presslabs.com/version: 0.0.1
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
       name: dashboard.presslabs.com:organization::member
     rules:
     - apiGroups:
@@ -324,7 +276,9 @@ data:
     kind: ClusterRole
     metadata:
       labels:
-        dashboard.presslabs.com/version: 0.0.1
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
       name: dashboard.presslabs.com:organization::owner
     rules:
     - apiGroups:
@@ -375,7 +329,9 @@ data:
     kind: ClusterRole
     metadata:
       labels:
-        dashboard.presslabs.com/version: 0.0.1
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
       name: dashboard.presslabs.com:project::member
     rules:
     - apiGroups:
@@ -406,7 +362,9 @@ data:
     kind: ClusterRole
     metadata:
       labels:
-        dashboard.presslabs.com/version: 0.0.1
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
       name: dashboard.presslabs.com:project::owner
     rules:
     - apiGroups:
@@ -447,7 +405,9 @@ data:
     kind: ClusterRole
     metadata:
       labels:
-        dashboard.presslabs.com/version: 0.0.1
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
         rbac.dashboard.presslabs.com/aggregate-to-controller: "true"
       name: dashboard.presslabs.com:project::prometheus
     rules:
@@ -473,39 +433,242 @@ data:
       verbs:
       - get
     ---
-    apiVersion: apiregistration.k8s.io/v1beta1
-    kind: APIService
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
+        rbac.dashboard.presslabs.com/aggregate-to-controller: "true"
+      name: dashboard.presslabs.com:organization::invites
+    rules:
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - invites
+      verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+    ---
+    apiVersion: scheduling.k8s.io/v1beta1
+    description: This priority class is used for Presslabs Dashboard MySQL Cluster pods.
+    globalDefault: false
+    kind: PriorityClass
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
+      name: presslabs-dashboard-database
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
+    value: 50000
+    ---
+    apiVersion: scheduling.k8s.io/v1beta1
+    description: This priority class is used for Presslabs Dashboard Memcached pods.
+    globalDefault: false
+    kind: PriorityClass
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
+      name: presslabs-dashboard-memcached
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
+    value: 10000
+    ---
+    apiVersion: admissionregistration.k8s.io/v1beta1
+    kind: ValidatingWebhookConfiguration
     metadata:
       annotations:
-        certmanager.k8s.io/inject-ca-from-secret: ${namespace}/${name}-cert-manager-webhook-tls
+        certmanager.k8s.io/inject-ca-from: ${namespace}/${name}-dashboard-webhook-ca
       labels:
-        app: webhook
+        app: dashboard
         app.kubernetes.io/instance: ${name}
-        app.kubernetes.io/managed-by: Tiller
-        app.kubernetes.io/name: webhook
-        dashboard.presslabs.com/version: 0.0.1
-        helm.sh/chart: cert-manager-v0.10.1
-      name: v1beta1.webhook.certmanager.k8s.io
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
+        chart: dashboard-0.1.0_master
+        heritage: Tiller
+        release: ${name}
+      name: ${name}-dashboard
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
+    webhooks:
+    - clientConfig:
+        service:
+          name: ${name}-dashboard-webhook
+          namespace: ${namespace}
+          path: /validating-create-organization
+      failurePolicy: Fail
+      name: validating-create-organization.presslabs.com
+      namespaceSelector:
+        matchExpressions:
+        - key: control-plane
+          operator: DoesNotExist
+        - key: presslabs.com/kind
+          operator: Exists
+      rules:
+      - apiGroups:
+        - ""
+        apiVersions:
+        - v1
+        operations:
+        - CREATE
+        - UPDATE
+        resources:
+        - namespaces
+    - clientConfig:
+        service:
+          name: ${name}-dashboard-webhook
+          namespace: ${namespace}
+          path: /validating-create-project
+      failurePolicy: Fail
+      name: validating-create-project.presslabs.com
+      namespaceSelector:
+        matchExpressions:
+        - key: control-plane
+          operator: DoesNotExist
+        - key: presslabs.com/kind
+          operator: Exists
+      rules:
+      - apiGroups:
+        - ""
+        apiVersions:
+        - v1
+        operations:
+        - CREATE
+        - UPDATE
+        resources:
+        - namespaces
+    - clientConfig:
+        service:
+          name: ${name}-dashboard-webhook
+          namespace: ${namespace}
+          path: /validating-create-site
+      failurePolicy: Fail
+      name: validating-create-site.presslabs.com
+      namespaceSelector:
+        matchExpressions:
+        - key: control-plane
+          operator: DoesNotExist
+        - key: presslabs.com/kind
+          operator: In
+          values:
+          - project
+      rules:
+      - apiGroups:
+        - wordpress.presslabs.org
+        apiVersions:
+        - v1alpha1
+        operations:
+        - CREATE
+        - UPDATE
+        resources:
+        - wordpresses
+    ---
+    apiVersion: certmanager.k8s.io/v1alpha1
+    kind: Issuer
+    metadata:
+      labels:
+        app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
+        chart: dashboard-0.1.0_master
+        heritage: Tiller
+        release: ${name}
+      name: ${name}-dashboard-webhook-ca-issuer
+      namespace: ${namespace}
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
     spec:
-      group: webhook.certmanager.k8s.io
-      groupPriorityMinimum: 1000
-      service:
-        name: ${name}-cert-manager-webhook
-        namespace: ${namespace}
-      version: v1beta1
-      versionPriority: 15
+      selfSigned: {}
     ---
     apiVersion: certmanager.k8s.io/v1alpha1
     kind: Certificate
     metadata:
       labels:
         app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
         chart: dashboard-0.1.0_master
-        dashboard.presslabs.com/version: 0.0.1
+        heritage: Tiller
+        release: ${name}
+      name: ${name}-dashboard-webhook-ca
+      namespace: ${namespace}
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
+    spec:
+      commonName: ca.dashboard.presslabs.org
+      duration: 43800h
+      isCA: true
+      issuerRef:
+        name: ${name}-dashboard-webhook-ca-issuer
+      secretName: ${name}-dashboard-webhook-ca
+    ---
+    apiVersion: certmanager.k8s.io/v1alpha1
+    kind: Issuer
+    metadata:
+      labels:
+        app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
+        chart: dashboard-0.1.0_master
+        heritage: Tiller
+        release: ${name}
+      name: ${name}-dashboard-webhook-ca
+      namespace: ${namespace}
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
+    spec:
+      ca:
+        secretName: ${name}-dashboard-webhook-ca
+    ---
+    apiVersion: certmanager.k8s.io/v1alpha1
+    kind: Certificate
+    metadata:
+      labels:
+        app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
+        chart: dashboard-0.1.0_master
         heritage: Tiller
         release: ${name}
       name: ${name}-dashboard-webhook
       namespace: ${namespace}
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
     spec:
       dnsNames:
       - ${name}-dashboard-webhook
@@ -517,51 +680,22 @@ data:
       secretName: ${name}-dashboard-webhook
     ---
     apiVersion: certmanager.k8s.io/v1alpha1
-    kind: Certificate
-    metadata:
-      labels:
-        app: dashboard
-        chart: dashboard-0.1.0_master
-        dashboard.presslabs.com/version: 0.0.1
-        heritage: Tiller
-        release: ${name}
-      name: ${name}-dashboard-webhook-ca
-      namespace: ${namespace}
-    spec:
-      commonName: ca.dashboard.presslabs.org
-      duration: 43800h
-      isCA: true
-      issuerRef:
-        name: ${name}-dashboard-webhook-ca-issuer
-      secretName: ${name}-dashboard-webhook-ca
-    ---
-    apiVersion: certmanager.k8s.io/v1alpha1
-    kind: Certificate
-    metadata:
-      labels:
-        app: stack
-        chart: stack-v0.6.0
-        dashboard.presslabs.com/version: 0.0.1
-        heritage: Tiller
-        release: ${name}
-      name: ${name}-ingress-default
-    spec:
-      commonName: ingress.local
-      issuerRef:
-        kind: ClusterIssuer
-        name: ${name}-default
-      secretName: ${name}-ingress-default
-    ---
-    apiVersion: certmanager.k8s.io/v1alpha1
     kind: ClusterIssuer
     metadata:
       labels:
         app: stack
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
         chart: stack-v0.6.0
-        dashboard.presslabs.com/version: 0.0.1
         heritage: Tiller
         release: ${name}
       name: ${name}-default
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
     spec:
       acme:
         email: $letsEncryptEmail
@@ -571,53 +705,55 @@ data:
         server: $letsEncryptServer
     ---
     apiVersion: certmanager.k8s.io/v1alpha1
-    kind: Issuer
+    kind: Certificate
     metadata:
       labels:
-        app: dashboard
-        chart: dashboard-0.1.0_master
-        dashboard.presslabs.com/version: 0.0.1
+        app: stack
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
+        chart: stack-v0.6.0
         heritage: Tiller
         release: ${name}
-      name: ${name}-dashboard-webhook-ca
-      namespace: ${namespace}
+      name: ${name}-ingress-default
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
     spec:
-      ca:
-        secretName: ${name}-dashboard-webhook-ca
+      commonName: ingress.local
+      issuerRef:
+        kind: ClusterIssuer
+        name: ${name}-default
+      secretName: ${name}-ingress-default
     ---
-    apiVersion: certmanager.k8s.io/v1alpha1
-    kind: Issuer
+    apiVersion: apiregistration.k8s.io/v1beta1
+    kind: APIService
     metadata:
+      annotations:
+        certmanager.k8s.io/inject-ca-from-secret: ${namespace}/${name}-cert-manager-webhook-tls
       labels:
-        app: dashboard
-        chart: dashboard-0.1.0_master
-        dashboard.presslabs.com/version: 0.0.1
-        heritage: Tiller
-        release: ${name}
-      name: ${name}-dashboard-webhook-ca-issuer
-      namespace: ${namespace}
+        app: webhook
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/managed-by: Tiller
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
+        helm.sh/chart: cert-manager-v0.10.1
+      name: v1beta1.webhook.certmanager.k8s.io
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
     spec:
-      selfSigned: {}
-    ---
-    apiVersion: scheduling.k8s.io/v1beta1
-    description: This priority class is used for Presslabs Dashboard MySQL Cluster pods.
-    globalDefault: false
-    kind: PriorityClass
-    metadata:
-      labels:
-        dashboard.presslabs.com/version: 0.0.1
-      name: presslabs-dashboard-database
-    value: 50000
-    ---
-    apiVersion: scheduling.k8s.io/v1beta1
-    description: This priority class is used for Presslabs Dashboard Memcached pods.
-    globalDefault: false
-    kind: PriorityClass
-    metadata:
-      labels:
-        dashboard.presslabs.com/version: 0.0.1
-      name: presslabs-dashboard-memcached
-    value: 10000
+      group: webhook.certmanager.k8s.io
+      groupPriorityMinimum: 1000
+      service:
+        name: ${name}-cert-manager-webhook
+        namespace: ${namespace}
+      version: v1beta1
+      versionPriority: 15
     ---
     apiVersion: admissionregistration.k8s.io/v1beta1
     kind: ValidatingWebhookConfiguration
@@ -628,10 +764,15 @@ data:
         app: webhook
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/managed-by: Tiller
-        app.kubernetes.io/name: webhook
-        dashboard.presslabs.com/version: 0.0.1
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
         helm.sh/chart: cert-manager-v0.10.1
       name: ${name}-cert-manager-webhook
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
     webhooks:
     - clientConfig:
         service:
@@ -666,100 +807,83 @@ data:
       sideEffects: None
     ---
     apiVersion: admissionregistration.k8s.io/v1beta1
-    kind: ValidatingWebhookConfiguration
+    kind: MutatingWebhookConfiguration
     metadata:
       annotations:
-        certmanager.k8s.io/inject-ca-from: ${namespace}/${name}-dashboard-webhook-ca
+        certmanager.k8s.io/inject-apiserver-ca: "true"
       labels:
-        app: dashboard
-        chart: dashboard-0.1.0_master
-        dashboard.presslabs.com/version: 0.0.1
-        heritage: Tiller
-        release: ${name}
-      name: ${name}-dashboard
+        app: webhook
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/managed-by: Tiller
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
+        helm.sh/chart: cert-manager-v0.10.1
+      name: ${name}-cert-manager-webhook
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
     webhooks:
     - clientConfig:
         service:
-          name: ${name}-dashboard-webhook
-          namespace: ${namespace}
-          path: /validating-create-organization
+          name: kubernetes
+          namespace: default
+          path: /apis/webhook.certmanager.k8s.io/v1beta1/mutations
       failurePolicy: Fail
-      name: validating-create-organization.presslabs.com
-      namespaceSelector:
-        matchExpressions:
-        - key: control-plane
-          operator: DoesNotExist
+      name: webhook.certmanager.k8s.io
       rules:
       - apiGroups:
-        - ""
-        apiVersions:
-        - v1
-        operations:
-        - CREATE
-        - UPDATE
-        resources:
-        - namespaces
-    - clientConfig:
-        service:
-          name: ${name}-dashboard-webhook
-          namespace: ${namespace}
-          path: /validating-create-project
-      failurePolicy: Fail
-      name: validating-create-project.presslabs.com
-      namespaceSelector:
-        matchExpressions:
-        - key: control-plane
-          operator: DoesNotExist
-      rules:
-      - apiGroups:
-        - ""
-        apiVersions:
-        - v1
-        operations:
-        - CREATE
-        - UPDATE
-        resources:
-        - namespaces
-    - clientConfig:
-        service:
-          name: ${name}-dashboard-webhook
-          namespace: ${namespace}
-          path: /validating-create-site
-      failurePolicy: Fail
-      name: validating-create-site.presslabs.com
-      namespaceSelector:
-        matchExpressions:
-        - key: control-plane
-          operator: DoesNotExist
-      rules:
-      - apiGroups:
-        - wordpress.presslabs.org
+        - certmanager.k8s.io
         apiVersions:
         - v1alpha1
         operations:
         - CREATE
         - UPDATE
         resources:
-        - wordpresses
+        - certificates
+        - issuers
+        - clusterissuers
+        - orders
+        - challenges
+        - certificaterequests
 kind: ConfigMap
 metadata:
-  name: ${name}-dash-globals-manifests-6g99thktbm
+  labels:
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
+  name: ${name}-dash-globals-manifests-6fk7k9ktf8
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: ${name}-dash-install-manifest
+  labels:
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
+  name: ${name}-dash-install-manifests
 spec:
   backoffLimit: 3
   template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
     spec:
       containers:
       - args:
         - |
           # first install CRDs
           cat /data/crds/manifest_crds.yaml.gz.b64enc | base64 -d | gzip -dc | kubectl apply -f- ;
+
+
+          # patch with application UID and create resources
           # don't validate due to: https://github.com/jetstack/cert-manager/issues/1143
-          kubectl apply --validate=false -f /data/globals/manifest_globals.yaml ;
+          APP_UID=$(kubectl get applications.app.k8s.io ${name} -o jsonpath --template '{.metadata.uid}') ;
+          echo "\n++ Patching resources with owner reference: $name ($APP_UID)" ;
+          cat /data/globals/manifest_globals.yaml | env -i "APPLICATION_UID=$APP_UID" envsubst | kubectl apply -f- --validate=false ;
         command:
         - /bin/sh
         - -c
@@ -774,8 +898,8 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-6g99thktbm
+          name: ${name}-dash-globals-manifests-6fk7k9ktf8
         name: globals-manifests
       - configMap:
-          name: ${name}-dash-crds-manifests-9hgc22mfth
+          name: ${name}-dash-crds-manifests-65d4668hfc
         name: crd-manifests

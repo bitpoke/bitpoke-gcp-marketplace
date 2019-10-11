@@ -71,3 +71,9 @@ patchesJson6902:
     kind: Secret
     name: ${name}-dashboard-oidc
   path: patches/dashboard_oidc_secret.yaml
+
+
+commonLabels:
+  app.kubernetes.io/name: presslabs-dashboard
+  app.kubernetes.io/instance: ${name}
+  app.kubernetes.io/version: "0.0.1"
