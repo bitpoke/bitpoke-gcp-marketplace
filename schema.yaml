@@ -74,6 +74,12 @@ properties:
         generatedProperties:
           base64Encoded: dashboardOIDCIssuerEncoded
 
+  dashboardAdminEmails:
+    type: string
+    title: AdminEmails
+    description: A list of admin emails, separated by comma
+    default: ""
+
   # let's encrypt
   letsEncryptEmail:
     type: string
@@ -217,5 +223,6 @@ required:
 - dashboardOIDCClientID
 - dashboardOIDCSecret
 - dashboardOIDCIssuer
+- dashboardAdminEmails
 - gcpConfigConnectorEnabled
 - gcpWorkloadIdentityEnabled
