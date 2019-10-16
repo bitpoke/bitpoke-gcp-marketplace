@@ -34,6 +34,9 @@ resources:
   # wordpress operator
   - ../charts/dashboard-gcm/charts/stack/charts/wordpress-operator/templates/deployment.yaml
 
+  # stack
+  - ../charts/dashboard-gcm/charts/stack/charts/nginx-ingress/templates/addheaders-configmap.yaml
+
 
 patchesJson6902:
 # cert-manager fix service accounts

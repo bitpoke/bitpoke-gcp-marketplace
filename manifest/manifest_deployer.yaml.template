@@ -70,7 +70,9 @@ metadata:
 ---
 apiVersion: v1
 data:
+  add-headers: ${namespace}/${name}-nginx-ingress-custom-add-headers
   custom-http-errors: 502,503,504
+  hsts-preload: "true"
 kind: ConfigMap
 metadata:
   labels:
@@ -78,11 +80,27 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 0.0.1
-    chart: nginx-ingress-1.24.0
+    chart: nginx-ingress-1.24.3
     component: controller
     heritage: Tiller
     release: ${name}
   name: ${name}-nginx-ingress-controller
+---
+apiVersion: v1
+data:
+  server: nginx
+kind: ConfigMap
+metadata:
+  labels:
+    app: nginx-ingress
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
+    chart: nginx-ingress-1.24.3
+    component: controller
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-nginx-ingress-custom-add-headers
 ---
 apiVersion: v1
 data:
@@ -302,7 +320,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 0.0.1
-    chart: nginx-ingress-1.24.0
+    chart: nginx-ingress-1.24.3
     component: controller
     heritage: Tiller
     release: ${name}
@@ -336,7 +354,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 0.0.1
-    chart: nginx-ingress-1.24.0
+    chart: nginx-ingress-1.24.3
     component: default-backend
     heritage: Tiller
     release: ${name}
@@ -663,7 +681,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 0.0.1
-    chart: nginx-ingress-1.24.0
+    chart: nginx-ingress-1.24.3
     component: controller
     heritage: Tiller
     release: ${name}
@@ -759,7 +777,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 0.0.1
-    chart: nginx-ingress-1.24.0
+    chart: nginx-ingress-1.24.3
     component: default-backend
     heritage: Tiller
     release: ${name}
@@ -827,7 +845,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 0.0.1
-    chart: wordpress-operator-v0.6.0
+    chart: wordpress-operator-v0.6.3
     heritage: Tiller
     release: ${name}
   name: ${name}-wordpress-operator
