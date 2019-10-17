@@ -22,20 +22,22 @@ spec:
     kind: Job
   - group: batch
     kind: CronJob
-  - group: certmanager.k8s.io
-    kind: Certificate
-  - group: certmanager.k8s.io
-    kind: Issuer
-  - group: certmanager.k8s.io
-    kind: ClusterIssuer
-  - group: monitoring.coreos.com
-    kind: Prometheus
-  - group: monitoring.coreos.com
-    kind: ServiceMonitor
-  - group: monitoring.coreos.com
-    kind: PrometheusRule
-  - group: monitoring.coreos.com
-    kind: AlertManager
+# TODO: deployer don't have permissions to query those resources. Only from version 2 it will be
+# possible to grant more permissions to deployer service account.
+#  - group: certmanager.k8s.io
+#    kind: Certificate
+#  - group: certmanager.k8s.io
+#    kind: Issuer
+#  - group: certmanager.k8s.io
+#    kind: ClusterIssuer
+#  - group: monitoring.coreos.com
+#    kind: Prometheus
+#  - group: monitoring.coreos.com
+#    kind: ServiceMonitor
+#  - group: monitoring.coreos.com
+#    kind: PrometheusRule
+#  - group: monitoring.coreos.com
+#    kind: AlertManager
   - group: extensions/v1beta1
     kind: Ingress
   descriptor:
