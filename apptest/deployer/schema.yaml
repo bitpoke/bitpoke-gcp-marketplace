@@ -44,3 +44,7 @@ properties:
   gcpWorkloadIdentityEnabled:
     type: boolean
     default: false
+
+  dashboardAdminEmails:
+    type: string
+    default: "admin@example.com"

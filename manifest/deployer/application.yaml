@@ -60,10 +60,11 @@ spec:
 
       ## How to
 
-      Update super admin emails list by running the following command:
+      Update super admin emails list:
+
       ```
       export DASHBOARD_SUPERADMIN_EMAILS=admin1@example.com,admin2@example.com
-      kubectl -n ${namespace} patch deployment ${name}--dashboard-apiserver '{"spec":{"template":{"spec":{"containers":[{"name":"apiserver","env":[{"name":"DASHBOARD_SUPERADMIN_EMAILS","value":"'"$DASHBOARD_SUPERADMIN_EMAILS"'"}]}]}}}}'
+      kubectl -n ${namespace} patch deployment ${name}-dashboard-apiserver '{"spec":{"template":{"spec":{"containers":[{"name":"apiserver","env":[{"name":"DASHBOARD_SUPERADMIN_EMAILS","value":"'"$DASHBOARD_SUPERADMIN_EMAILS"'"}]}]}}}}'
       ```
 
     type: Presslabs Stack
