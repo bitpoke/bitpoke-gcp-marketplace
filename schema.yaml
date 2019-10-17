@@ -77,7 +77,7 @@ properties:
   dashboardAdminEmails:
     type: string
     title: AdminEmails
-    description: A list of admin emails, separated by comma
+    description: A comma-separated list of emails for users with elevated access to the Presslabs Dashboard. These users gain a cluster-admin role for Dashboard's operations.
     default: ""
 
   # let's encrypt

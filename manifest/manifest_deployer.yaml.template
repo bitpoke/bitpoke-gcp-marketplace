@@ -577,6 +577,9 @@ spec:
         - --http-addr=:8080
         - --grpc-addr=:9000
         - --base-url=//$dashboardDomain
+        env:
+        - name: DASHBOARD_SUPERADMIN_EMAILS
+          value: ${dashboardAdminEmails}
         envFrom:
         - prefix: OIDC_
           secretRef:
@@ -1037,6 +1040,14 @@ spec:
       Create your organization, group sites in projects and launch with a click new sites that scale
       up and down automatically as needed. Give your team access and start working on your very own
       cloud-native hosting platform!
+
+      ## How to
+
+      Update super admin emails list by running the following command:
+      ```
+      export DASHBOARD_SUPERADMIN_EMAILS=admin1@example.com,admin2@example.com
+      kubectl -n ${namespace} patch deployment ${name}--dashboard-apiserver '{"spec":{"template":{"spec":{"containers":[{"name":"apiserver","env":[{"name":"DASHBOARD_SUPERADMIN_EMAILS","value":"'"$DASHBOARD_SUPERADMIN_EMAILS"'"}]}]}}}}'
+      ```
     type: Presslabs Stack
     version: v0.5.1
   info:

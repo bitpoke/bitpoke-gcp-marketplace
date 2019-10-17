@@ -402,6 +402,22 @@ data:
       - patch
     ---
     apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRoleBinding
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 0.0.1
+      name: dashboard.presslabs.com:dashboard:superadmin
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: cluster-admin
+    subjects:
+    - kind: Group
+      name: superadmins@dashboard.presslabs.com
+    ---
+    apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
     metadata:
       labels:
@@ -853,7 +869,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 0.0.1
-  name: ${name}-dash-globals-manifests-tgk5fhm48m
+  name: ${name}-dash-globals-manifests-t98ttk97mt
 ---
 apiVersion: batch/v1
 kind: Job
@@ -898,7 +914,7 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-tgk5fhm48m
+          name: ${name}-dash-globals-manifests-t98ttk97mt
         name: globals-manifests
       - configMap:
           name: ${name}-dash-crds-manifests-hb7gk852m4
