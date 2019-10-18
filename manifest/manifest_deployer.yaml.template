@@ -414,7 +414,7 @@ spec:
       - args:
         - --v=2
         - --cluster-resource-namespace=$(POD_NAMESPACE)
-        - --leader-election-namespace=kube-system
+        - --leader-election-namespace=${namespace}
         - --acme-http01-solver-image=$certAcmeSolverImage
         - --webhook-namespace=$(POD_NAMESPACE)
         - --webhook-ca-secret=${name}-cert-manager-webhook-ca
@@ -468,7 +468,7 @@ spec:
       containers:
       - args:
         - --v=2
-        - --leader-election-namespace=kube-system
+        - --leader-election-namespace=${namespace}
         env:
         - name: POD_NAMESPACE
           valueFrom:

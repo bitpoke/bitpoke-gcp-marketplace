@@ -1,3 +1,6 @@
+global:
+  leaderElection:
+    namespace: ${namespace}
 stack:
   # override chart name
   fullnameOverride: "${name}"
