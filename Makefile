@@ -168,9 +168,12 @@ endef
                                   | .build/manifest/charts
 	helm dependency update $(DASHBOARD_CHART_PATH)
 	helm template $(DASHBOARD_CHART_PATH) -f manifest/values.yaml \
-			--name '$${name}' --namespace '$${namespace}' \
+			--name 'helm-release-name' --namespace 'helm-namespace' \
 			--kube-version 1.10 \
 			--output-dir .build/manifest/charts
+# it we need to replace the release name and namespace with our placeholders
+	find .build/manifest/charts -type f -print0 | xargs -0 sed -i 's/helm-release-name/$${name}/g'
+	find .build/manifest/charts -type f -print0 | xargs -0 sed -i 's/helm-namespace/$${namespace}/g'
 
 
 .build/manifest/%: $(shell find manifest -name '*.yaml') | .build/manifest
@@ -228,8 +231,8 @@ clean-manifests:
 .PHONY: verify-manifest
 verify-manifest: clean-manifests manifests
 # test if the kustomize replace all fields that needs to be replaced
-	[ "$(shell grep SET_IN_KUSTOMIZE $(wildcard manifest/*.template))" = "" ] || exit 1
-	[ "$(shell grep U0VUX0lOX0tVU1RPTUlaRQ== $(wildcard manifest/*.template))" = "" ] || exit 1
+	[ "$(shell grep SET_IN_KUSTOMIZE -r --include='*.template')" = "" ] || exit 1
+	[ "$(shell grep U0VUX0lOX0tVU1RPTUlaRQ== -r --include='*.template')" = "" ] || exit 1
 
 # check for missing files or not used in kustomize
 	./scripts/check_files.sh .build/manifest/charts \

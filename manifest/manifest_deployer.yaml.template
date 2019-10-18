@@ -562,7 +562,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/oidc-config: be5488c7d968d695b9525e59e3490e60cf672c6a58d9a4f0aac897df19445f30
+        checksum/oidc-config: f2a683a6393e8db92df3de75ad77b9966d88456c084c28a2fdced664a7786efa
       labels:
         app: dashboard
         app.kubernetes.io/instance: ${name}
@@ -626,7 +626,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 4c906345789bc22c3cdbb7299a1fd544b58fd3d6f29150f61e21d614ec799918
+        checksum/config: 1bbf4d5a3a2fc39f145b3c7dbb12d25827e8a33db91b3891cca07c4653a7a2a4
       labels:
         app: dashboard
         app.kubernetes.io/instance: ${name}
@@ -905,8 +905,8 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 01834de5587dc78ce5390278247c40515283abfdbd8e97b70ced7d03a5e62adb
-        checksum/secret: ada260f8155fffd821f4ec0dd484fa3c0c516d96ff6de7c7701abd877b8473e7
+        checksum/config: fcf882e5a77176c667f10bc86695f850d1db8888897a59544a1a9877110cc5c8
+        checksum/secret: f0cb7a1824aca94a0aff5019f2cc510593ed6c83d31f346dff8373d08b54f664
       labels:
         app: mysql-operator
         app.kubernetes.io/instance: ${name}
@@ -1043,10 +1043,11 @@ spec:
 
       ## How to
 
-      Update super admin emails list by running the following command:
+      Update super admin emails list:
+
       ```
       export DASHBOARD_SUPERADMIN_EMAILS=admin1@example.com,admin2@example.com
-      kubectl -n ${namespace} patch deployment ${name}--dashboard-apiserver '{"spec":{"template":{"spec":{"containers":[{"name":"apiserver","env":[{"name":"DASHBOARD_SUPERADMIN_EMAILS","value":"'"$DASHBOARD_SUPERADMIN_EMAILS"'"}]}]}}}}'
+      kubectl -n ${namespace} patch deployment ${name}-dashboard-apiserver '{"spec":{"template":{"spec":{"containers":[{"name":"apiserver","env":[{"name":"DASHBOARD_SUPERADMIN_EMAILS","value":"'"$DASHBOARD_SUPERADMIN_EMAILS"'"}]}]}}}}'
       ```
     type: Presslabs Stack
     version: v0.5.1
