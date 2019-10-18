@@ -161,7 +161,7 @@ metadata:
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 0.0.1
-    helm.sh/chart: cert-manager-v0.10.1
+    helm.sh/chart: cert-manager-v0.11.0
   name: ${name}-cert-manager
   namespace: ${namespace}
 spec:
@@ -184,7 +184,7 @@ metadata:
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 0.0.1
-    helm.sh/chart: cert-manager-v0.10.1
+    helm.sh/chart: cert-manager-v0.11.0
   name: ${name}-cert-manager-webhook
   namespace: ${namespace}
 spec:
@@ -384,7 +384,7 @@ metadata:
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 0.0.1
-    helm.sh/chart: cert-manager-v0.10.1
+    helm.sh/chart: cert-manager-v0.11.0
   name: ${name}-cert-manager
   namespace: ${namespace}
 spec:
@@ -408,13 +408,13 @@ spec:
         app.kubernetes.io/managed-by: Tiller
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 0.0.1
-        helm.sh/chart: cert-manager-v0.10.1
+        helm.sh/chart: cert-manager-v0.11.0
     spec:
       containers:
       - args:
         - --v=2
         - --cluster-resource-namespace=$(POD_NAMESPACE)
-        - --leader-election-namespace=$(POD_NAMESPACE)
+        - --leader-election-namespace=kube-system
         - --acme-http01-solver-image=$certAcmeSolverImage
         - --webhook-namespace=$(POD_NAMESPACE)
         - --webhook-ca-secret=${name}-cert-manager-webhook-ca
@@ -442,7 +442,7 @@ metadata:
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 0.0.1
-    helm.sh/chart: cainjector-v0.10.1
+    helm.sh/chart: cainjector-v0.11.0
   name: ${name}-cert-manager-cainjector
   namespace: ${namespace}
 spec:
@@ -463,12 +463,12 @@ spec:
         app.kubernetes.io/managed-by: Tiller
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 0.0.1
-        helm.sh/chart: cainjector-v0.10.1
+        helm.sh/chart: cainjector-v0.11.0
     spec:
       containers:
       - args:
         - --v=2
-        - --leader-election-namespace=$(POD_NAMESPACE)
+        - --leader-election-namespace=kube-system
         env:
         - name: POD_NAMESPACE
           valueFrom:
@@ -489,7 +489,7 @@ metadata:
     app.kubernetes.io/managed-by: Tiller
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 0.0.1
-    helm.sh/chart: cert-manager-v0.10.1
+    helm.sh/chart: cert-manager-v0.11.0
   name: ${name}-cert-manager-webhook
   namespace: ${namespace}
 spec:
@@ -510,7 +510,7 @@ spec:
         app.kubernetes.io/managed-by: Tiller
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 0.0.1
-        helm.sh/chart: cert-manager-v0.10.1
+        helm.sh/chart: cert-manager-v0.11.0
     spec:
       containers:
       - args:
@@ -626,7 +626,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1bbf4d5a3a2fc39f145b3c7dbb12d25827e8a33db91b3891cca07c4653a7a2a4
+        checksum/config: d10b9e8556c0ebebd527530ad21f381cf80e3ae0c167848700fc42d1ea22638f
       labels:
         app: dashboard
         app.kubernetes.io/instance: ${name}
@@ -1090,8 +1090,8 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
-    certmanager.k8s.io/acme-challenge-type: http01
-    certmanager.k8s.io/cluster-issuer: ${name}-default
+    cert-manager.io/acme-challenge-type: http01
+    cert-manager.io/cluster-issuer: ${name}-default
     kubernetes.io/ingress.class: presslabs-stack
   labels:
     app: dashboard

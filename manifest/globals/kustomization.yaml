@@ -37,7 +37,7 @@ patchesJson6902:
     group: apiregistration.k8s.io
     version: v1beta1
     kind: APIService
-    name: v1beta1.webhook.certmanager.k8s.io
+    name: v1beta1.webhook.cert-manager.io
   path: owner_reference_patch.yaml
 
 # dashboard
@@ -64,43 +64,43 @@ patchesJson6902:
 
 # stack
 - target:
-    group: certmanager.k8s.io
-    version: v1alpha1
+    group: cert-manager.io
+    version: v1alpha2
     kind: ClusterIssuer
     name: ${name}-default
   path: owner_reference_patch.yaml
 
 # certificates
 - target:
-    group: certmanager.k8s.io
-    version: v1alpha1
+    group: cert-manager.io
+    version: v1alpha2
     kind: Certificate
     name: ${name}-ingress-default
   path: owner_reference_patch.yaml
 - target:
-    group: certmanager.k8s.io
-    version: v1alpha1
+    group: cert-manager.io
+    version: v1alpha2
     kind: Certificate
     name: ${name}-dashboard-webhook
   path: owner_reference_patch.yaml
 
 - target:
-    group: certmanager.k8s.io
-    version: v1alpha1
+    group: cert-manager.io
+    version: v1alpha2
     kind: Issuer
     name: ${name}-dashboard-webhook-ca
   path: owner_reference_patch.yaml
 
 - target:
-    group: certmanager.k8s.io
-    version: v1alpha1
+    group: cert-manager.io
+    version: v1alpha2
     kind: Certificate
     name: ${name}-dashboard-webhook-ca
   path: owner_reference_patch.yaml
 
 - target:
-    group: certmanager.k8s.io
-    version: v1alpha1
+    group: cert-manager.io
+    version: v1alpha2
     kind: Issuer
     name: ${name}-dashboard-webhook-ca-issuer
   path: owner_reference_patch.yaml

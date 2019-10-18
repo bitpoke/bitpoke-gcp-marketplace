@@ -4,4 +4,4 @@ metadata:
   name: "${namespace}"
   labels:
     # avoid chicken-and-egg problem by disabling issuer validation in this namespace
-    certmanager.k8s.io/disable-validation: "true"
+    cert-manager.io/disable-validation: "true"
