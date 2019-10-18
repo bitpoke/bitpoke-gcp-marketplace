@@ -1050,7 +1050,7 @@ spec:
       kubectl -n ${namespace} patch deployment ${name}-dashboard-apiserver '{"spec":{"template":{"spec":{"containers":[{"name":"apiserver","env":[{"name":"DASHBOARD_SUPERADMIN_EMAILS","value":"'"$DASHBOARD_SUPERADMIN_EMAILS"'"}]}]}}}}'
       ```
     type: Presslabs Stack
-    version: v0.5.1
+    version: v1.0.0
   info:
   - name: Ingress IP
     type: Reference
@@ -1090,7 +1090,6 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
-    cert-manager.io/acme-challenge-type: http01
     cert-manager.io/cluster-issuer: ${name}-default
     kubernetes.io/ingress.class: presslabs-stack
   labels:

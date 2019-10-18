@@ -68,7 +68,7 @@ spec:
       ```
 
     type: Presslabs Stack
-    version: v0.5.1
+    version: v1.0.0
   info:
   # ingress
   - name: Ingress IP
