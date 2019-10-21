@@ -82,6 +82,7 @@ patchesJson6902:
     version: v1alpha2
     kind: Certificate
     name: ${name}-dashboard-webhook
+    namespace: ${namespace}
   path: owner_reference_patch.yaml
 
 - target:
@@ -89,6 +90,7 @@ patchesJson6902:
     version: v1alpha2
     kind: Issuer
     name: ${name}-dashboard-webhook-ca
+    namespace: ${namespace}
   path: owner_reference_patch.yaml
 
 - target:
@@ -96,6 +98,7 @@ patchesJson6902:
     version: v1alpha2
     kind: Certificate
     name: ${name}-dashboard-webhook-ca
+    namespace: ${namespace}
   path: owner_reference_patch.yaml
 
 - target:
@@ -103,6 +106,7 @@ patchesJson6902:
     version: v1alpha2
     kind: Issuer
     name: ${name}-dashboard-webhook-ca-issuer
+    namespace: ${namespace}
   path: owner_reference_patch.yaml
 
 

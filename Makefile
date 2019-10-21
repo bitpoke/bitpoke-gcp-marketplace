@@ -228,8 +228,8 @@ clean-manifests:
 	rm -f manifest/manifest_*
 
 # a simple rule to test if the generated manifests are ok
-.PHONY: verify-manifest
-verify-manifest: clean-manifests manifests
+.PHONY: verify-manifests
+verify-manifests: clean-manifests manifests
 # test if the kustomize replace all fields that needs to be replaced
 	[ "$(shell grep SET_IN_KUSTOMIZE -r --include='*.template')" = "" ] || exit 1
 	[ "$(shell grep U0VUX0lOX0tVU1RPTUlaRQ== -r --include='*.template')" = "" ] || exit 1
@@ -239,6 +239,3 @@ verify-manifest: clean-manifests manifests
 	  manifest/deployer/kustomization.yaml \
 	  manifest/crds/kustomization.yaml \
 	  manifest/globals/kustomization.yaml
-
-# check for differences
-	git diff --exit-code manifest/*.template
