@@ -46,13 +46,13 @@ spec:
       Kubernetes. It is built as an opinionated implementation of the Presslabs Stack, a collection
       of open source low-level building blocks for WordPress infrastructure.
     links:
-    - description: Presslabs Dashboard documentation
-      url: https://www.presslabs.com/docs/dashboard
+    - description: Presslabs Dashboard
+      url: https://www.presslabs.com/dashboard
     - description: Presslabs Stack
-      url: https://presslabs.com/stack
+      url: https://www.presslabs.com/stack
     maintainers:
     - name: Presslabs
-      url: https://presslabs.com/stack
+      url: https://www.presslabs.com
     notes: |-
       Create your organization, group sites in projects and launch with a click new sites that scale
       up and down automatically as needed. Give your team access and start working on your very own
@@ -60,14 +60,34 @@ spec:
 
       ## How to
 
-      Update super admin emails list:
+      Following guides provide information on how to manage your Presslabs Dashboard instance.
+
+      ### Upgrade your Presslabs Dashboard instance
+
+      In order to upgrade your Presslabs Dashboard, you need to delete the currently installed
+      version and install the new version. This **WILL NOT DELETE** sites created using the
+      current instance.
+
+      **NOTE**: You should upgrade only one patch version at a time. For example, you can safely upgrade
+      from version 1.0 to 1.1, but not from version 1.0 to 1.2. You need to go from 1.0 to 1.1 and then to 1.2.
+
+      ### Change super admins
 
       ```
       export DASHBOARD_SUPERADMIN_EMAILS=admin1@example.com,admin2@example.com
-      kubectl -n ${namespace} patch deployment ${name}-dashboard-apiserver '{"spec":{"template":{"spec":{"containers":[{"name":"apiserver","env":[{"name":"DASHBOARD_SUPERADMIN_EMAILS","value":"'"$DASHBOARD_SUPERADMIN_EMAILS"'"}]}]}}}}'
+      kubectl -n ${namespace} patch deployment \
+        ${name}-dashboard-apiserver -p "\
+        spec:
+          template:
+            spec:
+              containers:
+              - name: apiserver
+                env:
+                - name: DASHBOARD_SUPERADMIN_EMAILS
+                  value: \"$DASHBOARD_SUPERADMIN_EMAILS\""
       ```
 
-    type: Presslabs Stack
+    type: Presslabs Dashboard
     version: v1.0.0
   info:
   # ingress
