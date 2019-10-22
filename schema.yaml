@@ -33,11 +33,17 @@ properties:
   dashboardIP:
     type: string
     default: ""
-    title: IP Address
+    title: Presslabs Dashboard Ingress IP Address
     description: |
       We recommend that you create a pre-allocated static IP address for your Presslabs Dashboard to prevent IP changes.
       If not specified, an ephemeral external IP will be created which you can later convert to a static one.
       Read more about it at https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address.
+
+  dashboardAdminEmails:
+    type: string
+    title: Presslabs Dashboard Admins
+    description: A comma-separated list of emails for users with elevated access to the Presslabs Dashboard. These users gain a cluster-admin role for Dashboard's operations.
+    default: ""
 
   dashboardImage:
     type: string
@@ -73,12 +79,6 @@ properties:
       string:
         generatedProperties:
           base64Encoded: dashboardOIDCIssuerEncoded
-
-  dashboardAdminEmails:
-    type: string
-    title: AdminEmails
-    description: A comma-separated list of emails for users with elevated access to the Presslabs Dashboard. These users gain a cluster-admin role for Dashboard's operations.
-    default: ""
 
   # let's encrypt
   letsEncryptEmail:
