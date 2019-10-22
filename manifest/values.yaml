@@ -1,3 +1,9 @@
+component_default: &component_default
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+
 global:
   leaderElection:
     namespace: ${namespace}
@@ -11,6 +17,7 @@ stack:
     server: $letsEncryptServer
 
   wordpress-operator:
+    <<: *component_default
     enabled: true
     image: $wordpressOperatorImage
     crd:
@@ -22,6 +29,7 @@ stack:
       name: $serviceAccount
 
   mysql-operator:
+    <<: *component_default
     enabled: true
     image: $mysqlControllerImage
     installCRDs: true
@@ -32,6 +40,7 @@ stack:
       create: false
       serviceAccountName: $serviceAccount
     orchestrator:
+      <<: *component_default
       image: $mysqlOrchestratorImage
       # NOTE: this will be ovewrite by kustomize
       topologyPassword: SET_IN_KUSTOMIZE
@@ -44,13 +53,24 @@ stack:
       create: false
       name: $serviceAccount
     controller:
+      <<: *component_default
+      replicaCount: 2
+      minAvailable: 1
+      resources:
+        requests:
+          memory: "768Mi"
+          cpu: "500m"
       service:
         loadBalancerIP: $dashboardIP
+        externalTrafficPolicy: Local
       image:
         repository: $ingressImageRegistry
         # pin version here because it uses comparSemver in chart, patch it later with kustomize
         tag: v0.24.1
     defaultBackend:
+      <<: *component_default
+      replicaCount: 2
+      minAvailable: 1
       serviceAccount:
         create: false
         name: $serviceAccount
@@ -60,6 +80,7 @@ stack:
         pullPolicy: Always
 
   cert-manager:
+    <<: *component_default
     enabled: true
     fullnameOverride: ${name}-cert-manager
     global:
@@ -67,6 +88,7 @@ stack:
         create: false
 
     webhook:
+      <<: *component_default
       fullnameOverride: ${name}-cert-manager-webhook
       image:
         repository: $certWebhookImageRegistry
@@ -79,6 +101,7 @@ stack:
         name: $serviceAccount
 
     cainjector:
+      <<: *component_default
       fullnameOverride: ${name}-cert-manager-cainjector
       image:
         repository: $certCAinjectorImageRegistry
@@ -115,6 +138,7 @@ dashboard:
     install: true
 
   apiserver:
+    <<: *component_default
     oidc:
       # NOTE: those values are patched by kustomize
       client_id: SET_IN_KUSTOMIZE
@@ -139,6 +163,7 @@ dashboard:
       name: $serviceAccount
 
   controller:
+    <<: *component_default
     enablePrometheusIntegration: false
     serviceAccount:
       create: false

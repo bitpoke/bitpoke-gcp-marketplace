@@ -24,6 +24,8 @@ resources:
   - ../charts/dashboard-gcm/charts/stack/charts/nginx-ingress/templates/controller-service.yaml
   - ../charts/dashboard-gcm/charts/stack/charts/nginx-ingress/templates/default-backend-deployment.yaml
   - ../charts/dashboard-gcm/charts/stack/charts/nginx-ingress/templates/default-backend-service.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/nginx-ingress/templates/controller-poddisruptionbudget.yaml
+  - ../charts/dashboard-gcm/charts/stack/charts/nginx-ingress/templates/default-backend-poddisruptionbudget.yaml
 
   # mysql operator
   - ../charts/dashboard-gcm/charts/stack/charts/mysql-operator/templates/statefulset.yaml

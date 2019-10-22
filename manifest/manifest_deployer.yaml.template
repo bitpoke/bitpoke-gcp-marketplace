@@ -327,6 +327,7 @@ metadata:
   name: ${name}-nginx-ingress-controller
 spec:
   clusterIP: ""
+  externalTrafficPolicy: Local
   loadBalancerIP: $dashboardIP
   ports:
   - name: http
@@ -430,7 +431,10 @@ spec:
         name: cert-manager
         ports:
         - containerPort: 9402
-        resources: {}
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
       serviceAccountName: $serviceAccount
 ---
 apiVersion: apps/v1
@@ -477,7 +481,10 @@ spec:
         image: $certCAinjectorImageRegistry:$certCAinjectorImageTag
         imagePullPolicy: IfNotPresent
         name: cainjector
-        resources: {}
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
       serviceAccountName: $serviceAccount
 ---
 apiVersion: apps/v1
@@ -526,7 +533,10 @@ spec:
         image: $certWebhookImageRegistry:$certWebhookImageTag
         imagePullPolicy: IfNotPresent
         name: cert-manager
-        resources: {}
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
         volumeMounts:
         - mountPath: /certs
           name: certs
@@ -691,7 +701,7 @@ metadata:
   name: ${name}-nginx-ingress-controller
 spec:
   minReadySeconds: 0
-  replicas: 1
+  replicas: 2
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -758,7 +768,10 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 1
-        resources: {}
+        resources:
+          requests:
+            cpu: 500m
+            memory: 768Mi
         securityContext:
           allowPrivilegeEscalation: true
           capabilities:
@@ -786,7 +799,7 @@ metadata:
     release: ${name}
   name: ${name}-nginx-ingress-default-backend
 spec:
-  replicas: 1
+  replicas: 2
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -834,7 +847,10 @@ spec:
           periodSeconds: 5
           successThreshold: 1
           timeoutSeconds: 5
-        resources: {}
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
         securityContext:
           runAsUser: 65534
       serviceAccountName: $serviceAccount
@@ -876,7 +892,10 @@ spec:
         image: $wordpressOperatorImage
         imagePullPolicy: IfNotPresent
         name: wordpress-operator
-        resources: {}
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
       serviceAccount: $serviceAccount
 ---
 apiVersion: apps/v1
@@ -935,7 +954,10 @@ spec:
         image: $mysqlControllerImage
         imagePullPolicy: IfNotPresent
         name: operator
-        resources: {}
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
       - env:
         - name: POD_IP
           valueFrom:
@@ -966,7 +988,10 @@ spec:
             path: /api/raft-health
             port: 3000
           timeoutSeconds: 10
-        resources: null
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
         volumeMounts:
         - mountPath: /var/lib/orchestrator/
           name: data
@@ -992,6 +1017,54 @@ spec:
       resources:
         requests:
           storage: 1Gi
+---
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  labels:
+    app: nginx-ingress
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
+    chart: nginx-ingress-1.24.3
+    component: controller
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-nginx-ingress-controller
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: nginx-ingress
+      app.kubernetes.io/instance: ${name}
+      app.kubernetes.io/name: presslabs-dashboard
+      app.kubernetes.io/version: 0.0.1
+      component: controller
+      release: ${name}
+---
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  labels:
+    app: nginx-ingress
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 0.0.1
+    chart: nginx-ingress-1.24.3
+    component: default-backend
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-nginx-ingress-default-backend
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: nginx-ingress
+      app.kubernetes.io/instance: ${name}
+      app.kubernetes.io/name: presslabs-dashboard
+      app.kubernetes.io/version: 0.0.1
+      component: default-backend
+      release: ${name}
 ---
 apiVersion: app.k8s.io/v1beta1
 kind: Application
@@ -1029,13 +1102,13 @@ spec:
       Kubernetes. It is built as an opinionated implementation of the Presslabs Stack, a collection
       of open source low-level building blocks for WordPress infrastructure.
     links:
-    - description: Presslabs Dashboard documentation
-      url: https://www.presslabs.com/docs/dashboard
+    - description: Presslabs Dashboard
+      url: https://www.presslabs.com/dashboard
     - description: Presslabs Stack
-      url: https://presslabs.com/stack
+      url: https://www.presslabs.com/stack
     maintainers:
     - name: Presslabs
-      url: https://presslabs.com/stack
+      url: https://www.presslabs.com
     notes: |-
       Create your organization, group sites in projects and launch with a click new sites that scale
       up and down automatically as needed. Give your team access and start working on your very own
@@ -1043,13 +1116,33 @@ spec:
 
       ## How to
 
-      Update super admin emails list:
+      Following guides provide information on how to manage your Presslabs Dashboard instance.
+
+      ### Upgrade your Presslabs Dashboard instance
+
+      In order to upgrade your Presslabs Dashboard, you need to delete the currently installed
+      version and install the new version. This **WILL NOT DELETE** sites created using the
+      current instance.
+
+      **NOTE**: You should upgrade only one patch version at a time. For example, you can safely upgrade
+      from version 1.0 to 1.1, but not from version 1.0 to 1.2. You need to go from 1.0 to 1.1 and then to 1.2.
+
+      ### Change super admins
 
       ```
       export DASHBOARD_SUPERADMIN_EMAILS=admin1@example.com,admin2@example.com
-      kubectl -n ${namespace} patch deployment ${name}-dashboard-apiserver '{"spec":{"template":{"spec":{"containers":[{"name":"apiserver","env":[{"name":"DASHBOARD_SUPERADMIN_EMAILS","value":"'"$DASHBOARD_SUPERADMIN_EMAILS"'"}]}]}}}}'
+      kubectl -n ${namespace} patch deployment \
+        ${name}-dashboard-apiserver -p "\
+        spec:
+          template:
+            spec:
+              containers:
+              - name: apiserver
+                env:
+                - name: DASHBOARD_SUPERADMIN_EMAILS
+                  value: \"$DASHBOARD_SUPERADMIN_EMAILS\""
       ```
-    type: Presslabs Stack
+    type: Presslabs Dashboard
     version: v1.0.0
   info:
   - name: Ingress IP
