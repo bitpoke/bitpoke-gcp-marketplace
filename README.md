@@ -16,8 +16,6 @@ The following operators are included in this application:
  * [**Cert Manager**](https://github.com/jetstack/cert-manager) used for managing and issuance TLS
    certificates.
  * [**Nginx Ingress Controller**](https://github.com/kubernetes/ingress-nginx) for configuring NGINX.
- * [**Prometheus Operator**](https://github.com/coreos/prometheus-operator) used for deploying
-   Prometheus for monitoring
  * **Presslabs Dashboard**
  
  
@@ -119,8 +117,6 @@ Set application secrets and configuration like domain name, Google project ID an
 
 ```shell
 export dashboardDomain=domain.example.com
-export dashboardProjectID=<google cloud project id>
-export dashboardServiceAccountKey=<service account key base64 encoded>
 export dashboardOIDCClientID=<oidc client id base64 encoded>
 export dashboardOIDCSecret=<oidc secret base64 encoded>
 export dashboardOIDCIssuer=<oidc issuer base64 encoded>
@@ -129,8 +125,8 @@ export dashboardOIDCIssuer=<oidc issuer base64 encoded>
 Configure the container images:
 
 ```shell
-REGISTRY=gcr.io/presslabs/dashboard
-TAG=latest
+REGISTRY=gcr.io/press-labs-public
+TAG=1.0
 
 export dashboardImage="${REGISTRY}/dashboard:${TAG}"
 
@@ -243,7 +239,7 @@ Use `envsubst` to expand the template. We recommend that you save the expanded
 manifest file for future updates to the application.
 
 ```shell
-cat manifest/manifest_deployer.yaml.template manifest/manifest_job.yaml.template  | envsubst '$name $namespace $dashboardDomain $dashboardImage $dashboardServiceAccount $dashboardProjectID $dashboardOIDCClient $dashboardOIDCSecret $dashboardOIDCIssuer $serviceAccount $certManagerImageRegistry $certManagerImageTag $certAcmeSolverImageRegistry $certAcmeSolverImageTag  $certWebhookImageRegistry $certWebhookImageTag $certCAinjectorImageRegistry $certCAinjectorImageTag $ingressImageRegistry $ingressImageTag $ingressDefaultBackendImageRegistry $ingressDefaultBackendImageTag $mysqlControllerImage $mysqlOrchestratorImage $mysqlOrchestratorPassowrd $wordpressOperatorImage ' \
+cat manifest/manifest_deployer.yaml.template manifest/manifest_job.yaml.template  | envsubst '$name $namespace $dashboardDomain $dashboardImage $dashboardOIDCClient $dashboardOIDCSecret $dashboardOIDCIssuer $serviceAccount $certManagerImageRegistry $certManagerImageTag $certAcmeSolverImageRegistry $certAcmeSolverImageTag  $certWebhookImageRegistry $certWebhookImageTag $certCAinjectorImageRegistry $certCAinjectorImageTag $ingressImageRegistry $ingressImageTag $ingressDefaultBackendImageRegistry $ingressDefaultBackendImageTag $mysqlControllerImage $mysqlOrchestratorImage $mysqlOrchestratorPassowrd $wordpressOperatorImage ' \
   > "${name}_manifest.yaml"
 ```
 
