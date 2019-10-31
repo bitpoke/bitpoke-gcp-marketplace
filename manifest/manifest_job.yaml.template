@@ -803,6 +803,30 @@ data:
       - get
       - list
       - watch
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - mysqlusers
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - mysqldatabases
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
+      - mysql.presslabs.org
+      resources:
+      - mysqlclusters
+      verbs:
+      - get
+      - list
+      - watch
     ---
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
@@ -1318,7 +1342,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 0.0.1
-  name: ${name}-dash-globals-manifests-2htd946h42
+  name: ${name}-dash-globals-manifests-9kf2b4m9f4
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1363,7 +1387,7 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-2htd946h42
+          name: ${name}-dash-globals-manifests-9kf2b4m9f4
         name: globals-manifests
       - configMap:
           name: ${name}-dash-crds-manifests-mf42259bg2
