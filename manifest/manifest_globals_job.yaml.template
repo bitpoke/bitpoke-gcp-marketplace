@@ -1,0 +1,964 @@
+apiVersion: v1
+data:
+  manifest_globals.yaml: |
+    apiVersion: v1
+    kind: Namespace
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+        cert-manager.io/disable-validation: "true"
+      name: presslabs-system
+    ---
+    apiVersion: apiextensions.k8s.io/v1beta1
+    kind: CustomResourceDefinition
+    metadata:
+      annotations:
+        helm.sh/hook: crd-install
+      labels:
+        app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+        chart: dashboard-0.1.0_master
+        controller-tools.k8s.io: "1.0"
+        heritage: Tiller
+        release: ${name}
+      name: accountbindings.dashboard.presslabs.com
+    spec:
+      group: dashboard.presslabs.com
+      names:
+        kind: AccountBinding
+        plural: accountbindings
+      scope: Namespaced
+      validation:
+        openAPIV3Schema:
+          properties:
+            apiVersion:
+              description: 'APIVersion defines the versioned schema of this representation
+                of an object. Servers should convert recognized schemas to the latest
+                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              type: string
+            kind:
+              description: 'Kind is a string value representing the REST resource this
+                object represents. Servers may infer this from the endpoint the client
+                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              type: string
+            metadata:
+              type: object
+            spec:
+              properties:
+                userId:
+                  description: The unaltered OpenID Connect subject
+                  type: string
+              required:
+              - userId
+              type: object
+      version: v1alpha1
+    ---
+    apiVersion: apiextensions.k8s.io/v1beta1
+    kind: CustomResourceDefinition
+    metadata:
+      annotations:
+        helm.sh/hook: crd-install
+      labels:
+        app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+        chart: dashboard-0.1.0_master
+        controller-tools.k8s.io: "1.0"
+        heritage: Tiller
+        release: ${name}
+      name: invites.dashboard.presslabs.com
+    spec:
+      group: dashboard.presslabs.com
+      names:
+        kind: Invite
+        plural: invites
+      scope: Namespaced
+      subresources:
+        status: {}
+      validation:
+        openAPIV3Schema:
+          properties:
+            apiVersion:
+              description: 'APIVersion defines the versioned schema of this representation
+                of an object. Servers should convert recognized schemas to the latest
+                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              type: string
+            kind:
+              description: 'Kind is a string value representing the REST resource this
+                object represents. Servers may infer this from the endpoint the client
+                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              type: string
+            metadata:
+              type: object
+            spec:
+              properties:
+                email:
+                  description: The email of the invited user (it is recommended to encrypt
+                    the string)
+                  type: string
+                redeemToken:
+                  description: RedeemToken is the token used for verification purposes
+                    when redeeming the invite. It is recommended to encrypt the string.
+                  type: string
+              type: object
+            status:
+              properties:
+                conditions:
+                  description: Conditions represents the Invite resource conditions list.
+                  items:
+                    properties:
+                      lastTransitionTime:
+                        description: Last time the condition transitioned from one status
+                          to another.
+                        format: date-time
+                        type: string
+                      lastUpdateTime:
+                        description: The last time this condition was updated.
+                        format: date-time
+                        type: string
+                      message:
+                        description: A human readable message indicating details about
+                          the transition.
+                        type: string
+                      reason:
+                        description: The reason for the condition's last transition.
+                        type: string
+                      status:
+                        description: Status of the condition, one of True, False, Unknown.
+                        type: string
+                      type:
+                        description: Type of Invite condition.
+                        type: string
+                    required:
+                    - type
+                    - status
+                    - lastTransitionTime
+                    - reason
+                    - message
+                    type: object
+                  type: array
+                userId:
+                  description: UserID is the ID of the invited user
+                  type: string
+              type: object
+      version: v1alpha1
+    ---
+    apiVersion: apiextensions.k8s.io/v1beta1
+    kind: CustomResourceDefinition
+    metadata:
+      annotations:
+        helm.sh/hook: crd-install
+      labels:
+        app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+        chart: dashboard-0.1.0_master
+        controller-tools.k8s.io: "1.0"
+        heritage: Tiller
+        release: ${name}
+      name: mysqldatabases.dashboard.presslabs.com
+    spec:
+      group: dashboard.presslabs.com
+      names:
+        kind: MySQLDatabase
+        plural: mysqldatabases
+      scope: Namespaced
+      validation:
+        openAPIV3Schema:
+          properties:
+            apiVersion:
+              description: 'APIVersion defines the versioned schema of this representation
+                of an object. Servers should convert recognized schemas to the latest
+                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              type: string
+            kind:
+              description: 'Kind is a string value representing the REST resource this
+                object represents. Servers may infer this from the endpoint the client
+                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              type: string
+            metadata:
+              type: object
+            spec:
+              properties:
+                clusterRef:
+                  description: ClusterRef represents a reference to the MySQL cluster.
+                    This field should be immutable.
+                  type: object
+                database:
+                  description: Database represents the database name which will be created.
+                    This field should be immutable.
+                  type: string
+              required:
+              - clusterRef
+              - database
+              type: object
+            status:
+              properties:
+                conditions:
+                  description: Conditions represents the MySQLDatabase  resource conditions
+                    list.
+                  items:
+                    properties:
+                      lastTransitionTime:
+                        description: Last time the condition transitioned from one status
+                          to another.
+                        format: date-time
+                        type: string
+                      lastUpdateTime:
+                        description: The last time this condition was updated.
+                        format: date-time
+                        type: string
+                      message:
+                        description: A human readable message indicating details about
+                          the transition.
+                        type: string
+                      reason:
+                        description: The reason for the condition's last transition.
+                        type: string
+                      status:
+                        description: Status of the condition, one of True, False, Unknown.
+                        type: string
+                      type:
+                        description: Type of MySQLDatabase condition.
+                        type: string
+                    required:
+                    - type
+                    - status
+                    - lastTransitionTime
+                    - reason
+                    - message
+                    type: object
+                  type: array
+              type: object
+      version: v1alpha1
+    ---
+    apiVersion: apiextensions.k8s.io/v1beta1
+    kind: CustomResourceDefinition
+    metadata:
+      annotations:
+        helm.sh/hook: crd-install
+      labels:
+        app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+        chart: dashboard-0.1.0_master
+        controller-tools.k8s.io: "1.0"
+        heritage: Tiller
+        release: ${name}
+      name: mysqlusers.dashboard.presslabs.com
+    spec:
+      group: dashboard.presslabs.com
+      names:
+        kind: MySQLUser
+        plural: mysqlusers
+      scope: Namespaced
+      validation:
+        openAPIV3Schema:
+          properties:
+            apiVersion:
+              description: 'APIVersion defines the versioned schema of this representation
+                of an object. Servers should convert recognized schemas to the latest
+                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              type: string
+            kind:
+              description: 'Kind is a string value representing the REST resource this
+                object represents. Servers may infer this from the endpoint the client
+                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              type: string
+            metadata:
+              type: object
+            spec:
+              properties:
+                allowedHost:
+                  description: AllowedHost is the allowed host to connect from. This field
+                    should be immutable.
+                  type: string
+                clusterRef:
+                  description: ClusterRef represents a reference to the MySQL cluster.
+                    This field should be immutable.
+                  type: object
+                password:
+                  description: Password is the password for the user.
+                  properties:
+                    key:
+                      description: The key of the secret to select from.  Must be a valid
+                        secret key.
+                      type: string
+                    name:
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                        TODO: Add other useful fields. apiVersion, kind, uid?'
+                      type: string
+                  required:
+                  - key
+                  type: object
+                permissions:
+                  description: Permissions is the list of roles that user has in the specified
+                    database.
+                  items:
+                    properties:
+                      permissions:
+                        description: Permissions represents the permissions granted on
+                          the schema/tables
+                        items:
+                          type: string
+                        type: array
+                      schema:
+                        description: Schema represents the schema to which the permission
+                          applies
+                        type: string
+                      tables:
+                        description: Tables represents the tables inside the schema to
+                          which the permission applies
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - schema
+                    - tables
+                    - permissions
+                    type: object
+                  type: array
+                user:
+                  description: User is the name of the user that will be created with
+                    will access the specified database. This field should be immutable.
+                  type: string
+              required:
+              - clusterRef
+              - user
+              - password
+              type: object
+            status:
+              properties:
+                conditions:
+                  description: Conditions represents the MySQLUser resource conditions
+                    list.
+                  items:
+                    properties:
+                      lastTransitionTime:
+                        description: Last time the condition transitioned from one status
+                          to another.
+                        format: date-time
+                        type: string
+                      lastUpdateTime:
+                        description: The last time this condition was updated.
+                        format: date-time
+                        type: string
+                      message:
+                        description: A human readable message indicating details about
+                          the transition.
+                        type: string
+                      reason:
+                        description: The reason for the condition's last transition.
+                        type: string
+                      status:
+                        description: Status of the condition, one of True, False, Unknown.
+                        type: string
+                      type:
+                        description: Type of MySQLUser condition.
+                        type: string
+                    required:
+                    - type
+                    - status
+                    - lastTransitionTime
+                    - reason
+                    - message
+                    type: object
+                  type: array
+              type: object
+      version: v1alpha1
+    ---
+    apiVersion: apiextensions.k8s.io/v1beta1
+    kind: CustomResourceDefinition
+    metadata:
+      annotations:
+        helm.sh/hook: crd-install
+      labels:
+        app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+        chart: dashboard-0.1.0_master
+        controller-tools.k8s.io: "1.0"
+        heritage: Tiller
+        release: ${name}
+      name: projects.dashboard.presslabs.com
+    spec:
+      group: dashboard.presslabs.com
+      names:
+        kind: Project
+        plural: projects
+      scope: Namespaced
+      validation:
+        openAPIV3Schema:
+          properties:
+            apiVersion:
+              description: 'APIVersion defines the versioned schema of this representation
+                of an object. Servers should convert recognized schemas to the latest
+                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              type: string
+            kind:
+              description: 'Kind is a string value representing the REST resource this
+                object represents. Servers may infer this from the endpoint the client
+                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              type: string
+            metadata:
+              type: object
+            spec:
+              properties:
+                namespace:
+                  description: Name of ProjectNamespace
+                  type: string
+              type: object
+      version: v1alpha1
+    ---
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+      name: dashboard.presslabs.com:organization::member
+    rules:
+    - apiGroups:
+      - ""
+      resources:
+      - namespaces
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
+      - ""
+      resources:
+      - secrets
+      verbs:
+      - create
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - projects
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - invites
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - accountbindings
+      verbs:
+      - get
+      - list
+      - watch
+    ---
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+      name: dashboard.presslabs.com:organization::owner
+    rules:
+    - apiGroups:
+      - ""
+      resources:
+      - namespaces
+      verbs:
+      - get
+      - list
+      - watch
+      - delete
+      - update
+      - patch
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - projects
+      verbs:
+      - get
+      - list
+      - watch
+      - create
+      - delete
+      - update
+      - patch
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - invites
+      verbs:
+      - get
+      - list
+      - watch
+      - create
+      - delete
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - accountbindings
+      verbs:
+      - get
+      - list
+      - watch
+      - create
+      - delete
+    ---
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+      name: dashboard.presslabs.com:project::member
+    rules:
+    - apiGroups:
+      - ""
+      resources:
+      - namespaces
+      - events
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
+      - ""
+      resources:
+      - secrets
+      verbs:
+      - create
+    - apiGroups:
+      - wordpress.presslabs.org
+      resources:
+      - wordpresses
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - mysqlusers
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - mysqldatabases
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
+      - mysql.presslabs.org
+      resources:
+      - mysqlclusters
+      verbs:
+      - get
+      - list
+      - watch
+    ---
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+      name: dashboard.presslabs.com:project::owner
+    rules:
+    - apiGroups:
+      - ""
+      resources:
+      - secrets
+      verbs:
+      - create
+    - apiGroups:
+      - ""
+      resources:
+      - namespaces
+      - events
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
+      - ""
+      resources:
+      - secrets
+      verbs:
+      - create
+    - apiGroups:
+      - wordpress.presslabs.org
+      resources:
+      - wordpresses
+      verbs:
+      - get
+      - list
+      - watch
+      - create
+      - delete
+      - update
+      - patch
+    ---
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRoleBinding
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+      name: dashboard.presslabs.com:dashboard:superadmin
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: cluster-admin
+    subjects:
+    - kind: Group
+      name: superadmins@dashboard.presslabs.com
+    ---
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+        rbac.dashboard.presslabs.com/aggregate-to-controller: "true"
+      name: dashboard.presslabs.com:project::prometheus
+    rules:
+    - apiGroups:
+      - ""
+      resources:
+      - nodes
+      - services
+      - endpoints
+      - pods
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
+      - ""
+      resources:
+      - configmaps
+      verbs:
+      - get
+    - nonResourceURLs:
+      - /metrics
+      verbs:
+      - get
+    ---
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+        rbac.dashboard.presslabs.com/aggregate-to-controller: "true"
+      name: dashboard.presslabs.com:organization::invites
+    rules:
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - invites
+      verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+    ---
+    apiVersion: scheduling.k8s.io/v1beta1
+    description: This priority class is used for Presslabs Dashboard MySQL Cluster pods.
+    globalDefault: false
+    kind: PriorityClass
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+      name: presslabs-dashboard-database
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
+    value: 50000
+    ---
+    apiVersion: scheduling.k8s.io/v1beta1
+    description: This priority class is used for Presslabs Dashboard Memcached pods.
+    globalDefault: false
+    kind: PriorityClass
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+      name: presslabs-dashboard-memcached
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
+    value: 10000
+    ---
+    apiVersion: admissionregistration.k8s.io/v1beta1
+    kind: ValidatingWebhookConfiguration
+    metadata:
+      annotations:
+        cert-manager.io/inject-ca-from: ${namespace}/${name}-dashboard-webhook-ca
+      labels:
+        app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+        chart: dashboard-0.1.0_master
+        heritage: Tiller
+        release: ${name}
+      name: ${name}-dashboard
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
+    webhooks:
+    - clientConfig:
+        service:
+          name: ${name}-dashboard-webhook
+          namespace: ${namespace}
+          path: /validating-create-organization
+      failurePolicy: Fail
+      name: validating-create-organization.presslabs.com
+      namespaceSelector:
+        matchExpressions:
+        - key: control-plane
+          operator: DoesNotExist
+        - key: presslabs.com/kind
+          operator: Exists
+      rules:
+      - apiGroups:
+        - ""
+        apiVersions:
+        - v1
+        operations:
+        - CREATE
+        - UPDATE
+        resources:
+        - namespaces
+    - clientConfig:
+        service:
+          name: ${name}-dashboard-webhook
+          namespace: ${namespace}
+          path: /validating-create-project
+      failurePolicy: Fail
+      name: validating-create-project.presslabs.com
+      namespaceSelector:
+        matchExpressions:
+        - key: control-plane
+          operator: DoesNotExist
+        - key: presslabs.com/kind
+          operator: Exists
+      rules:
+      - apiGroups:
+        - ""
+        apiVersions:
+        - v1
+        operations:
+        - CREATE
+        - UPDATE
+        resources:
+        - namespaces
+    - clientConfig:
+        service:
+          name: ${name}-dashboard-webhook
+          namespace: ${namespace}
+          path: /validating-create-site
+      failurePolicy: Fail
+      name: validating-create-site.presslabs.com
+      namespaceSelector:
+        matchExpressions:
+        - key: control-plane
+          operator: DoesNotExist
+        - key: presslabs.com/kind
+          operator: In
+          values:
+          - project
+      rules:
+      - apiGroups:
+        - wordpress.presslabs.org
+        apiVersions:
+        - v1alpha1
+        operations:
+        - CREATE
+        - UPDATE
+        resources:
+        - wordpresses
+    ---
+    apiVersion: cert-manager.io/v1alpha2
+    kind: Issuer
+    metadata:
+      labels:
+        app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+        chart: dashboard-0.1.0_master
+        heritage: Tiller
+        release: ${name}
+      name: ${name}-dashboard-webhook-ca-issuer
+      namespace: ${namespace}
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
+    spec:
+      selfSigned: {}
+    ---
+    apiVersion: cert-manager.io/v1alpha2
+    kind: Certificate
+    metadata:
+      labels:
+        app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+        chart: dashboard-0.1.0_master
+        heritage: Tiller
+        release: ${name}
+      name: ${name}-dashboard-webhook-ca
+      namespace: ${namespace}
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
+    spec:
+      commonName: ca.dashboard.presslabs.org
+      duration: 43800h
+      isCA: true
+      issuerRef:
+        name: ${name}-dashboard-webhook-ca-issuer
+      secretName: ${name}-dashboard-webhook-ca
+    ---
+    apiVersion: cert-manager.io/v1alpha2
+    kind: Issuer
+    metadata:
+      labels:
+        app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+        chart: dashboard-0.1.0_master
+        heritage: Tiller
+        release: ${name}
+      name: ${name}-dashboard-webhook-ca
+      namespace: ${namespace}
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
+    spec:
+      ca:
+        secretName: ${name}-dashboard-webhook-ca
+    ---
+    apiVersion: cert-manager.io/v1alpha2
+    kind: Certificate
+    metadata:
+      labels:
+        app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+        chart: dashboard-0.1.0_master
+        heritage: Tiller
+        release: ${name}
+      name: ${name}-dashboard-webhook
+      namespace: ${namespace}
+      ownerReferences:
+      - apiVersion: app.k8s.io/v1beta1
+        kind: Application
+        name: ${name}
+        uid: ${APPLICATION_UID}
+    spec:
+      dnsNames:
+      - ${name}-dashboard-webhook
+      - ${name}-dashboard-webhook.${namespace}
+      - ${name}-dashboard-webhook.${namespace}.svc
+      duration: 8760h
+      issuerRef:
+        name: ${name}-dashboard-webhook-ca
+      secretName: ${name}-dashboard-webhook
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 1.0.0
+  name: ${name}-dash-globals-manifests-g657m797f7
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 1.0.0
+  name: ${name}-dash-install-manifests
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+    spec:
+      containers:
+      - args:
+        - |
+          # fail at first command that fails
+          set -e
+          # patch with application UID and create resources
+          # don't validate due to: https://github.com/jetstack/cert-manager/issues/1143
+          APP_UID=$(kubectl get applications.app.k8s.io ${name} -o jsonpath --template '{.metadata.uid}') ;
+          echo "\n++ Patching resources with owner reference: $name ($APP_UID)" ;
+
+          cat /data/globals/manifest_globals.yaml | env -i "APPLICATION_UID=$APP_UID" envsubst | kubectl apply -f- --validate=false ;
+        command:
+        - /bin/sh
+        - -c
+        image: $kubectlImage
+        name: init
+        volumeMounts:
+        - mountPath: /data/globals/
+          name: globals-manifests
+      restartPolicy: Never
+      serviceAccountName: $serviceAccount
+      volumes:
+      - configMap:
+          name: ${name}-dash-globals-manifests-g657m797f7
+        name: globals-manifests

@@ -1,0 +1,61 @@
+component_default: &component_default
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+
+letsencrypt:
+  enabled: true
+  email: $letsEncryptEmail
+  server: $letsEncryptServer
+
+wordpress-operator:
+  <<: *component_default
+  enabled: true
+  crd:
+    install: false
+
+mysql-operator:
+  <<: *component_default
+  enabled: true
+  installCRDs: false
+  orchestrator:
+    <<: *component_default
+    # NOTE: pay atention to this
+    # topologyPassword: ...
+
+nginx-ingress:
+  enabled: true
+  rbac:
+    create: true
+  serviceAccount:
+    create: true
+  controller:
+    <<: *component_default
+    replicaCount: 2
+    minAvailable: 1
+    resources:
+      requests:
+        memory: "768Mi"
+        cpu: "500m"
+    service:
+      loadBalancerIP: $dashboardIP
+      externalTrafficPolicy: Local
+  defaultBackend:
+    <<: *component_default
+    replicaCount: 2
+    minAvailable: 1
+
+cert-manager:
+  <<: *component_default
+  enabled: true
+  webhook:
+    <<: *component_default
+
+  cainjector:
+    <<: *component_default
+
+
+prometheus-operator:
+  enabled: false
+

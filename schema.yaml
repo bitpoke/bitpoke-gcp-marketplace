@@ -117,104 +117,18 @@ properties:
   # Container Images
   #
 
-  # cert-manager
-  certManagerImage:
-    type: string
-    default: $REGISTRY/cert-manager-controller:$TAG
-    x-google-marketplace:
-      type: IMAGE
-      image:
-        generatedProperties:
-          splitByColon:
-            before: certManagerImageRegistry
-            after: certManagerImageTag
-
-  certAcmeSolverImage:
-    type: string
-    default: $REGISTRY/cert-manager-acmesolver:$TAG
-    x-google-marketplace:
-      type: IMAGE
-
-  certWebhookImage:
-    type: string
-    default: $REGISTRY/cert-manager-webhook:$TAG
-    x-google-marketplace:
-      type: IMAGE
-      image:
-        generatedProperties:
-          splitByColon:
-            before: certWebhookImageRegistry
-            after: certWebhookImageTag
-
-  certCAinjectorImage:
-    type: string
-    default: $REGISTRY/cert-manager-cainjector:$TAG
-    x-google-marketplace:
-      type: IMAGE
-      image:
-        generatedProperties:
-          splitByColon:
-            before: certCAinjectorImageRegistry
-            after: certCAinjectorImageTag
-
-  # ingress controller
-  ingressImage:
-    type: string
-    default: $REGISTRY/ingress-controller:$TAG
-    x-google-marketplace:
-      type: IMAGE
-      image:
-        generatedProperties:
-          splitByColon:
-            before: ingressImageRegistry
-            after: ingressImageTag
-
-  ingressDefaultBackendImage:
-    type: string
-    default: $REGISTRY/ingress-default-backend:$TAG
-    x-google-marketplace:
-      type: IMAGE
-      image:
-        generatedProperties:
-          splitByColon:
-            before: ingressDefaultBackendImageRegistry
-            after: ingressDefaultBackendImageTag
-
-  # mysql-operator
-  mysqlControllerImage:
-    type: string
-    default: $REGISTRY/mysql-operator:$TAG
-    x-google-marketplace:
-      type: IMAGE
-
-  mysqlOrchestratorImage:
-    type: string
-    default: $REGISTRY/mysql-orchestrator:$TAG
-    x-google-marketplace:
-      type: IMAGE
-
-  mysqlOrchestratorPassword:
-    type: string
-    x-google-marketplace:
-      type: GENERATED_PASSWORD
-      generatedPassword:
-        length: 16
-        includeSymbols: False
-        base64: True
-
-  # wordpress operator
-  wordpressOperatorImage:
-    type: string
-    default: $REGISTRY/wordpress-operator:$TAG
-    x-google-marketplace:
-      type: IMAGE
-
-  # miscellaneous
   kubectlImage:
     type: string
     default: $REGISTRY/k8s-deploy-tools:$TAG
     x-google-marketplace:
       type: IMAGE
+
+  stackInstallerImage:
+    type: string
+    default: $REGISTRY/stack-installer:$TAG
+    x-google-marketplace:
+      type: IMAGE
+
 
 required:
 - name

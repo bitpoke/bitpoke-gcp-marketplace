@@ -12,23 +12,14 @@ TAG ?= latest
 
 DASHBOARD_CHART_PATH ?= charts/dashboard-gcm
 
-define getTagForImg
-$(shell helm template $(DASHBOARD_CHART_PATH) | grep "image: \"$(1)" | sed 's/.*://' | sed 's/"//' | sed -n '1p')
-endef
-
-CERT_MANAGER_TAG ?= $(call getTagForImg,quay.io/jetstack/cert-manager-controller)
-INGRESS_OPERATOR_TAG ?= $(call getTagForImg,quay.io/kubernetes-ingress-controller/nginx-ingress-controller)
-WORDPRESS_OPERATOR_TAG ?= $(call getTagForImg,quay.io/presslabs/wordpress-operator)
-MYSQL_OPERATOR_TAG ?= $(call getTagForImg,quay.io/presslabs/mysql-operator)
-DASHBOARD_TAG ?= $(call getTagForImg,gcr.io/press-labs-dashboard/dashboard)
+# TODO: try a better detection
+DASHBOARD_TAG ?= $(shell git describe --tags --abbrev=0)
+STACK_TAG ?= latest  # TODO: pin stack version
 
 $(info ---- TAG = $(TAG))
 
-$(info ---- CERT_MANAGER_TAG = $(CERT_MANAGER_TAG))
-$(info ---- INGRESS_OPERATOR_TAG = $(INGRESS_OPERATOR_TAG))
-$(info ---- WORDPRESS_OPERATOR_TAG = $(WORDPRESS_OPERATOR_TAG))
-$(info ---- MYSQL_OPERATOR_TAG = $(MYSQL_OPERATOR_TAG))
 $(info ---- DASHBOARD_TAG = $(DASHBOARD_TAG))
+$(info ---- STACK_TAG = $(STACK_TAG))
 
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/dashboard/deployer:$(TAG)
@@ -41,7 +32,6 @@ APP_PARAMETERS ?= { \
   "dashboardOIDCClientID": "$(OIDC_CLIENT_ID)", \
   "dashboardOIDCSecret": "$(OIDC_SECRET)", \
   "dashboardOIDCIssuer": "$(OIDC_ISSUER)", \
-  "mysqlOrchestratorPassword": "$(ORCHESTRATOR_PASSOWRD)", \
   "letsEncryptEmail": "$(LETS_ENCRYPT_EMAIL)", \
   "letsEncryptServer": "$(LETS_ENCRYPT_SERVER)", \
   "reportingSecret": "$(REPORTING_SECRET)" \
@@ -53,10 +43,7 @@ TESTER_IMAGE ?= $(REGISTRY)/dashboard/tester:$(TAG)
 
 app/build:: .build/dashboard/deployer \
             .build/dashboard/dashboard \
-            .build/dashboard/cert-manager \
-            .build/dashboard/ingress \
-            .build/dashboard/mysql-operator \
-            .build/dashboard/wordpress-operator
+            .build/dashboard/stack-installer
 
 ## Republish docker images to Google registry
 
@@ -99,61 +86,19 @@ endef
 	$(call republish,\
 				 spaceonfire/k8s-deploy-tools,\
 	       $(REGISTRY)/dashboard/k8s-deploy-tools:$(TAG))
+
 	@touch "$@"
 
-# cert-manager images
-.build/dashboard/cert-manager: .build/dashboard/cert-manager-controller \
-                               .build/dashboard/cert-manager-acmesolver \
-                               .build/dashboard/cert-manager-webhook \
-                               .build/dashboard/cert-manager-cainjector
-	@touch "$@"
-
-.build/dashboard/cert-manager-%: .build/var/TAG \
-                                 .build/var/REGISTRY \
-                                 .build/var/CERT_MANAGER_TAG \
-                                 | .build/dashboard
+.build/dashboard/stack-installer: .build/var/REGISTRY \
+                                  .build/var/DASHBOARD_TAG \
+                                  | .build/dashboard
 	$(call republish,\
-         quay.io/jetstack/cert-manager-$*:$(CERT_MANAGER_TAG),\
-         $(REGISTRY)/dashboard/cert-manager-$*:$(TAG))
+				 quay.io/presslabs/stack-installer:$(STACK_TAG),\
+	       $(REGISTRY)/dashboard/stack-installer:$(TAG))
+
 	@touch "$@"
 
 
-# nginx-ingress operator images
-.build/dashboard/ingress: .build/var/TAG \
-                          .build/var/REGISTRY \
-                          .build/var/INGRESS_OPERATOR_TAG \
-                          | .build/dashboard
-	$(call republish,\
-	       quay.io/kubernetes-ingress-controller/nginx-ingress-controller:$(INGRESS_OPERATOR_TAG),\
-         $(REGISTRY)/dashboard/ingress-controller:$(TAG))
-	$(call republish,\
-	       quay.io/presslabs/default-backend:latest,\
-         $(REGISTRY)/dashboard/ingress-default-backend:$(TAG))
-	@touch "$@"
-
-
-# mysql-operator images
-.build/dashboard/mysql-operator: .build/var/TAG \
-                                 .build/var/REGISTRY \
-                                 .build/var/MYSQL_OPERATOR_TAG \
-                                 | .build/dashboard
-	$(call republish,\
-	       quay.io/presslabs/mysql-operator:$(MYSQL_OPERATOR_TAG),\
-	       $(REGISTRY)/dashboard/mysql-operator:$(TAG))
-	$(call republish,\
-	       quay.io/presslabs/mysql-operator-orchestrator:$(MYSQL_OPERATOR_TAG),\
-	       $(REGISTRY)/dashboard/mysql-orchestrator:$(TAG))
-	@touch "$@"
-
-# wordpress-operator images
-.build/dashboard/wordpress-operator: .build/var/TAG \
-                                     .build/var/REGISTRY \
-                                     .build/var/WORDPRESS_OPERATOR_TAG \
-                                     | .build/dashboard
-	$(call republish,\
-	       quay.io/presslabs/wordpress-operator:$(WORDPRESS_OPERATOR_TAG),\
-	       $(REGISTRY)/dashboard/wordpress-operator:$(TAG))
-	@touch "$@"
 
 ## Build the manifests
 
@@ -162,6 +107,10 @@ endef
 
 .build/manifest/charts: | .build/manifest
 	mkdir "$@"
+
+.build/manifest/%: $(shell find manifest -name '*.yaml') | .build/manifest
+	rm -rf "$@"
+	cp -r manifest/$* "$@"
 
 .build/manifest/charts/dashboard-gcm: manifest/values.yaml \
                                   $(DASHBOARD_CHART_PATH) \
@@ -176,11 +125,6 @@ endef
 	find .build/manifest/charts -type f -print0 | xargs -0 sed -i 's/helm-namespace/$${namespace}/g'
 
 
-.build/manifest/%: $(shell find manifest -name '*.yaml') | .build/manifest
-	rm -rf "$@"
-	cp -r manifest/$* "$@"
-
-
 .build/manifest/manifest_globals.yaml: manifest/*.yaml \
                                        .build/manifest/charts/dashboard-gcm \
                                        .build/manifest/globals \
@@ -190,37 +134,33 @@ endef
 		--load_restrictor none --reorder none
 
 
-.build/manifest/manifest_crds.yaml.gz.b64enc: manifest/*.yaml \
-                                              .build/manifest/charts/dashboard-gcm \
-                                              .build/manifest/crds \
-                                              | .build/manifest
-
-# the CRDs are too long to sore them in a configmap so we achieve them before set in a config map.
-# NOTE that gzip -n is used to make zipping idempotent, else the timestamp gets updated every time
-# the file is created.
-	kustomize build .build/manifest/crds \
-		--load_restrictor none | name=$(NAME) envsubst | gzip -n | base64 > "$@"
-
-
-manifest/manifest_deployer.yaml.template: manifest/*.yaml \
+manifest/manifest_dashboard.yaml.template: manifest/*.yaml \
                                  .build/manifest/charts/dashboard-gcm \
-                                 .build/manifest/deployer
+                                 .build/manifest/dashboard
 
-	kustomize build .build/manifest/deployer -o "$@" \
+	kustomize build .build/manifest/dashboard -o "$@" \
 		--load_restrictor none
 
 
-manifest/manifest_job.yaml.template: manifest/*.yaml \
+manifest/manifest_globals_job.yaml.template: manifest/*.yaml \
                                  .build/manifest/job \
-                                 .build/manifest/manifest_globals.yaml \
-                                 .build/manifest/manifest_crds.yaml.gz.b64enc
+                                 .build/manifest/manifest_globals.yaml
 
 	kustomize build .build/manifest/job -o "$@" \
 		--load_restrictor none
 
+manifest/manifest_stack_installer_job.yaml.template: manifest/*.yaml \
+                                 .build/manifest/stack_values.yaml \
+                                 .build/manifest/stack
+
+	kustomize build .build/manifest/stack -o "$@" \
+		--load_restrictor none
+
 
 .PHONY: manifests
-manifests: manifest/manifest_deployer.yaml.template manifest/manifest_job.yaml.template
+manifests: manifest/manifest_dashboard.yaml.template \
+           manifest/manifest_globals_job.yaml.template \
+           manifest/manifest_stack_installer_job.yaml.template
 
 .PHONY: clean-manifests
 clean-manifests:
@@ -236,6 +176,5 @@ verify-manifests: clean-manifests manifests
 
 # check for missing files or not used in kustomize
 	./scripts/check_files.sh .build/manifest/charts \
-	  manifest/deployer/kustomization.yaml \
-	  manifest/crds/kustomization.yaml \
+	  manifest/dashboard/kustomization.yaml \
 	  manifest/globals/kustomization.yaml

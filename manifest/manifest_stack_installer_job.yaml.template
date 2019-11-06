@@ -1,0 +1,115 @@
+apiVersion: v1
+data:
+  stack_values.yaml: |+
+    component_default: &component_default
+      resources:
+        requests:
+          memory: "256Mi"
+          cpu: "100m"
+
+    letsencrypt:
+      enabled: true
+      email: $letsEncryptEmail
+      server: $letsEncryptServer
+
+    wordpress-operator:
+      <<: *component_default
+      enabled: true
+      crd:
+        install: false
+
+    mysql-operator:
+      <<: *component_default
+      enabled: true
+      installCRDs: false
+      orchestrator:
+        <<: *component_default
+        # NOTE: pay atention to this
+        # topologyPassword: ...
+
+    nginx-ingress:
+      enabled: true
+      rbac:
+        create: true
+      serviceAccount:
+        create: true
+      controller:
+        <<: *component_default
+        replicaCount: 2
+        minAvailable: 1
+        resources:
+          requests:
+            memory: "768Mi"
+            cpu: "500m"
+        service:
+          loadBalancerIP: $dashboardIP
+          externalTrafficPolicy: Local
+      defaultBackend:
+        <<: *component_default
+        replicaCount: 2
+        minAvailable: 1
+
+    cert-manager:
+      <<: *component_default
+      enabled: true
+      webhook:
+        <<: *component_default
+
+      cainjector:
+        <<: *component_default
+
+
+    prometheus-operator:
+      enabled: false
+
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 1.0.0
+  name: ${name}-stack-values-6f4k7db6hb
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 1.0.0
+  name: ${name}-dash-install-stack
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+    spec:
+      containers:
+      - env:
+        - name: HELM_HOST
+          value: localhost:44134
+        - name: NAMESPACE
+          value: presslabs-system
+        image: $stackInstallerImage
+        name: installer
+        volumeMounts:
+        - mountPath: /config
+          name: values-yaml
+      - command:
+        - supervisord
+        - -c
+        - /etc/supervisor.conf
+        env:
+        - name: TILLER_NAMESPACE
+          value: presslabs-system
+        image: $stackInstallerImage
+        name: tiller
+      restartPolicy: Never
+      serviceAccountName: $serviceAccount
+      volumes:
+      - configMap:
+          name: ${name}-stack-values-6f4k7db6hb
+        name: values-yaml

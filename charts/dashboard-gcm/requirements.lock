@@ -2,8 +2,5 @@ dependencies:
 - name: dashboard
   repository: file://../../../../chart/dashboard
   version: 0.1.0+master
-- name: stack
-  repository: https://presslabs.github.io/charts/
-  version: v0.7.0
-digest: sha256:58dc530dfe388a60f9f62bc562b278064bee1e5626baf368de4ba3e9dee8ec8e
-generated: "2019-10-18T12:29:30.936783771+03:00"
+digest: sha256:ec6509a8b2ac6d48d4115f95daf7e7ddf9a79d5db188c0d7fac9d22273e18ab2
+generated: "2019-11-06T17:01:36.315566236+02:00"
