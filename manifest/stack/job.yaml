@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "${name}-dash-install-stack"
+spec:
+  template:
+    spec:
+      serviceAccountName: $serviceAccount
+      restartPolicy: Never
+      containers:
+      - name: installer
+        image: $stackInstallerImage
+        env:
+        - name: HELM_HOST
+          value: localhost:44134
+        - name: NAMESPACE
+          value: presslabs-system
+
+        volumeMounts:
+        - name: values-yaml
+          mountPath: /config
+
+      - name: tiller
+        image: $stackInstallerImage
+        # this command will start tiller
+        command: [ "supervisord", "-c", "/etc/supervisor.conf" ]
+        env:
+        - name: TILLER_NAMESPACE
+          value: presslabs-system
+
+      volumes:
+      - name: values-yaml
+        configMap:
+          name: "${name}-stack-values"
+
+
+
+  backoffLimit: 3

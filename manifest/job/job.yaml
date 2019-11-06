@@ -13,27 +13,21 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - |
-            # first install CRDs
-            cat /data/crds/manifest_crds.yaml.gz.b64enc | base64 -d | gzip -dc | kubectl apply -f- --validate=false ;
-
-
+            # fail at first command that fails
+            set -e
             # patch with application UID and create resources
             # don't validate due to: https://github.com/jetstack/cert-manager/issues/1143
             APP_UID=$(kubectl get applications.app.k8s.io ${name} -o jsonpath --template '{.metadata.uid}') ;
             echo "\n++ Patching resources with owner reference: $name ($APP_UID)" ;
+
             cat /data/globals/manifest_globals.yaml | env -i "APPLICATION_UID=$APP_UID" envsubst | kubectl apply -f- --validate=false ;
 
         volumeMounts:
         - name: globals-manifests
           mountPath: /data/globals/
-        - name: crd-manifests
-          mountPath: /data/crds/
       volumes:
       - name: globals-manifests
         configMap:
           name: "${name}-dash-globals-manifests"
-      - name: crd-manifests
-        configMap:
-          name: "${name}-dash-crds-manifests"
 
   backoffLimit: 3

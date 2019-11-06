@@ -1,14 +1,17 @@
-# resources that will be in the deployer and creates the job
+
 resources:
   - job.yaml
 
+
 configMapGenerator:
-- name: "${name}-dash-globals-manifests"
+- name: "${name}-stack-values"
   behavior: create
   files:
-    - ../manifest_globals.yaml
+    - ../stack_values.yaml
+
 
 commonLabels:
   app.kubernetes.io/name: presslabs-dashboard
   app.kubernetes.io/instance: ${name}
   app.kubernetes.io/version: "1.0.0"
+

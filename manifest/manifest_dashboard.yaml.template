@@ -1,0 +1,260 @@
+apiVersion: v1
+data:
+  CLIENT_ID: $dashboardOIDCClientIDEncoded
+  CLIENT_SECRET: $dashboardOIDCSecretEncoded
+  ISSUER: $dashboardOIDCIssuerEncoded
+kind: Secret
+metadata:
+  labels:
+    app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 1.0.0
+    chart: dashboard-0.1.0_master
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-oidc
+type: Opaque
+---
+apiVersion: v1
+data:
+  DSN: ""
+kind: Secret
+metadata:
+  labels:
+    app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 1.0.0
+    chart: dashboard-0.1.0_master
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-sentry
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 1.0.0
+    chart: dashboard-0.1.0_master
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-apiserver
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  - name: grpc
+    port: 9000
+    protocol: TCP
+    targetPort: grpc
+  selector:
+    app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 1.0.0
+    component: apiserver
+    release: ${name}
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 1.0.0
+    chart: dashboard-0.1.0_master
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-webhook
+spec:
+  ports:
+  - name: http
+    port: 443
+    protocol: TCP
+    targetPort: 4433
+  selector:
+    app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 1.0.0
+    component: controller
+    release: ${name}
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 1.0.0
+    chart: dashboard-0.1.0_master
+    component: apiserver
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-apiserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard
+      app.kubernetes.io/instance: ${name}
+      app.kubernetes.io/name: presslabs-dashboard
+      app.kubernetes.io/version: 1.0.0
+      component: apiserver
+      release: ${name}
+  template:
+    metadata:
+      annotations:
+        checksum/oidc-config: f2a683a6393e8db92df3de75ad77b9966d88456c084c28a2fdced664a7786efa
+      labels:
+        app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+        component: apiserver
+        release: ${name}
+    spec:
+      containers:
+      - args:
+        - apiserver
+        - --http-addr=:8080
+        - --grpc-addr=:9000
+        - --base-url=//$dashboardDomain
+        env:
+        - name: DASHBOARD_SUPERADMIN_EMAILS
+          value: ${dashboardAdminEmails}
+        envFrom:
+        - prefix: OIDC_
+          secretRef:
+            name: ${name}-dashboard-oidc
+        - prefix: SENTRY_
+          secretRef:
+            name: ${name}-dashboard-sentry
+        image: $dashboardImage
+        imagePullPolicy: IfNotPresent
+        name: apiserver
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 9000
+          name: grpc
+          protocol: TCP
+        resources: null
+      serviceAccount: $serviceAccount
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 1.0.0
+    chart: dashboard-0.1.0_master
+    component: controller
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard
+      app.kubernetes.io/instance: ${name}
+      app.kubernetes.io/name: presslabs-dashboard
+      app.kubernetes.io/version: 1.0.0
+      component: controller
+      release: ${name}
+  template:
+    metadata:
+      annotations:
+        checksum/config: d10b9e8556c0ebebd527530ad21f381cf80e3ae0c167848700fc42d1ea22638f
+      labels:
+        app: dashboard
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+        component: controller
+        release: ${name}
+    spec:
+      containers:
+      - args:
+        - controller-manager
+        - --webhook-port=4433
+        - --webhook-cert-dir=/tmp/${name}-dashboard-webhook-cert-dir
+        - --webhook-service-name=${name}-dashboard-webhook
+        - --prometheus-operator-enabled=false
+        - --site-certificate-issuer=${name}-default
+        env:
+        - name: AGENT_ENCODED_KEY
+          valueFrom:
+            secretKeyRef:
+              key: reporting-key
+              name: $reportingSecret
+        - name: AGENT_CONSUMER_ID
+          valueFrom:
+            secretKeyRef:
+              key: consumer-id
+              name: $reportingSecret
+        - name: AGENT_SERVICE_NAME
+          value: presslabs-dashboard.mp-press-labs-public.appspot.com
+        image: $dashboardImage
+        imagePullPolicy: IfNotPresent
+        name: controller
+        ports:
+        - containerPort: 4433
+          name: webhook
+        volumeMounts:
+        - mountPath: /tmp/${name}-dashboard-webhook-cert-dir
+          name: webhook-certs
+      serviceAccount: $serviceAccount
+      volumes:
+      - name: webhook-certs
+        secret:
+          items:
+          - key: tls.crt
+            path: cert.pem
+          - key: tls.key
+            path: key.pem
+          secretName: ${name}-dashboard-webhook
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: ${name}-default
+    kubernetes.io/ingress.class: presslabs-stack
+  labels:
+    app: dashboard
+    app.kubernetes.io/instance: ${name}
+    app.kubernetes.io/name: presslabs-dashboard
+    app.kubernetes.io/version: 1.0.0
+    chart: dashboard-0.1.0_master
+    heritage: Tiller
+    release: ${name}
+  name: ${name}-dashboard-apiserver
+spec:
+  rules:
+  - host: $dashboardDomain
+    http:
+      paths:
+      - backend:
+          serviceName: ${name}-dashboard-apiserver
+          servicePort: http
+        path: /
+  tls:
+  - hosts:
+    - $dashboardDomain
+    secretName: ${name}-dashboard-tls
