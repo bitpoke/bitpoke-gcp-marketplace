@@ -827,6 +827,14 @@ data:
       - get
       - list
       - watch
+    - apiGroups:
+      - certificates.cert-manager.io
+      resources:
+      - certificates
+      verbs:
+      - get
+      - list
+      - watch
     ---
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
@@ -1342,7 +1350,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 0.0.1
-  name: ${name}-dash-globals-manifests-9kf2b4m9f4
+  name: ${name}-dash-globals-manifests-bf6b77d7k2
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1387,7 +1395,7 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-9kf2b4m9f4
+          name: ${name}-dash-globals-manifests-bf6b77d7k2
         name: globals-manifests
       - configMap:
           name: ${name}-dash-crds-manifests-mf42259bg2
