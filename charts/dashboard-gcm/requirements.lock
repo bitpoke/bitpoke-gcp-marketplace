@@ -1,6 +1,6 @@
 dependencies:
 - name: dashboard
-  repository: file://../../../../chart/dashboard
+  repository: file://../../../../deploy/charts/dashboard
   version: 0.1.0+master
-digest: sha256:ec6509a8b2ac6d48d4115f95daf7e7ddf9a79d5db188c0d7fac9d22273e18ab2
-generated: "2019-11-06T17:01:36.315566236+02:00"
+digest: sha256:77d973a9838d7d97290b989183f1222bf8cf100d1aa3a45087d310b93080819b
+generated: "2019-11-29T15:24:19.235988+02:00"

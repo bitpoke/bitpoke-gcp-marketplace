@@ -1,3 +1,7 @@
+.PHONY: .git.publish
+.git.publish:
+	@$(MAKE) -f Makefile.new .git.publish
+
 # Convenience makefiles.
 include gcloud.Makefile
 include var.Makefile
@@ -7,6 +11,12 @@ include crd.Makefile
 # application.
 # It requires several APP_* variables defined as followed.
 include app.Makefile
+
+ifeq ($(shell uname -s | tr '[:upper:]' '[:lower:]'),darwin)
+	SEDI = sed -i ''
+else
+	SEDI = sed -i
+endif
 
 TAG ?= latest
 
@@ -121,8 +131,8 @@ endef
 			--kube-version 1.10 \
 			--output-dir .build/manifest/charts
 # it we need to replace the release name and namespace with our placeholders
-	find .build/manifest/charts -type f -print0 | xargs -0 sed -i 's/helm-release-name/$${name}/g'
-	find .build/manifest/charts -type f -print0 | xargs -0 sed -i 's/helm-namespace/$${namespace}/g'
+	find .build/manifest/charts -type f -print0 | xargs -0 $(SEDI) 's/helm-release-name/$${name}/g'
+	find .build/manifest/charts -type f -print0 | xargs -0 $(SEDI) 's/helm-namespace/$${namespace}/g'
 
 
 .build/manifest/manifest_globals.yaml: manifest/*.yaml \
