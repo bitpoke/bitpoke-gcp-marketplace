@@ -24,8 +24,6 @@ data:
       installCRDs: false
       orchestrator:
         <<: *component_default
-        # NOTE: pay atention to this
-        # topologyPassword: ...
 
     nginx-ingress:
       enabled: true
@@ -68,7 +66,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.0.0
-  name: ${name}-stack-values-6f4k7db6hb
+  name: ${name}-stack-values-8mk55ttmf6
 ---
 apiVersion: batch/v1
 kind: Job
@@ -111,5 +109,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-stack-values-6f4k7db6hb
+          name: ${name}-stack-values-8mk55ttmf6
         name: values-yaml

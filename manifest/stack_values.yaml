@@ -21,8 +21,6 @@ mysql-operator:
   installCRDs: false
   orchestrator:
     <<: *component_default
-    # NOTE: pay atention to this
-    # topologyPassword: ...
 
 nginx-ingress:
   enabled: true
