@@ -144,36 +144,10 @@ required:
 x-google-marketplace:
   clusterConstraints:
     resources:
-    # Presslabs Dashboard System pods
-    - replicas: 9
-      requests:
-        cpu: 100m
-        memory: 256Mi
-      affinity:
-        simpleNodeAffinity:
-          type: REQUIRE_MINIMUM_NODE_COUNT
-          minimumNodeCount: 2
-    # Presslabs Dashboard nginx Ingress
-    - replicas: 2
-      requests:
-        cpu: 500m
-        memory: 768Mi
-      affinity:
-        simpleNodeAffinity:
-          type: REQUIRE_ONE_NODE_PER_REPLICA
-    # MySQL pods
-    - replicas: 1
-      requests:
-        cpu: 2
-        memory: 4Gi
-      affinity:
-        simpleNodeAffinity:
-          type: REQUIRE_ONE_NODE_PER_REPLICA
-    # WordPress site pods
     - replicas: 3
       requests:
-        cpu: 1
-        memory: 1Gi
+        cpu: 3
+        memory: 12Gi
       affinity:
         simpleNodeAffinity:
           type: REQUIRE_ONE_NODE_PER_REPLICA
