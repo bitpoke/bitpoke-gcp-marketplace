@@ -129,29 +129,7 @@ REGISTRY=gcr.io/press-labs-public
 TAG=1.0
 
 export dashboardImage="${REGISTRY}/dashboard:${TAG}"
-
-export certManagerImage="${REGISTRY}/cert-manager-controller:${TAG}"
-export certManagerImageRegistry="${REGISTRY}/cert-manager-controller"
-export certManagerImageTag="${TAG}"
-export certAcmeSolverImage="${REGISTRY}/cert-manager-acmesolver:${TAG}"
-export certWebhookImage="${REGISTRY}/cert-manager-webhook:${TAG}"
-export certWebhookImageRegistry="${REGISTRY}/cert-manager-webhook"
-export certWebhookImageTag="${TAG}"
-export certCAinjectorImage="${REGISTRY}/cert-manager-cainjector:${TAG}"
-export certCAinjectorImageRegistry="${REGISTRY}/cert-manager-cainjector"
-export certCAinjectorImageTag="${TAG}"
-
-export ingressImage="${REGISTRY}/ingress-controller:${TAG}"
-export ingressImageRegstry="${REGISTRY}/ingress-controller"
-export ingressImageTag="${TAG}"
-export ingressDefaultBackendImage="${REGISTRY}/ingress-default-backend:${TAG}"
-export ingressDefaultBackendImageRegistry="${REGISTRY}/ingress-default-backend"
-export ingressDefaultBackendImageTag="${TAG}"
-
-export mysqlControllerImage="${REGISTRY}/mysql-operator:${TAG}"
-export mysqlOrchestratorImage="${REGISTRY}/mysql-orchestrator:${TAG}"
-
-export wordpressOperatorImage="${REGISTRY}/wordpress-operator:${TAG}"
+export stackInstallerImage="${REGISTRY}/stack-installer:${TAG}"
 ```
 
 The images above are referenced by
@@ -165,20 +143,7 @@ script:
 ```shell
 for i in \
          "dashboardImage" \
-         "certManagerImage" \
-         "certAcmeSolverImage" \
-         "certWebhookImage" \
-         "certCAinjectorImage" \
-         "ingressImage" \
-         "ingressDefaultBackendImage" \
-         "mysqlControllerImage" \
-         "mysqlOrchestratorImage" \
-         "mysqlSidecarImage" \
-         "mysqlMetricsImage" \
-         "wordpressOperatorImage" \
-         "wordpressRuntimeImage" \
-         "wordpressRcloneImage" \
-         "wordpressGitCloneImage"; do
+         "stackInstallerImage"; do
   repo=$(echo ${!i} | cut -d: -f1);
   digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
