@@ -29,6 +29,8 @@ properties:
     title: Presslabs Dashboard Domain
     description: This will be the domain used by the Presslabs Dashboard.
     default: example.com
+    maxLength: 253
+    pattern: "^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
 
   dashboardIP:
     type: string
@@ -74,6 +76,8 @@ properties:
     title: Auth0 Issuer URL
     description: The Auth0 domain, including the https:// prefix and trailing slash.
     default: "https://example.auth0.com/"
+    maxLength: 262
+    pattern: "^https:\\/\\/[a-z0-9]([-a-z0-9]*[a-z0-9])?\\.auth0\\.com\\/$"
     x-google-marketplace:
       type: STRING
       string:
