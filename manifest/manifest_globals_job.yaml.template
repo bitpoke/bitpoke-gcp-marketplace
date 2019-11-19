@@ -551,47 +551,6 @@ data:
       - get
       - list
       - watch
-    - apiGroups:
-      - dashboard.presslabs.com
-      resources:
-      - mysqlusers
-      verbs:
-      - get
-      - list
-      - watch
-    - apiGroups:
-      - dashboard.presslabs.com
-      resources:
-      - mysqldatabases
-      verbs:
-      - get
-      - list
-      - watch
-    - apiGroups:
-      - mysql.presslabs.org
-      resources:
-      - mysqlclusters
-      verbs:
-      - get
-      - update
-      - list
-      - watch
-    - apiGroups:
-      - mysql.presslabs.org
-      resources:
-      - mysqlbackups
-      verbs:
-      - get
-      - list
-      - watch
-    - apiGroups:
-      - cert-manager.io
-      resources:
-      - certificates
-      verbs:
-      - get
-      - list
-      - watch
     ---
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
@@ -717,11 +676,6 @@ data:
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.0.0
       name: presslabs-dashboard-database
-      ownerReferences:
-      - apiVersion: app.k8s.io/v1beta1
-        kind: Application
-        name: ${name}
-        uid: ${APPLICATION_UID}
     value: 50000
     ---
     apiVersion: scheduling.k8s.io/v1beta1
@@ -734,11 +688,6 @@ data:
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.0.0
       name: presslabs-dashboard-memcached
-      ownerReferences:
-      - apiVersion: app.k8s.io/v1beta1
-        kind: Application
-        name: ${name}
-        uid: ${APPLICATION_UID}
     value: 10000
     ---
     apiVersion: admissionregistration.k8s.io/v1beta1
@@ -935,7 +884,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.0.0
-  name: ${name}-dash-globals-manifests-4258gttd4g
+  name: ${name}-dash-globals-manifests-47f4mhhhcg
 ---
 apiVersion: batch/v1
 kind: Job
@@ -977,5 +926,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-4258gttd4g
+          name: ${name}-dash-globals-manifests-47f4mhhhcg
         name: globals-manifests
