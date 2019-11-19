@@ -13,7 +13,7 @@ TAG ?= latest
 DASHBOARD_CHART_PATH ?= charts/dashboard-gcm
 
 DASHBOARD_TAG ?= $(shell git describe --tags --abbrev=0)
-STACK_TAG ?= v0.7.1
+STACK_TAG ?= 0.7.2
 
 $(info ---- TAG = $(TAG))
 
