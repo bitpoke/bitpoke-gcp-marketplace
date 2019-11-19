@@ -26,20 +26,6 @@ patchesJson6902:
     name: ${name}-dashboard
   path: owner_reference_patch.yaml
 
-- target:
-    group: scheduling.k8s.io
-    version: v1beta1
-    kind: PriorityClass
-    name: presslabs-dashboard-memcached
-  path: owner_reference_patch.yaml
-
-- target:
-    group: scheduling.k8s.io
-    version: v1beta1
-    kind: PriorityClass
-    name: presslabs-dashboard-database
-  path: owner_reference_patch.yaml
-
 # certificates
 - target:
     group: cert-manager.io
