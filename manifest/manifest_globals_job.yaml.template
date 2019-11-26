@@ -576,6 +576,14 @@ data:
       - list
       - watch
     - apiGroups:
+      - mysql.presslabs.org
+      resources:
+      - mysqlbackups
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
       - certificates.cert-manager.io
       resources:
       - certificates
@@ -926,7 +934,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.0.0
-  name: ${name}-dash-globals-manifests-tk72dd5bhh
+  name: ${name}-dash-globals-manifests-gm68927bf7
 ---
 apiVersion: batch/v1
 kind: Job
@@ -968,5 +976,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-tk72dd5bhh
+          name: ${name}-dash-globals-manifests-gm68927bf7
         name: globals-manifests
