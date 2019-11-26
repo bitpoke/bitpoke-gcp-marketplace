@@ -584,7 +584,7 @@ data:
       - list
       - watch
     - apiGroups:
-      - certificates.cert-manager.io
+      - cert-manager.io
       resources:
       - certificates
       verbs:
@@ -934,7 +934,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.0.0
-  name: ${name}-dash-globals-manifests-gm68927bf7
+  name: ${name}-dash-globals-manifests-cf9cmffh9f
 ---
 apiVersion: batch/v1
 kind: Job
@@ -976,5 +976,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-gm68927bf7
+          name: ${name}-dash-globals-manifests-cf9cmffh9f
         name: globals-manifests
