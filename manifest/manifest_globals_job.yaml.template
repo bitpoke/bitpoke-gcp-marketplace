@@ -911,7 +911,20 @@ spec:
           # patch with application UID and create resources
           # don't validate due to: https://github.com/jetstack/cert-manager/issues/1143
           APP_UID=$(kubectl get applications.app.k8s.io ${name} -o jsonpath --template '{.metadata.uid}') ;
-          echo "\n++ Patching resources with owner reference: $name ($APP_UID)" ;
+          echo -n "\n++ Patching resources with owner reference: $name ($APP_UID)\n" ;
+
+          # wait for needed CRDs to exists and be ready. timeout of 30s
+          # those CRDs are installed by stack installer
+          RESOURCES="certificates.cert-manager.io issuers.cert-manager.io"
+          i=0
+          while [ $i -lt 30  ]; do
+            i=$(expr $i + 1)
+            kubectl get crd $RESOURCES && i=30
+            sleep 1
+          done
+
+          # expect CRDs to be ready
+          kubectl wait --for condition=established crd $RESOURCES
 
           cat /data/globals/manifest_globals.yaml | env -i "APPLICATION_UID=$APP_UID" envsubst | kubectl apply -f- --validate=false ;
         command:

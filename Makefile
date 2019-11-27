@@ -90,6 +90,7 @@ endef
 
 .build/dashboard/stack-installer: .build/var/REGISTRY \
                                   .build/var/DASHBOARD_TAG \
+                                  .build/var/TAG \
                                   | .build/dashboard
 	$(call republish,\
 				 quay.io/presslabs/stack-installer:$(STACK_TAG),\
