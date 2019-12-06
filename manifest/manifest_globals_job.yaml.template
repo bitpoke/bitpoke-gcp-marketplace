@@ -573,6 +573,7 @@ data:
       - mysqlclusters
       verbs:
       - get
+      - update
       - list
       - watch
     - apiGroups:
@@ -934,7 +935,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.0.0
-  name: ${name}-dash-globals-manifests-cf9cmffh9f
+  name: ${name}-dash-globals-manifests-4258gttd4g
 ---
 apiVersion: batch/v1
 kind: Job
@@ -976,5 +977,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-cf9cmffh9f
+          name: ${name}-dash-globals-manifests-4258gttd4g
         name: globals-manifests
