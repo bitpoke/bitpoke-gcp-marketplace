@@ -20,7 +20,7 @@ spec:
             APP_UID=$(kubectl get applications.app.k8s.io ${name} -o jsonpath --template '{.metadata.uid}') ;
             echo -n "\n++ Patching resources with owner reference: $name ($APP_UID)\n" ;
 
-            # wait for needed CRDs to exists and be ready. timeout of 30s
+            # wait for needed CRDs to exist and be ready; timeout of 30s
             # those CRDs are installed by stack installer
             RESOURCES="certificates.cert-manager.io issuers.cert-manager.io"
             i=0

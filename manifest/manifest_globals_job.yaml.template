@@ -551,6 +551,47 @@ data:
       - get
       - list
       - watch
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - mysqlusers
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
+      - dashboard.presslabs.com
+      resources:
+      - mysqldatabases
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
+      - mysql.presslabs.org
+      resources:
+      - mysqlclusters
+      verbs:
+      - get
+      - update
+      - list
+      - watch
+    - apiGroups:
+      - mysql.presslabs.org
+      resources:
+      - mysqlbackups
+      verbs:
+      - get
+      - list
+      - watch
+    - apiGroups:
+      - cert-manager.io
+      resources:
+      - certificates
+      verbs:
+      - get
+      - list
+      - watch
     ---
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
@@ -884,7 +925,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.0.0
-  name: ${name}-dash-globals-manifests-47f4mhhhcg
+  name: ${name}-dash-globals-manifests-56hc44hct2
 ---
 apiVersion: batch/v1
 kind: Job
@@ -913,7 +954,7 @@ spec:
           APP_UID=$(kubectl get applications.app.k8s.io ${name} -o jsonpath --template '{.metadata.uid}') ;
           echo -n "\n++ Patching resources with owner reference: $name ($APP_UID)\n" ;
 
-          # wait for needed CRDs to exists and be ready. timeout of 30s
+          # wait for needed CRDs to exist and be ready; timeout of 30s
           # those CRDs are installed by stack installer
           RESOURCES="certificates.cert-manager.io issuers.cert-manager.io"
           i=0
@@ -939,5 +980,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-47f4mhhhcg
+          name: ${name}-dash-globals-manifests-56hc44hct2
         name: globals-manifests
