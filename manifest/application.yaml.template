@@ -95,7 +95,8 @@ spec:
     type: Reference
     valueFrom:
       serviceRef:
-        name: ${name}-nginx-ingress-controller
+        namespace: presslabs-system
+        name: stack-nginx-ingress-controller
   - name: Domain Name
     value: https://$dashboardDomain
 
