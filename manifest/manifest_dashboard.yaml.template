@@ -196,7 +196,7 @@ spec:
         - --webhook-cert-dir=/tmp/${name}-dashboard-webhook-cert-dir
         - --webhook-service-name=${name}-dashboard-webhook
         - --prometheus-operator-enabled=false
-        - --site-certificate-issuer=${name}-default
+        - --site-certificate-issuer=stack-default
         env:
         - name: AGENT_ENCODED_KEY
           valueFrom:
@@ -234,7 +234,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
-    cert-manager.io/cluster-issuer: ${name}-default
+    cert-manager.io/cluster-issuer: stack-default
     kubernetes.io/ingress.class: presslabs-stack
   labels:
     app: dashboard

@@ -151,7 +151,7 @@ dashboard:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: presslabs-stack
-        cert-manager.io/cluster-issuer: ${name}-default
+        cert-manager.io/cluster-issuer: stack-default
       hosts:
         - $dashboardDomain
       tls:
@@ -169,7 +169,7 @@ dashboard:
       create: false
       name: $serviceAccount
     extraArgs:
-      - --site-certificate-issuer=${name}-default
+      - --site-certificate-issuer=stack-default
 
   rbac:
     create: false
