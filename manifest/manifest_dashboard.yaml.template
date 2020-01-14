@@ -183,7 +183,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: d10b9e8556c0ebebd527530ad21f381cf80e3ae0c167848700fc42d1ea22638f
+        checksum/config: 9987c6ae9ca2548f958d1696b0fca303aa9574a7346393d1f61ad733f537b5a9
       labels:
         app: dashboard
         app.kubernetes.io/instance: ${name}

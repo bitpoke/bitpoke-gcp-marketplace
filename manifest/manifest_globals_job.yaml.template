@@ -15,6 +15,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
+        controller-gen.kubebuilder.io/version: v0.2.4
         helm.sh/hook: crd-install
       labels:
         app: dashboard
@@ -22,7 +23,6 @@ data:
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.0.0
         chart: dashboard-0.1.0_master
-        controller-tools.k8s.io: "1.0"
         heritage: Tiller
         release: ${name}
       name: accountbindings.dashboard.presslabs.com
@@ -30,24 +30,28 @@ data:
       group: dashboard.presslabs.com
       names:
         kind: AccountBinding
+        listKind: AccountBindingList
         plural: accountbindings
+        singular: accountbinding
       scope: Namespaced
       validation:
         openAPIV3Schema:
+          description: AccountBinding is the Schema for the account bindings API
           properties:
             apiVersion:
               description: 'APIVersion defines the versioned schema of this representation
                 of an object. Servers should convert recognized schemas to the latest
-                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
               type: string
             kind:
               description: 'Kind is a string value representing the REST resource this
                 object represents. Servers may infer this from the endpoint the client
-                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
               type: string
             metadata:
               type: object
             spec:
+              description: AccountBindingSpec defines the desired state of AccountBinding
               properties:
                 userId:
                   description: The unaltered OpenID Connect subject
@@ -55,12 +59,18 @@ data:
               required:
               - userId
               type: object
+          type: object
       version: v1alpha1
+      versions:
+      - name: v1alpha1
+        served: true
+        storage: true
     ---
     apiVersion: apiextensions.k8s.io/v1beta1
     kind: CustomResourceDefinition
     metadata:
       annotations:
+        controller-gen.kubebuilder.io/version: v0.2.4
         helm.sh/hook: crd-install
       labels:
         app: dashboard
@@ -68,7 +78,6 @@ data:
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.0.0
         chart: dashboard-0.1.0_master
-        controller-tools.k8s.io: "1.0"
         heritage: Tiller
         release: ${name}
       name: invites.dashboard.presslabs.com
@@ -76,26 +85,30 @@ data:
       group: dashboard.presslabs.com
       names:
         kind: Invite
+        listKind: InviteList
         plural: invites
+        singular: invite
       scope: Namespaced
       subresources:
         status: {}
       validation:
         openAPIV3Schema:
+          description: Invite is the Schema for the invites API
           properties:
             apiVersion:
               description: 'APIVersion defines the versioned schema of this representation
                 of an object. Servers should convert recognized schemas to the latest
-                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
               type: string
             kind:
               description: 'Kind is a string value representing the REST resource this
                 object represents. Servers may infer this from the endpoint the client
-                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
               type: string
             metadata:
               type: object
             spec:
+              description: InviteSpec defines the desired state of Invite
               properties:
                 email:
                   description: The email of the invited user (it is recommended to encrypt
@@ -107,10 +120,13 @@ data:
                   type: string
               type: object
             status:
+              description: InviteStatus defines the observed state of an Invite
               properties:
                 conditions:
                   description: Conditions represents the Invite resource conditions list.
                   items:
+                    description: InviteCondition defines the condition struct for an Invite
+                      resource
                     properties:
                       lastTransitionTime:
                         description: Last time the condition transitioned from one status
@@ -135,23 +151,29 @@ data:
                         description: Type of Invite condition.
                         type: string
                     required:
-                    - type
-                    - status
                     - lastTransitionTime
-                    - reason
                     - message
+                    - reason
+                    - status
+                    - type
                     type: object
                   type: array
                 userId:
                   description: UserID is the ID of the invited user
                   type: string
               type: object
+          type: object
       version: v1alpha1
+      versions:
+      - name: v1alpha1
+        served: true
+        storage: true
     ---
     apiVersion: apiextensions.k8s.io/v1beta1
     kind: CustomResourceDefinition
     metadata:
       annotations:
+        controller-gen.kubebuilder.io/version: v0.2.4
         helm.sh/hook: crd-install
       labels:
         app: dashboard
@@ -159,7 +181,6 @@ data:
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.0.0
         chart: dashboard-0.1.0_master
-        controller-tools.k8s.io: "1.0"
         heritage: Tiller
         release: ${name}
       name: mysqldatabases.dashboard.presslabs.com
@@ -167,28 +188,37 @@ data:
       group: dashboard.presslabs.com
       names:
         kind: MySQLDatabase
+        listKind: MySQLDatabaseList
         plural: mysqldatabases
+        singular: mysqldatabase
       scope: Namespaced
       validation:
         openAPIV3Schema:
+          description: MySQLDatabase is the Schema for the MySQL Database API
           properties:
             apiVersion:
               description: 'APIVersion defines the versioned schema of this representation
                 of an object. Servers should convert recognized schemas to the latest
-                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
               type: string
             kind:
               description: 'Kind is a string value representing the REST resource this
                 object represents. Servers may infer this from the endpoint the client
-                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
               type: string
             metadata:
               type: object
             spec:
+              description: MySQLDatabaseSpec defines the desired state of MySQLDatabaseSpec
               properties:
                 clusterRef:
                   description: ClusterRef represents a reference to the MySQL cluster.
                     This field should be immutable.
+                  properties:
+                    name:
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                        TODO: Add other useful fields. apiVersion, kind, uid?'
+                      type: string
                   type: object
                 database:
                   description: Database represents the database name which will be created.
@@ -199,11 +229,14 @@ data:
               - database
               type: object
             status:
+              description: MySQLDatabaseStatus defines the observed state of MySQLDatabase
               properties:
                 conditions:
                   description: Conditions represents the MySQLDatabase  resource conditions
                     list.
                   items:
+                    description: MySQLDatabaseCondition defines the condition struct for
+                      a MySQLDatabase resource
                     properties:
                       lastTransitionTime:
                         description: Last time the condition transitioned from one status
@@ -228,20 +261,26 @@ data:
                         description: Type of MySQLDatabase condition.
                         type: string
                     required:
-                    - type
-                    - status
                     - lastTransitionTime
-                    - reason
                     - message
+                    - reason
+                    - status
+                    - type
                     type: object
                   type: array
               type: object
+          type: object
       version: v1alpha1
+      versions:
+      - name: v1alpha1
+        served: true
+        storage: true
     ---
     apiVersion: apiextensions.k8s.io/v1beta1
     kind: CustomResourceDefinition
     metadata:
       annotations:
+        controller-gen.kubebuilder.io/version: v0.2.4
         helm.sh/hook: crd-install
       labels:
         app: dashboard
@@ -249,7 +288,6 @@ data:
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.0.0
         chart: dashboard-0.1.0_master
-        controller-tools.k8s.io: "1.0"
         heritage: Tiller
         release: ${name}
       name: mysqlusers.dashboard.presslabs.com
@@ -257,24 +295,28 @@ data:
       group: dashboard.presslabs.com
       names:
         kind: MySQLUser
+        listKind: MySQLUserList
         plural: mysqlusers
+        singular: mysqluser
       scope: Namespaced
       validation:
         openAPIV3Schema:
+          description: MySQLUser is the Schema for the MySQL User API
           properties:
             apiVersion:
               description: 'APIVersion defines the versioned schema of this representation
                 of an object. Servers should convert recognized schemas to the latest
-                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
               type: string
             kind:
               description: 'Kind is a string value representing the REST resource this
                 object represents. Servers may infer this from the endpoint the client
-                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
               type: string
             metadata:
               type: object
             spec:
+              description: MySQLUserSpec defines the desired state of MySQLUserSpec
               properties:
                 allowedHost:
                   description: AllowedHost is the allowed host to connect from. This field
@@ -283,6 +325,11 @@ data:
                 clusterRef:
                   description: ClusterRef represents a reference to the MySQL cluster.
                     This field should be immutable.
+                  properties:
+                    name:
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                        TODO: Add other useful fields. apiVersion, kind, uid?'
+                      type: string
                   type: object
                 password:
                   description: Password is the password for the user.
@@ -302,6 +349,7 @@ data:
                   description: Permissions is the list of roles that user has in the specified
                     database.
                   items:
+                    description: MySQLPermission defines a MySQL schema permission
                     properties:
                       permissions:
                         description: Permissions represents the permissions granted on
@@ -320,9 +368,9 @@ data:
                           type: string
                         type: array
                     required:
+                    - permissions
                     - schema
                     - tables
-                    - permissions
                     type: object
                   type: array
                 user:
@@ -331,15 +379,18 @@ data:
                   type: string
               required:
               - clusterRef
-              - user
               - password
+              - user
               type: object
             status:
+              description: MySQLUserStatus defines the observed state of MySQLUser
               properties:
                 conditions:
                   description: Conditions represents the MySQLUser resource conditions
                     list.
                   items:
+                    description: MySQLUserCondition defines the condition struct for a
+                      MySQLUser resource
                     properties:
                       lastTransitionTime:
                         description: Last time the condition transitioned from one status
@@ -364,20 +415,26 @@ data:
                         description: Type of MySQLUser condition.
                         type: string
                     required:
-                    - type
-                    - status
                     - lastTransitionTime
-                    - reason
                     - message
+                    - reason
+                    - status
+                    - type
                     type: object
                   type: array
               type: object
+          type: object
       version: v1alpha1
+      versions:
+      - name: v1alpha1
+        served: true
+        storage: true
     ---
     apiVersion: apiextensions.k8s.io/v1beta1
     kind: CustomResourceDefinition
     metadata:
       annotations:
+        controller-gen.kubebuilder.io/version: v0.2.4
         helm.sh/hook: crd-install
       labels:
         app: dashboard
@@ -385,7 +442,6 @@ data:
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.0.0
         chart: dashboard-0.1.0_master
-        controller-tools.k8s.io: "1.0"
         heritage: Tiller
         release: ${name}
       name: projects.dashboard.presslabs.com
@@ -393,30 +449,39 @@ data:
       group: dashboard.presslabs.com
       names:
         kind: Project
+        listKind: ProjectList
         plural: projects
+        singular: project
       scope: Namespaced
       validation:
         openAPIV3Schema:
+          description: Project is the Schema for the projects API
           properties:
             apiVersion:
               description: 'APIVersion defines the versioned schema of this representation
                 of an object. Servers should convert recognized schemas to the latest
-                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
               type: string
             kind:
               description: 'Kind is a string value representing the REST resource this
                 object represents. Servers may infer this from the endpoint the client
-                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
               type: string
             metadata:
               type: object
             spec:
+              description: ProjectSpec defines the desired state of Project
               properties:
                 namespace:
                   description: Name of ProjectNamespace
                   type: string
               type: object
+          type: object
       version: v1alpha1
+      versions:
+      - name: v1alpha1
+        served: true
+        storage: true
     ---
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
@@ -755,9 +820,9 @@ data:
         service:
           name: ${name}-dashboard-webhook
           namespace: ${namespace}
-          path: /validating-create-organization
+          path: /validating-organization-dashboard
       failurePolicy: Fail
-      name: validating-create-organization.presslabs.com
+      name: validating-organization.presslabs.com
       namespaceSelector:
         matchExpressions:
         - key: control-plane
@@ -778,9 +843,9 @@ data:
         service:
           name: ${name}-dashboard-webhook
           namespace: ${namespace}
-          path: /validating-create-project
+          path: /validating-project-dashboard
       failurePolicy: Fail
-      name: validating-create-project.presslabs.com
+      name: validating-project.presslabs.com
       namespaceSelector:
         matchExpressions:
         - key: control-plane
@@ -801,9 +866,9 @@ data:
         service:
           name: ${name}-dashboard-webhook
           namespace: ${namespace}
-          path: /validating-create-site
+          path: /validating-site-dashboard
       failurePolicy: Fail
-      name: validating-create-site.presslabs.com
+      name: validating-site.presslabs.com
       namespaceSelector:
         matchExpressions:
         - key: control-plane
@@ -925,7 +990,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.0.0
-  name: ${name}-dash-globals-manifests-56hc44hct2
+  name: ${name}-dash-globals-manifests-9b82ftf7hh
 ---
 apiVersion: batch/v1
 kind: Job
@@ -980,5 +1045,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-56hc44hct2
+          name: ${name}-dash-globals-manifests-9b82ftf7hh
         name: globals-manifests
