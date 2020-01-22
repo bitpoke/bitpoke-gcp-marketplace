@@ -828,7 +828,9 @@ data:
         - key: control-plane
           operator: DoesNotExist
         - key: presslabs.com/kind
-          operator: Exists
+          operator: In
+          values:
+          - organization
       rules:
       - apiGroups:
         - ""
@@ -851,7 +853,9 @@ data:
         - key: control-plane
           operator: DoesNotExist
         - key: presslabs.com/kind
-          operator: Exists
+          operator: In
+          values:
+          - project
       rules:
       - apiGroups:
         - ""
@@ -873,10 +877,6 @@ data:
         matchExpressions:
         - key: control-plane
           operator: DoesNotExist
-        - key: presslabs.com/kind
-          operator: In
-          values:
-          - project
       rules:
       - apiGroups:
         - wordpress.presslabs.org
@@ -990,7 +990,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.0.0
-  name: ${name}-dash-globals-manifests-9b82ftf7hh
+  name: ${name}-dash-globals-manifests-476mfmhdg4
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1045,5 +1045,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-9b82ftf7hh
+          name: ${name}-dash-globals-manifests-476mfmhdg4
         name: globals-manifests

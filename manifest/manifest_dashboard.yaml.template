@@ -183,7 +183,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 9987c6ae9ca2548f958d1696b0fca303aa9574a7346393d1f61ad733f537b5a9
+        checksum/config: 6af111cc54dad786cd9af408d05b2537dce7bdcb4d6b8c88cd34adde8fef11c1
       labels:
         app: dashboard
         app.kubernetes.io/instance: ${name}
@@ -197,7 +197,6 @@ spec:
         - controller-manager
         - --webhook-port=4433
         - --webhook-cert-dir=/tmp/${name}-dashboard-webhook-cert-dir
-        - --webhook-service-name=${name}-dashboard-webhook
         - --prometheus-operator-enabled=false
         - --site-certificate-issuer=stack-default
         env:
@@ -230,11 +229,6 @@ spec:
       volumes:
       - name: webhook-certs
         secret:
-          items:
-          - key: tls.crt
-            path: cert.pem
-          - key: tls.key
-            path: key.pem
           secretName: ${name}-dashboard-webhook
 ---
 apiVersion: extensions/v1beta1
