@@ -609,6 +609,13 @@ data:
       verbs:
       - create
     - apiGroups:
+      - ""
+      resources:
+      - resourcequota
+      verbs:
+      - get
+      - update
+    - apiGroups:
       - wordpress.presslabs.org
       resources:
       - wordpresses
@@ -682,12 +689,6 @@ data:
       - get
       - list
       - watch
-    - apiGroups:
-      - ""
-      resources:
-      - secrets
-      verbs:
-      - create
     - apiGroups:
       - wordpress.presslabs.org
       resources:
@@ -990,7 +991,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.0.0
-  name: ${name}-dash-globals-manifests-476mfmhdg4
+  name: ${name}-dash-globals-manifests-b9dt2bd572
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1045,5 +1046,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-476mfmhdg4
+          name: ${name}-dash-globals-manifests-b9dt2bd572
         name: globals-manifests
