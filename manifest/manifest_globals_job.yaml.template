@@ -611,7 +611,7 @@ data:
     - apiGroups:
       - ""
       resources:
-      - resourcequota
+      - resourcequotas
       verbs:
       - get
       - update
@@ -991,7 +991,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.0.0
-  name: ${name}-dash-globals-manifests-b9dt2bd572
+  name: ${name}-dash-globals-manifests-87htmddgg9
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1046,5 +1046,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-b9dt2bd572
+          name: ${name}-dash-globals-manifests-87htmddgg9
         name: globals-manifests
