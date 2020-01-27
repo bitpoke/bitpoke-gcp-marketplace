@@ -664,6 +664,12 @@ data:
       - get
       - list
       - watch
+    - apiGroups:
+      - iam.cnrm.cloud.google.com
+      resources:
+      - iamserviceaccounts
+      verbs:
+      - get
     ---
     apiVersion: rbac.authorization.k8s.io/v1
     kind: ClusterRole
@@ -991,7 +997,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.0.0
-  name: ${name}-dash-globals-manifests-87htmddgg9
+  name: ${name}-dash-globals-manifests-cf458829h4
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1046,5 +1052,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-87htmddgg9
+          name: ${name}-dash-globals-manifests-cf458829h4
         name: globals-manifests
