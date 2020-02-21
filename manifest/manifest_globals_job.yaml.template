@@ -594,6 +594,13 @@ data:
       name: dashboard.presslabs.com:project::member
     rules:
     - apiGroups:
+      - apps
+      resources:
+      - statefulsets
+      verbs:
+      - get
+      - update
+    - apiGroups:
       - ""
       resources:
       - namespaces
@@ -997,7 +1004,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.0.0
-  name: ${name}-dash-globals-manifests-cf458829h4
+  name: ${name}-dash-globals-manifests-68hbmtdm48
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1052,5 +1059,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-cf458829h4
+          name: ${name}-dash-globals-manifests-68hbmtdm48
         name: globals-manifests
