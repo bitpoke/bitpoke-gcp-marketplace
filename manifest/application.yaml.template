@@ -88,7 +88,7 @@ spec:
       ```
 
     type: Presslabs Dashboard
-    version: v1.0.0
+    version: v1.3.0
   info:
   # ingress
   - name: Ingress IP
