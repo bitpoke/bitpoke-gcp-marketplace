@@ -22,6 +22,7 @@ TAG ?= latest
 
 DASHBOARD_CHART_PATH ?= charts/dashboard-gcm
 
+DASHBOARD_IMAGE ?= gcr.io/press-labs-dashboard/dashboard-gcp-marketplace
 DASHBOARD_TAG ?= $(shell git describe --tags --abbrev=0)
 STACK_TAG ?= 0.8.1
 
@@ -90,7 +91,7 @@ endef
                             .build/var/DASHBOARD_TAG \
                             | .build/dashboard
 	$(call republish,\
-	       gcr.io/press-labs-public/dashboard:$(DASHBOARD_TAG),\
+	       $(DASHBOARD_IMAGE):$(DASHBOARD_TAG),\
 	       $(REGISTRY)/dashboard:$(TAG))
 	$(call republish,\
 				 spaceonfire/k8s-deploy-tools,\
