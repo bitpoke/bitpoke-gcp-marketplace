@@ -810,6 +810,23 @@ data:
       name: presslabs-dashboard-memcached
     value: 10000
     ---
+    allowVolumeExpansion: true
+    apiVersion: storage.k8s.io/v1
+    kind: StorageClass
+    metadata:
+      labels:
+        addonmanager.kubernetes.io/mode: EnsureExists
+        app.kubernetes.io/instance: ${name}
+        app.kubernetes.io/name: presslabs-dashboard
+        app.kubernetes.io/version: 1.0.0
+        kubernetes.io/cluster-service: "true"
+      name: ssd
+    parameters:
+      type: pd-ssd
+    provisioner: kubernetes.io/gce-pd
+    reclaimPolicy: Delete
+    volumeBindingMode: Immediate
+    ---
     apiVersion: admissionregistration.k8s.io/v1beta1
     kind: ValidatingWebhookConfiguration
     metadata:
@@ -1004,7 +1021,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.0.0
-  name: ${name}-dash-globals-manifests-68hbmtdm48
+  name: ${name}-dash-globals-manifests-h55cb7dt7f
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1059,5 +1076,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-68hbmtdm48
+          name: ${name}-dash-globals-manifests-h55cb7dt7f
         name: globals-manifests

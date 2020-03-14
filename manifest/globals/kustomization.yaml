@@ -12,6 +12,7 @@ resources:
   - ../charts/dashboard-gcm/charts/dashboard/templates/prometheus-clusterrole.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/invite-clusterrole.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/default-priority-classes.yaml
+  - ../charts/dashboard-gcm/charts/dashboard/templates/storage-class-ssd.yaml
 
   # webhooks and its certificates and issuers
   - ../charts/dashboard-gcm/charts/dashboard/templates/webhook.yaml
