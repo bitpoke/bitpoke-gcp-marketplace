@@ -132,6 +132,10 @@ spec:
         - --grpc-addr=:9000
         - --base-url=//$dashboardDomain
         env:
+        - env: DASHBOARD_SYSTEM_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         - name: DASHBOARD_SUPERADMIN_EMAILS
           value: ${dashboardAdminEmails}
         envFrom:
@@ -200,6 +204,10 @@ spec:
         - --prometheus-operator-enabled=false
         - --site-certificate-issuer=stack-default
         env:
+        - env: DASHBOARD_SYSTEM_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         - name: AGENT_ENCODED_KEY
           valueFrom:
             secretKeyRef:
