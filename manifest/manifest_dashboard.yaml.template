@@ -132,7 +132,7 @@ spec:
         - --grpc-addr=:9000
         - --base-url=//$dashboardDomain
         env:
-        - env: DASHBOARD_SYSTEM_NAMESPACE
+        - name: DASHBOARD_SYSTEM_NAMESPACE
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
@@ -204,7 +204,7 @@ spec:
         - --prometheus-operator-enabled=false
         - --site-certificate-issuer=stack-default
         env:
-        - env: DASHBOARD_SYSTEM_NAMESPACE
+        - name: DASHBOARD_SYSTEM_NAMESPACE
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
