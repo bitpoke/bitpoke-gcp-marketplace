@@ -136,7 +136,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        - env: DASHBOARD_RELEASE_NAME
+        - name: DASHBOARD_RELEASE_NAME
           valueFrom:
             fieldRef:
               fieldPath: metadata.labels.release
@@ -212,7 +212,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        - env: DASHBOARD_RELEASE_NAME
+        - name: DASHBOARD_RELEASE_NAME
           valueFrom:
             fieldRef:
               fieldPath: metadata.labels.release
