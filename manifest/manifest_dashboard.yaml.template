@@ -136,6 +136,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        - env: DASHBOARD_RELEASE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels.release
         - name: DASHBOARD_SUPERADMIN_EMAILS
           value: ${dashboardAdminEmails}
         envFrom:
@@ -208,6 +212,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        - env: DASHBOARD_RELEASE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels.release
         - name: AGENT_ENCODED_KEY
           valueFrom:
             secretKeyRef:
