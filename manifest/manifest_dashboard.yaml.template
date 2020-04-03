@@ -201,6 +201,7 @@ spec:
       containers:
       - args:
         - controller-manager
+        - --base-url=//$dashboardDomain
         - --webhook-port=4433
         - --webhook-cert-dir=/tmp/${name}-dashboard-webhook-cert-dir
         - --prometheus-operator-enabled=false
