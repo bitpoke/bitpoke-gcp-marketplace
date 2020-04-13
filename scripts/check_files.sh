@@ -9,7 +9,7 @@ filesinKustomizeFile=.build/files_from_kustomize.txt
 
 find $dir_path -name '*.yaml' |\
     grep -v 'controller-clusterrole-kubebuilder.yaml' |\
-    grep -v 'smtp-defaults.yaml' |\
+    grep -v 'dashboard-installer.yaml' |\
     sed 's/.build\/manifest/../g' | sort > $chartFile
 
 echo -n "" > $filesinKustomizeFile.tmp
