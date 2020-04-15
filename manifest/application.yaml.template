@@ -25,11 +25,11 @@ spec:
     kind: CronJob
 # TODO: deployer don't have permissions to query those resources. Only from version 2 it will be
 # possible to grant more permissions to deployer service account.
-#  - group: certmanager.k8s.io
+#  - group: cert-manager.io
 #    kind: Certificate
-#  - group: certmanager.k8s.io
+#  - group: cert-manager.io
 #    kind: Issuer
-#  - group: certmanager.k8s.io
+#  - group: cert-manager.io
 #    kind: ClusterIssuer
 #  - group: monitoring.coreos.com
 #    kind: Prometheus
