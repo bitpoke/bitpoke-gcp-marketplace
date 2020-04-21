@@ -7,6 +7,7 @@ resources:
   - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-sentry-secret.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/controller-deployment.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/webhook-service.yaml
+  - ../charts/dashboard-gcm/charts/dashboard/templates/dashboard-application.yaml
 
 patchesJson6902:
 # dashboard secrets to bypass base64 encode

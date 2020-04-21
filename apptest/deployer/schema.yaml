@@ -1,50 +1,6 @@
 applicationApiVersion: v1beta1
 
 properties:
-  dashboardOIDCClientID:
-    type: string
-    title: Auth0 Client ID
-    default: "test"
-    x-google-marketplace:
-      type: STRING
-      string:
-        generatedProperties:
-          base64Encoded: dashboardOIDCClientIDEncoded
-
-  dashboardOIDCSecret:
-    type: string
-    title: Auth0 Client Secret
-    default: "test"
-    x-google-marketplace:
-      type: STRING
-      string:
-        generatedProperties:
-          base64Encoded: dashboardOIDCSecretEncoded
-
-  dashboardOIDCIssuer:
-    type: string
-    title: Auth0 Issuer URL
-    default: "https://example.auth0.com/"
-    x-google-marketplace:
-      type: STRING
-      string:
-        generatedProperties:
-          base64Encoded: dashboardOIDCIssuerEncoded
-
-  # let's encrypt
-  letsEncryptEmail:
-    type: string
-    title: Let's Encrypt Account Email
-    default: 'ping@example.com'
-
-  gcpConfigConnectorEnabled:
-    type: boolean
-    default: false
-
   gcpWorkloadIdentityEnabled:
     type: boolean
     default: false
-
-  dashboardAdminEmails:
-    type: string
-    default: "admin@example.com"

@@ -79,7 +79,6 @@ required:
 - name
 - namespace
 - dashboardDomain
-- dashboardAdminEmails
 - gcpWorkloadIdentityEnabled
 
 x-google-marketplace:
