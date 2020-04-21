@@ -205,7 +205,7 @@ spec:
         - --webhook-port=4433
         - --webhook-cert-dir=/tmp/${name}-dashboard-webhook-cert-dir
         - --prometheus-operator-enabled=false
-        - --site-certificate-issuer=stack-default
+        - --site-certificate-issuer=stack-default-certificate-issuer
         env:
         - name: DASHBOARD_SYSTEM_NAMESPACE
           valueFrom:
@@ -248,7 +248,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
-    cert-manager.io/cluster-issuer: stack-default
+    cert-manager.io/cluster-issuer: stack-default-certificate-issuer
     kubernetes.io/ingress.class: presslabs-stack
   labels:
     app: dashboard
