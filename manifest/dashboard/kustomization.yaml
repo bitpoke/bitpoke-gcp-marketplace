@@ -9,14 +9,6 @@ resources:
   - ../charts/dashboard-gcm/charts/dashboard/templates/webhook-service.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/dashboard-application.yaml
 
-patchesJson6902:
-# dashboard secrets to bypass base64 encode
-- target:
-    version: v1
-    kind: Secret
-    name: ${name}-dashboard-oidc
-  path: patches/dashboard_oidc_secret.yaml
-
 commonLabels:
   app.kubernetes.io/name: presslabs-dashboard
   app.kubernetes.io/instance: ${name}

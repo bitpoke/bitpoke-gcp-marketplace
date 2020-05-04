@@ -22,7 +22,7 @@ data:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.4.0
-        chart: dashboard-0.1.0_master
+        chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
       name: accountbindings.dashboard.presslabs.com
@@ -77,7 +77,7 @@ data:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.4.0
-        chart: dashboard-0.1.0_master
+        chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
       name: invites.dashboard.presslabs.com
@@ -180,7 +180,7 @@ data:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.4.0
-        chart: dashboard-0.1.0_master
+        chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
       name: mysqldatabases.dashboard.presslabs.com
@@ -287,7 +287,7 @@ data:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.4.0
-        chart: dashboard-0.1.0_master
+        chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
       name: mysqlusers.dashboard.presslabs.com
@@ -441,7 +441,7 @@ data:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.4.0
-        chart: dashboard-0.1.0_master
+        chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
       name: projects.dashboard.presslabs.com
@@ -851,7 +851,7 @@ data:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.4.0
-        chart: dashboard-0.1.0_master
+        chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
       name: ${name}-dashboard
@@ -941,7 +941,7 @@ data:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.4.0
-        chart: dashboard-0.1.0_master
+        chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
       name: ${name}-dashboard-webhook-ca-issuer
@@ -962,7 +962,7 @@ data:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.4.0
-        chart: dashboard-0.1.0_master
+        chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
       name: ${name}-dashboard-webhook-ca
@@ -988,7 +988,7 @@ data:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.4.0
-        chart: dashboard-0.1.0_master
+        chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
       name: ${name}-dashboard-webhook-ca
@@ -1010,7 +1010,7 @@ data:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
         app.kubernetes.io/version: 1.4.0
-        chart: dashboard-0.1.0_master
+        chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
       name: ${name}-dashboard-webhook
@@ -1035,7 +1035,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.4.0
-  name: ${name}-dash-globals-manifests-6kk97k954d
+  name: ${name}-dash-globals-manifests-t967c64tmh
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1090,5 +1090,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-6kk97k954d
+          name: ${name}-dash-globals-manifests-t967c64tmh
         name: globals-manifests

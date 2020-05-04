@@ -7,143 +7,23 @@ component_default: &component_default
 global:
   leaderElection:
     namespace: ${namespace}
-stack:
-  # override chart name
-  fullnameOverride: "${name}"
-
-  letsencrypt:
-    enabled: true
-    email: $letsEncryptEmail
-    server: $letsEncryptServer
-
-  wordpress-operator:
-    <<: *component_default
-    enabled: true
-    image: $wordpressOperatorImage
-    crd:
-      install: true
-    rbac:
-      create: false
-    serviceAccount:
-      create: false
-      name: $serviceAccount
-
-  mysql-operator:
-    <<: *component_default
-    enabled: true
-    image: $mysqlControllerImage
-    installCRDs: true
-    extraArgs:
-      # this is set to avoid id collision because of a mysql-operator bug #368
-      - --leader-election-id=mysql-operator-leader-election
-    rbac:
-      create: false
-      serviceAccountName: $serviceAccount
-    orchestrator:
-      <<: *component_default
-      image: $mysqlOrchestratorImage
-      # NOTE: this will be ovewrite by kustomize
-      topologyPassword: SET_IN_KUSTOMIZE
-
-  nginx-ingress:
-    enabled: true
-    rbac:
-      create: false
-    serviceAccount:
-      create: false
-      name: $serviceAccount
-    controller:
-      <<: *component_default
-      replicaCount: 2
-      minAvailable: 1
-      resources:
-        requests:
-          memory: "768Mi"
-          cpu: "500m"
-      service:
-        loadBalancerIP: $dashboardIP
-        externalTrafficPolicy: Local
-      image:
-        repository: $ingressImageRegistry
-        # pin version here because it uses comparSemver in chart, patch it later with kustomize
-        tag: v0.24.1
-    defaultBackend:
-      <<: *component_default
-      replicaCount: 2
-      minAvailable: 1
-      serviceAccount:
-        create: false
-        name: $serviceAccount
-      image:
-        repository: $ingressDefaultBackendImageRegistry
-        tag: $ingressDefaultBackendImageTag
-        pullPolicy: Always
-
-  cert-manager:
-    <<: *component_default
-    enabled: true
-    fullnameOverride: ${name}-cert-manager
-    global:
-      rbac:
-        create: false
-
-    webhook:
-      <<: *component_default
-      fullnameOverride: ${name}-cert-manager-webhook
-      image:
-        repository: $certWebhookImageRegistry
-        tag: $certWebhookImageTag
-      global:
-        rbac:
-          create: false
-      serviceAccount:
-        create: false
-        name: $serviceAccount
-
-    cainjector:
-      <<: *component_default
-      fullnameOverride: ${name}-cert-manager-cainjector
-      image:
-        repository: $certCAinjectorImageRegistry
-        tag: $certCAinjectorImageTag
-      global:
-        rbac:
-          create: false
-      serviceAccount:
-        create: false
-        name: $serviceAccount
-
-    image:
-      repository: $certManagerImageRegistry
-      tag: $certManagerImageTag
-    extraArgs:
-      - --acme-http01-solver-image=$certAcmeSolverImage
-    serviceAccount:
-      create: false
-      name: $serviceAccount
-
-
-  prometheus-operator:
-    enabled: false
 
 dashboard:
   image: $dashboardImage
   fullNameOverride: "${name}-dashboard"
 
+  stack:
+    name: stack
+    namespace: presslabs-system
+
   defaults:
     installRoles: true
-    dashboardAdminEmails: "${dashboardAdminEmails}"
 
   crd:
     install: true
 
   apiserver:
     <<: *component_default
-    oidc:
-      # NOTE: those values are patched by kustomize
-      client_id: SET_IN_KUSTOMIZE
-      client_secret: SET_IN_KUSTOMIZE
-      client_issuer: SET_IN_KUSTOMIZE
 
     baseURL: //$dashboardDomain
 

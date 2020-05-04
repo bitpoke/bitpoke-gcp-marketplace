@@ -9,8 +9,8 @@ data:
 
     letsencrypt:
       enabled: true
-      email: $letsEncryptEmail
-      server: $letsEncryptServer
+      email: ping@$dashboardDomain
+      server: https://acme-v02.api.letsencrypt.org/directory
 
     wordpress-operator:
       <<: *component_default
@@ -66,7 +66,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.4.0
-  name: ${name}-stack-values-8mk55ttmf6
+  name: ${name}-stack-values-bfbh4c6k25
 ---
 apiVersion: batch/v1
 kind: Job
@@ -109,5 +109,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-stack-values-8mk55ttmf6
+          name: ${name}-stack-values-bfbh4c6k25
         name: values-yaml

@@ -39,11 +39,6 @@ APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)", \
   "dashboardDomain": "$(DOMAIN)", \
-  "dashboardOIDCClientID": "$(OIDC_CLIENT_ID)", \
-  "dashboardOIDCSecret": "$(OIDC_SECRET)", \
-  "dashboardOIDCIssuer": "$(OIDC_ISSUER)", \
-  "letsEncryptEmail": "$(LETS_ENCRYPT_EMAIL)", \
-  "letsEncryptServer": "$(LETS_ENCRYPT_SERVER)", \
   "reportingSecret": "$(REPORTING_SECRET)" \
 }
 
@@ -181,10 +176,6 @@ clean-manifests:
 # a simple rule to test if the generated manifests are ok
 .PHONY: verify-manifests
 verify-manifests: clean-manifests manifests
-# test if the kustomize replace all fields that needs to be replaced
-	[ "$(shell grep SET_IN_KUSTOMIZE -r --include='*.template')" = "" ] || exit 1
-	[ "$(shell grep U0VUX0lOX0tVU1RPTUlaRQ== -r --include='*.template')" = "" ] || exit 1
-
 # check for missing files or not used in kustomize
 	./scripts/check_files.sh .build/manifest/charts \
 	  manifest/dashboard/kustomization.yaml \

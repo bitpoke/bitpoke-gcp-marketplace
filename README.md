@@ -113,13 +113,10 @@ export name=dashboard-1
 export namespace=default
 ```
 
-Set application secrets and configuration like domain name, Google project ID and OIDC credentials:
+Set application domain name:
 
 ```shell
 export dashboardDomain=domain.example.com
-export dashboardOIDCClientID=<oidc client id base64 encoded>
-export dashboardOIDCSecret=<oidc secret base64 encoded>
-export dashboardOIDCIssuer=<oidc issuer base64 encoded>
 ```
 
 Configure the container images:
@@ -149,16 +146,6 @@ for i in \
   export $i="$repo@$digest";
   env | grep $i;
 done
-```
-
-Generate a random password for Orchestrator topology user:
-
-```shell
-# Install pwgen and base64
-sudo apt-get install -y pwgen base64
-
-# Set the Orchestrator topology password
-export mysqlOrchestratorPassword="$(pwgen 12 1 | tr -d '\n' | base64)"
 ```
 
 #### Create a namespace in your Kubernetes cluster
@@ -204,7 +191,8 @@ Use `envsubst` to expand the template. We recommend that you save the expanded
 manifest file for future updates to the application.
 
 ```shell
-cat manifest/manifest_deployer.yaml.template manifest/manifest_job.yaml.template  | envsubst '$name $namespace $dashboardDomain $dashboardImage $dashboardOIDCClient $dashboardOIDCSecret $dashboardOIDCIssuer $serviceAccount $certManagerImageRegistry $certManagerImageTag $certAcmeSolverImageRegistry $certAcmeSolverImageTag  $certWebhookImageRegistry $certWebhookImageTag $certCAinjectorImageRegistry $certCAinjectorImageTag $ingressImageRegistry $ingressImageTag $ingressDefaultBackendImageRegistry $ingressDefaultBackendImageTag $mysqlControllerImage $mysqlOrchestratorImage $mysqlOrchestratorPassowrd $wordpressOperatorImage ' \
+cat manifest/*.yaml.template |\
+  envsubst '$name $namespace $dashboardDomain $dashboardImage $serviceAccount' \
   > "${name}_manifest.yaml"
 ```
 

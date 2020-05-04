@@ -6,8 +6,8 @@ component_default: &component_default
 
 letsencrypt:
   enabled: true
-  email: $letsEncryptEmail
-  server: $letsEncryptServer
+  email: ping@$dashboardDomain
+  server: https://acme-v02.api.letsencrypt.org/directory
 
 wordpress-operator:
   <<: *component_default
