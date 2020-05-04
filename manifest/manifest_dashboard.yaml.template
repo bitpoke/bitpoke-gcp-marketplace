@@ -9,7 +9,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
-    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/version: 1.4.0
     chart: dashboard-0.1.0_master
     heritage: Tiller
     release: ${name}
@@ -25,7 +25,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
-    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/version: 1.4.0
     chart: dashboard-0.1.0_master
     heritage: Tiller
     release: ${name}
@@ -39,7 +39,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
-    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/version: 1.4.0
     chart: dashboard-0.1.0_master
     heritage: Tiller
     release: ${name}
@@ -58,7 +58,7 @@ spec:
     app: dashboard
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
-    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/version: 1.4.0
     component: apiserver
     release: ${name}
   type: ClusterIP
@@ -70,7 +70,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
-    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/version: 1.4.0
     chart: dashboard-0.1.0_master
     heritage: Tiller
     release: ${name}
@@ -85,7 +85,7 @@ spec:
     app: dashboard
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
-    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/version: 1.4.0
     component: controller
     release: ${name}
   type: ClusterIP
@@ -97,7 +97,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
-    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/version: 1.4.0
     chart: dashboard-0.1.0_master
     component: apiserver
     heritage: Tiller
@@ -110,7 +110,7 @@ spec:
       app: dashboard
       app.kubernetes.io/instance: ${name}
       app.kubernetes.io/name: presslabs-dashboard
-      app.kubernetes.io/version: 1.0.0
+      app.kubernetes.io/version: 1.4.0
       component: apiserver
       release: ${name}
   template:
@@ -121,7 +121,7 @@ spec:
         app: dashboard
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
         component: apiserver
         release: ${name}
     spec:
@@ -131,6 +131,8 @@ spec:
         - --http-addr=:8080
         - --grpc-addr=:9000
         - --base-url=//$dashboardDomain
+        - --stack.application.name="stack"
+        - --stack.application.namespace="presslabs-system"
         env:
         - name: DASHBOARD_SYSTEM_NAMESPACE
           valueFrom:
@@ -170,7 +172,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
-    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/version: 1.4.0
     chart: dashboard-0.1.0_master
     component: controller
     heritage: Tiller
@@ -183,7 +185,7 @@ spec:
       app: dashboard
       app.kubernetes.io/instance: ${name}
       app.kubernetes.io/name: presslabs-dashboard
-      app.kubernetes.io/version: 1.0.0
+      app.kubernetes.io/version: 1.4.0
       component: controller
       release: ${name}
   template:
@@ -194,7 +196,7 @@ spec:
         app: dashboard
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
         component: controller
         release: ${name}
     spec:
@@ -206,6 +208,8 @@ spec:
         - --webhook-cert-dir=/tmp/${name}-dashboard-webhook-cert-dir
         - --prometheus-operator-enabled=false
         - --site-certificate-issuer=stack-default-certificate-issuer
+        - --stack.application.name="stack"
+        - --stack.application.namespace="presslabs-system"
         env:
         - name: DASHBOARD_SYSTEM_NAMESPACE
           valueFrom:
@@ -254,7 +258,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
-    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/version: 1.4.0
   name: ${name}
 spec:
   componentKinds:
@@ -332,11 +336,7 @@ spec:
         name: stack-nginx-ingress-controller
         namespace: presslabs-system
   - name: Domain Name
-    value: https://$dashboardDomain
-  - name: Let's Encrypt email
-    value: $letsEncryptEmail
-  - name: Let's Encrypt URL
-    value: $letsEncryptServer
+    value: //$dashboardDomain
   - name: Auth0 Client ID
     type: Reference
     valueFrom:
@@ -355,9 +355,15 @@ spec:
       secretKeyRef:
         key: ISSUER
         name: ${name}-dashboard-oidc
+  - name: Install Link
+    type: Reference
+    valueFrom:
+      secretKeyRef:
+        key: INSTALL_LINK
+        name: jwt-install-link
   selector:
     matchLabels:
-      app: ${name}
+      app: dashboard
       release: ${name}
 ---
 apiVersion: extensions/v1beta1
@@ -370,7 +376,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
-    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/version: 1.4.0
     chart: dashboard-0.1.0_master
     heritage: Tiller
     release: ${name}

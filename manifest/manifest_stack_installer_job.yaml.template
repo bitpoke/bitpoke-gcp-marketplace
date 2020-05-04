@@ -65,7 +65,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
-    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/version: 1.4.0
   name: ${name}-stack-values-8mk55ttmf6
 ---
 apiVersion: batch/v1
@@ -74,7 +74,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
-    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/version: 1.4.0
   name: ${name}-dash-install-stack
 spec:
   backoffLimit: 3
@@ -83,7 +83,7 @@ spec:
       labels:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
     spec:
       containers:
       - env:

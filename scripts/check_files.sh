@@ -16,7 +16,10 @@ for kustomizationFile in $manifests; do
     yq r $kustomizationFile resources >> $filesinKustomizeFile.tmp
 done
 
-cat $filesinKustomizeFile.tmp | awk '{print $2}' | grep -v 'application.yaml' | grep -v 'namespace.yaml' | sort > $filesinKustomizeFile
+cat $filesinKustomizeFile.tmp | awk '{print $2}' |\
+    grep -v 'namespace.yaml' |\
+    sort > $filesinKustomizeFile
+
 rm $filesinKustomizeFile.tmp
 
 diff $chartFile $filesinKustomizeFile

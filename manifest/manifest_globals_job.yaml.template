@@ -7,7 +7,7 @@ data:
       labels:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
         cert-manager.io/disable-validation: "true"
       name: presslabs-system
     ---
@@ -21,7 +21,7 @@ data:
         app: dashboard
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
         chart: dashboard-0.1.0_master
         heritage: Tiller
         release: ${name}
@@ -76,7 +76,7 @@ data:
         app: dashboard
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
         chart: dashboard-0.1.0_master
         heritage: Tiller
         release: ${name}
@@ -179,7 +179,7 @@ data:
         app: dashboard
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
         chart: dashboard-0.1.0_master
         heritage: Tiller
         release: ${name}
@@ -286,7 +286,7 @@ data:
         app: dashboard
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
         chart: dashboard-0.1.0_master
         heritage: Tiller
         release: ${name}
@@ -440,7 +440,7 @@ data:
         app: dashboard
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
         chart: dashboard-0.1.0_master
         heritage: Tiller
         release: ${name}
@@ -489,7 +489,7 @@ data:
       labels:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
       name: dashboard.presslabs.com:organization::member
     rules:
     - apiGroups:
@@ -536,7 +536,7 @@ data:
       labels:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
       name: dashboard.presslabs.com:organization::owner
     rules:
     - apiGroups:
@@ -588,7 +588,7 @@ data:
       labels:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
       name: dashboard.presslabs.com:project::member
     rules:
     - apiGroups:
@@ -682,7 +682,7 @@ data:
       labels:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
       name: dashboard.presslabs.com:project::owner
     rules:
     - apiGroups:
@@ -719,7 +719,7 @@ data:
       labels:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
       name: dashboard.presslabs.com:dashboard:superadmin
     roleRef:
       apiGroup: rbac.authorization.k8s.io
@@ -735,7 +735,7 @@ data:
       labels:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
         rbac.dashboard.presslabs.com/aggregate-to-controller: "true"
       name: dashboard.presslabs.com:project::prometheus
     rules:
@@ -767,7 +767,7 @@ data:
       labels:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
         rbac.dashboard.presslabs.com/aggregate-to-controller: "true"
       name: dashboard.presslabs.com:organization::invites
     rules:
@@ -792,7 +792,7 @@ data:
       labels:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
       name: presslabs-dashboard-database
     value: 50000
     ---
@@ -804,7 +804,7 @@ data:
       labels:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
       name: presslabs-dashboard-memcached
     value: 10000
     ---
@@ -816,7 +816,7 @@ data:
         addonmanager.kubernetes.io/mode: EnsureExists
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
         kubernetes.io/cluster-service: "true"
       name: ssd
     parameters:
@@ -831,7 +831,7 @@ data:
       labels:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
       name: dashboard.presslabs.com:dashboard:installer
     roleRef:
       apiGroup: rbac.authorization.k8s.io
@@ -850,7 +850,7 @@ data:
         app: dashboard
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
         chart: dashboard-0.1.0_master
         heritage: Tiller
         release: ${name}
@@ -940,7 +940,7 @@ data:
         app: dashboard
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
         chart: dashboard-0.1.0_master
         heritage: Tiller
         release: ${name}
@@ -961,7 +961,7 @@ data:
         app: dashboard
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
         chart: dashboard-0.1.0_master
         heritage: Tiller
         release: ${name}
@@ -987,7 +987,7 @@ data:
         app: dashboard
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
         chart: dashboard-0.1.0_master
         heritage: Tiller
         release: ${name}
@@ -1009,7 +1009,7 @@ data:
         app: dashboard
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
         chart: dashboard-0.1.0_master
         heritage: Tiller
         release: ${name}
@@ -1034,8 +1034,8 @@ metadata:
   labels:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
-    app.kubernetes.io/version: 1.0.0
-  name: ${name}-dash-globals-manifests-bm82h9fbh9
+    app.kubernetes.io/version: 1.4.0
+  name: ${name}-dash-globals-manifests-6kk97k954d
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1043,7 +1043,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
-    app.kubernetes.io/version: 1.0.0
+    app.kubernetes.io/version: 1.4.0
   name: ${name}-dash-install-manifests
 spec:
   backoffLimit: 3
@@ -1052,7 +1052,7 @@ spec:
       labels:
         app.kubernetes.io/instance: ${name}
         app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.0.0
+        app.kubernetes.io/version: 1.4.0
     spec:
       containers:
       - args:
@@ -1090,5 +1090,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-bm82h9fbh9
+          name: ${name}-dash-globals-manifests-6kk97k954d
         name: globals-manifests
