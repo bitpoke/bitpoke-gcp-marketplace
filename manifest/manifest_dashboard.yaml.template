@@ -131,8 +131,8 @@ spec:
         - --http-addr=:8080
         - --grpc-addr=:9000
         - --base-url=//$dashboardDomain
-        - --stack.application.name="stack"
-        - --stack.application.namespace="presslabs-system"
+        - --stack.application.name=stack
+        - --stack.application.namespace=presslabs-system
         env:
         - name: DASHBOARD_SYSTEM_NAMESPACE
           valueFrom:
@@ -206,8 +206,8 @@ spec:
         - --webhook-cert-dir=/tmp/${name}-dashboard-webhook-cert-dir
         - --prometheus-operator-enabled=false
         - --site-certificate-issuer=stack-default-certificate-issuer
-        - --stack.application.name="stack"
-        - --stack.application.namespace="presslabs-system"
+        - --stack.application.name=stack
+        - --stack.application.namespace=presslabs-system
         env:
         - name: DASHBOARD_SYSTEM_NAMESPACE
           valueFrom:
