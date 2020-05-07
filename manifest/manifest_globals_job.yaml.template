@@ -825,22 +825,6 @@ data:
     reclaimPolicy: Delete
     volumeBindingMode: Immediate
     ---
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: ClusterRoleBinding
-    metadata:
-      labels:
-        app.kubernetes.io/instance: ${name}
-        app.kubernetes.io/name: presslabs-dashboard
-        app.kubernetes.io/version: 1.4.0
-      name: dashboard.presslabs.com:dashboard:installer
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: ClusterRole
-      name: cluster-admin
-    subjects:
-    - kind: User
-      name: dashboard-installer
-    ---
     apiVersion: admissionregistration.k8s.io/v1beta1
     kind: ValidatingWebhookConfiguration
     metadata:
@@ -1035,7 +1019,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.4.0
-  name: ${name}-dash-globals-manifests-t967c64tmh
+  name: ${name}-dash-globals-manifests-86h7dh4kb4
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1090,5 +1074,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-t967c64tmh
+          name: ${name}-dash-globals-manifests-86h7dh4kb4
         name: globals-manifests
