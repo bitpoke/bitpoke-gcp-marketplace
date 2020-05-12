@@ -286,6 +286,8 @@ spec:
     links:
     - description: Presslabs Dashboard
       url: https://www.presslabs.com/dashboard
+    - description: Presslabs Dashboard Docs
+      url: https://www.presslabs.com/docs/dashboard/
     - description: Presslabs Stack
       url: https://www.presslabs.com/stack
     maintainers:
@@ -320,24 +322,6 @@ spec:
         namespace: presslabs-system
   - name: Domain Name
     value: //$dashboardDomain
-  - name: Auth0 Client ID
-    type: Reference
-    valueFrom:
-      secretKeyRef:
-        key: CLIENT_ID
-        name: dashboard-oidc
-  - name: Auth0 Client Secret
-    type: Reference
-    valueFrom:
-      secretKeyRef:
-        key: CLIENT_SECRET
-        name: dashboard-oidc
-  - name: Auth0 Issuer URL
-    type: Reference
-    valueFrom:
-      secretKeyRef:
-        key: ISSUER
-        name: dashboard-oidc
   - name: Install Link
     type: Reference
     valueFrom:
