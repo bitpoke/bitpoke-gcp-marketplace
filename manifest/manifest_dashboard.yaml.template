@@ -310,6 +310,14 @@ spec:
 
       **NOTE**: You should upgrade only one patch version at a time. For example, you can safely upgrade
       from version 1.0 to 1.1, but not from version 1.0 to 1.2. You need to go from 1.0 to 1.1 and then to 1.2.
+
+      ### Manually disable/enable the installer link
+
+      Use the following command to enable the installer link:
+      `kubectl label secret dashboard-jwt-install-link -n presslabs-system dashboard.presslabs.com/enabled=true`
+
+      And this one to disable it:
+      `kubectl label secret dashboard-jwt-install-link -n presslabs-system dashboard.presslabs.com/enabled=false`
       ```
     type: Presslabs Dashboard
     version: v1.3.0
