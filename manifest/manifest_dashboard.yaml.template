@@ -131,6 +131,7 @@ spec:
         - --http-addr=:8080
         - --grpc-addr=:9000
         - --base-url=//$dashboardDomain
+        - --locales-path=/pkg/locales
         - --stack.application.name=stack
         - --stack.application.namespace=presslabs-system
         env:

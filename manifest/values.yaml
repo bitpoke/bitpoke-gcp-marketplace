@@ -42,6 +42,9 @@ dashboard:
       create: false
       name: $serviceAccount
 
+    extraArgs:
+      - --locales-path=/pkg/locales
+
   controller:
     <<: *component_default
     enablePrometheusIntegration: false
