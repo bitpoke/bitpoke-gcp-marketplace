@@ -69,6 +69,25 @@ Configure `kubectl` to connect to the new cluster.
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
+#### Generate license key
+
+You can obtain the license key, by going to 
+[Marketplace](https://console.cloud.google.com/marketplace/kubernetes/config/press-labs-public/presslabs-dashboard?version=1.4) 
+and generate it.
+
+Apply the license key
+
+```shell
+kubectl apply -f license.yaml 
+```
+
+Set reporting secret name
+
+```shell
+# this is the name the license that can be generated from the product page in Google Marketplace
+export reportingSecret=
+```
+
 #### Clone this repo
 
 Clone this repo and the associated tools repo:
@@ -125,10 +144,14 @@ Configure the container images:
 
 ```shell
 REGISTRY=gcr.io/press-labs-public
-TAG=1.0
+TAG=1.4
 
 export dashboardImage="${REGISTRY}/dashboard:${TAG}"
-export stackInstallerImage="${REGISTRY}/stack-installer:${TAG}"
+export stackInstallerImage="${REGISTRY}/dashboard/stack-installer:${TAG}"
+export kubectlImage=${REGISTRY}/dashboard/k8s-deploy-tools:${TAG}
+
+# optional
+export dashboardIP=
 ```
 
 The images above are referenced by
@@ -142,6 +165,7 @@ script:
 ```shell
 for i in \
          "dashboardImage" \
+         "kubectlImage" \
          "stackInstallerImage"; do
   repo=$(echo ${!i} | cut -d: -f1);
   digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
@@ -184,8 +208,9 @@ Create the service account:
 
 ```shell
 kubectl create serviceaccount -n $namespace $serviceAccount
-kubectl create clusterrolebinding ${name}_dashboard --clusterrole=cluster-admin --serviceaccount=$serviceAccount
+kubectl create clusterrolebinding ${name}_dashboard --clusterrole=cluster-admin --serviceaccount=$namespace:$serviceAccount
 ```
+
 
 #### Expand the application manifest template
 
@@ -194,7 +219,7 @@ manifest file for future updates to the application.
 
 ```shell
 cat manifest/*.yaml.template |\
-  envsubst '$name $namespace $dashboardDomain $dashboardImage $serviceAccount' \
+  envsubst '$name $namespace $dashboardDomain $dashboardImage $stackInstallerImage $serviceAccount $reportingSecret $kubectlImage $dashboardIP' \
   > "${name}_manifest.yaml"
 ```
 
