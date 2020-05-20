@@ -15,7 +15,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.2.4
+        controller-gen.kubebuilder.io/version: v0.3.0
         helm.sh/hook: crd-install
       labels:
         app: dashboard
@@ -70,7 +70,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.2.4
+        controller-gen.kubebuilder.io/version: v0.3.0
         helm.sh/hook: crd-install
       labels:
         app: dashboard
@@ -173,7 +173,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.2.4
+        controller-gen.kubebuilder.io/version: v0.3.0
         helm.sh/hook: crd-install
       labels:
         app: dashboard
@@ -280,7 +280,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.2.4
+        controller-gen.kubebuilder.io/version: v0.3.0
         helm.sh/hook: crd-install
       labels:
         app: dashboard
@@ -434,7 +434,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.2.4
+        controller-gen.kubebuilder.io/version: v0.3.0
         helm.sh/hook: crd-install
       labels:
         app: dashboard
@@ -1019,7 +1019,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.4.0
-  name: ${name}-dash-globals-manifests-86h7dh4kb4
+  name: ${name}-dash-globals-manifests-m2d78k24d6
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1074,5 +1074,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-86h7dh4kb4
+          name: ${name}-dash-globals-manifests-m2d78k24d6
         name: globals-manifests
