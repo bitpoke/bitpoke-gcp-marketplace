@@ -11,6 +11,10 @@ letsencrypt:
 
 wordpress-operator:
   <<: *component_default
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "50m"
   enabled: true
   crd:
     install: false
@@ -35,7 +39,7 @@ nginx-ingress:
     resources:
       requests:
         memory: "768Mi"
-        cpu: "500m"
+        cpu: "300m"
     service:
       loadBalancerIP: $dashboardIP
       externalTrafficPolicy: Local
@@ -43,15 +47,31 @@ nginx-ingress:
     <<: *component_default
     replicaCount: 2
     minAvailable: 1
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "50m"
 
 cert-manager:
   <<: *component_default
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "50m"
   enabled: true
   webhook:
     <<: *component_default
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "50m"
 
   cainjector:
     <<: *component_default
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "50m"
 
 
 prometheus-operator:

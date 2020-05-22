@@ -160,8 +160,8 @@ spec:
           protocol: TCP
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            cpu: 50m
+            memory: 128Mi
       serviceAccount: $serviceAccount
 ---
 apiVersion: apps/v1
@@ -236,8 +236,8 @@ spec:
           name: webhook
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            cpu: 50m
+            memory: 128Mi
         volumeMounts:
         - mountPath: /tmp/${name}-dashboard-webhook-cert-dir
           name: webhook-certs
