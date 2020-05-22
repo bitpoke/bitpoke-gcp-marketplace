@@ -14,6 +14,10 @@ data:
 
     wordpress-operator:
       <<: *component_default
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "50m"
       enabled: true
       crd:
         install: false
@@ -38,7 +42,7 @@ data:
         resources:
           requests:
             memory: "768Mi"
-            cpu: "500m"
+            cpu: "300m"
         service:
           loadBalancerIP: $dashboardIP
           externalTrafficPolicy: Local
@@ -46,15 +50,31 @@ data:
         <<: *component_default
         replicaCount: 2
         minAvailable: 1
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "50m"
 
     cert-manager:
       <<: *component_default
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "50m"
       enabled: true
       webhook:
         <<: *component_default
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "50m"
 
       cainjector:
         <<: *component_default
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "50m"
 
 
     prometheus-operator:
@@ -66,7 +86,7 @@ metadata:
     app.kubernetes.io/instance: ${name}
     app.kubernetes.io/name: presslabs-dashboard
     app.kubernetes.io/version: 1.4.0
-  name: ${name}-stack-values-bfbh4c6k25
+  name: ${name}-stack-values-d6m7g6dg79
 ---
 apiVersion: batch/v1
 kind: Job
@@ -109,5 +129,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-stack-values-bfbh4c6k25
+          name: ${name}-stack-values-d6m7g6dg79
         name: values-yaml
