@@ -315,10 +315,10 @@ spec:
       ### Manually disable/enable the installer link
 
       Use the following command to enable the installer link:
-      `kubectl label secret dashboard-jwt-install-link -n presslabs-system dashboard.presslabs.com/enabled=true`
+      `kubectl label secret dashboard-jwt-install-link -n presslabs-system dashboard.presslabs.com/enabled=true --overwrite`
 
       And this one to disable it:
-      `kubectl label secret dashboard-jwt-install-link -n presslabs-system dashboard.presslabs.com/enabled=false`
+      `kubectl label secret dashboard-jwt-install-link -n presslabs-system dashboard.presslabs.com/enabled=false --overwrite`
       ```
     type: Presslabs Dashboard
     version: v1.3.0
