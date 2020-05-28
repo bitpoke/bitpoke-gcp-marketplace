@@ -77,16 +77,18 @@ Clone this repo and the associated tools repo:
 git clone --recursive https://github.com/presslabs/dashboard-gcp-marketplace.git
 ```
 
-#### Install the Application resource definition
+#### Install the Application resource definition and install the Application controller
 
 An Application resource is a collection of individual Kubernetes components,
 such as Services, Deployments, and so on, that you can manage as a group.
 
-To set up your cluster to understand Application resources, run the following
-command:
+To set up your cluster to understand Application resources and to install the 
+Application controller, run the following command:
 
 ```shell
-kubectl apply -f "https://raw.githubusercontent.com/GoogleCloudPlatform/marketplace-k8s-app-tools/master/crd/app-crd.yaml"
+curl https://raw.githubusercontent.com/kubernetes-sigs/application/v0.8.2/deploy/kube-app-manager-aio.yaml \
+  | sed 's/quay.io\/kubernetes-sigs\/kube-app-manager:v0.8.1/gcr.io\/press-labs-public\/application-manager:v0.8.2/' \
+  | kubectl apply -f -
 ```
 
 You need to run this command once.
