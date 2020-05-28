@@ -130,7 +130,7 @@ spec:
         - apiserver
         - --http-addr=:8080
         - --grpc-addr=:9000
-        - --base-url=//$dashboardDomain
+        - --base-url=https://$dashboardDomain
         - --locales-path=/pkg/locales
         - --stack.application.name=stack
         - --stack.application.namespace=presslabs-system
@@ -202,7 +202,7 @@ spec:
       containers:
       - args:
         - controller-manager
-        - --base-url=//$dashboardDomain
+        - --base-url=https://$dashboardDomain
         - --webhook-port=4433
         - --webhook-cert-dir=/tmp/${name}-dashboard-webhook-cert-dir
         - --prometheus-operator-enabled=false
@@ -315,10 +315,10 @@ spec:
       ### Manually disable/enable the installer link
 
       Use the following command to enable the installer link:
-      `kubectl label secret dashboard-jwt-install-link -n presslabs-system dashboard.presslabs.com/enabled=true --overwrite`
+      `kubectl label secret dashboard-jwt-install-link -n $namespace dashboard.presslabs.com/enabled=true --overwrite`
 
       And this one to disable it:
-      `kubectl label secret dashboard-jwt-install-link -n presslabs-system dashboard.presslabs.com/enabled=false --overwrite`
+      `kubectl label secret dashboard-jwt-install-link -n $namespace dashboard.presslabs.com/enabled=false --overwrite`
       ```
     type: Presslabs Dashboard
     version: v1.3.0
@@ -330,7 +330,7 @@ spec:
         name: stack-nginx-ingress-controller
         namespace: presslabs-system
   - name: Domain Name
-    value: //$dashboardDomain
+    value: https://$dashboardDomain
   - name: Install Link
     type: Reference
     valueFrom:
