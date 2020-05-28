@@ -25,7 +25,7 @@ dashboard:
   apiserver:
     <<: *component_default
 
-    baseURL: //$dashboardDomain
+    baseURL: https://$dashboardDomain
 
     ingress:
       enabled: true
