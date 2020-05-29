@@ -218,9 +218,10 @@ Use `envsubst` to expand the template. We recommend that you save the expanded
 manifest file for future updates to the application.
 
 ```shell
-cat manifest/*.yaml.template |\
-  envsubst '$name $namespace $dashboardDomain $dashboardImage $stackInstallerImage $serviceAccount $reportingSecret $kubectlImage $dashboardIP' \
-  > "${name}_manifest.yaml"
+for f in manifest/*.yaml.template; do \
+  cat $f | envsubst '$name $namespace $dashboardDomain $dashboardImage $stackInstallerImage $serviceAccount $reportingSecret $kubectlImage $dashboardIP' >> "${name}_manifest.yaml"; \
+  echo "---" >> "${name}_manifest.yaml"; \
+done
 ```
 
 #### Apply the manifest to your Kubernetes cluster
