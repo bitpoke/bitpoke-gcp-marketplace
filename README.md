@@ -69,25 +69,6 @@ Configure `kubectl` to connect to the new cluster.
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
-#### Generate license key
-
-You can obtain the license key, by going to 
-[Marketplace](https://console.cloud.google.com/marketplace/kubernetes/config/press-labs-public/presslabs-dashboard?version=1.4) 
-and generate it.
-
-Apply the license key
-
-```shell
-kubectl apply -f license.yaml 
-```
-
-Set reporting secret name
-
-```shell
-# this is the name the license that can be generated from the product page in Google Marketplace
-export reportingSecret=
-```
-
 #### Clone this repo
 
 Clone this repo and the associated tools repo:
@@ -181,6 +162,25 @@ a new namespace:
 
 ```shell
 kubectl create namespace "$namespace"
+```
+
+#### Generate license key
+
+You can obtain the license key, by going to 
+[Marketplace](https://console.cloud.google.com/marketplace/kubernetes/config/press-labs-public/presslabs-dashboard?version=1.4) 
+and generate it.
+
+Apply the license key
+
+```shell
+kubectl apply -f license.yaml -n $namespace
+```
+
+Set reporting secret name
+
+```shell
+# this is the name the license that can be generated from the product page in Google Marketplace
+export reportingSecret=
 ```
 
 #### Create the Service Accounts
