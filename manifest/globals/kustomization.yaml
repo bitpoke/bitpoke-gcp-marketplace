@@ -18,6 +18,9 @@ resources:
   - ../charts/dashboard-gcm/charts/dashboard/templates/webhook.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/webhook-pki.yaml
 
+  # google config connector
+  - ../charts/dashboard-gcm/charts/dashboard/templates/google-config-connector.yaml
+
 
 patchesJson6902:
 # dashboard
