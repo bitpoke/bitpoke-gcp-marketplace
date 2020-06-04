@@ -19,7 +19,7 @@ resources:
   - ../charts/dashboard-gcm/charts/dashboard/templates/webhook-pki.yaml
 
   # google config connector
-  - ../charts/dashboard-gcm/charts/dashboard/templates/google-config-connector.yaml
+  - google-config-connector-crds.yaml
 
 
 patchesJson6902:

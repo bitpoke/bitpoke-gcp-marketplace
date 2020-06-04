@@ -18,6 +18,7 @@ done
 
 cat $filesinKustomizeFile.tmp | awk '{print $2}' |\
     grep -v 'namespace.yaml' |\
+    grep -v 'google-config-connector-crds.yaml' |\
     sort > $filesinKustomizeFile
 
 rm $filesinKustomizeFile.tmp
