@@ -321,7 +321,7 @@ spec:
       `kubectl label secret dashboard-jwt-install-link -n $namespace dashboard.presslabs.com/enabled=false --overwrite`
       ```
     type: Presslabs Dashboard
-    version: v1.3.0
+    version: v1.4.0
   info:
   - name: Ingress IP
     type: Reference
