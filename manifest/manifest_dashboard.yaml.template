@@ -277,7 +277,7 @@ spec:
     kind: Job
   - group: batch
     kind: CronJob
-  - group: extensions/v1beta1
+  - group: networking.k8s.io/v1beta1
     kind: Ingress
   descriptor:
     description: |
@@ -342,7 +342,7 @@ spec:
       app: dashboard
       release: ${name}
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   annotations:
