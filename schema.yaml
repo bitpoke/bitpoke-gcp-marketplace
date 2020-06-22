@@ -86,8 +86,8 @@ x-google-marketplace:
     resources:
     - replicas: 3
       requests:
-        cpu: 2
-        memory: 8Gi
+        cpu: 1
+        memory: 3Gi
       affinity:
         simpleNodeAffinity:
           type: REQUIRE_ONE_NODE_PER_REPLICA
