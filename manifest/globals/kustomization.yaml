@@ -66,6 +66,6 @@ patchesJson6902:
 
 
 commonLabels:
-  app.kubernetes.io/name: presslabs-dashboard
-  app.kubernetes.io/instance: ${name}
-  app.kubernetes.io/version: "1.4.0"
+  app.kubernetes.io/name: ${name}
+  app.kubernetes.io/part-of: presslabs-dashboard
+  app.kubernetes.io/version: "1.4"
