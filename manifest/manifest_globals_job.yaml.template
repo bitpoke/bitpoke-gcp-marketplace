@@ -1627,7 +1627,10 @@ spec:
           done
 
           # expect CRDs to be ready
-          kubectl wait --for condition=established crd $RESOURCES
+          kubectl wait --for condition=established crd $RESOURCES --timeout=120s
+
+          # wait for cert-manager webhook to be ready
+          kubectl wait --namespace presslabs-system --for condition=Available deployment/stack-cert-manager-webhook --timeout=120s
 
           cat /data/globals/manifest_globals.yaml | env -i "APPLICATION_UID=$APP_UID" envsubst | kubectl apply -f- --validate=false ;
         command:
