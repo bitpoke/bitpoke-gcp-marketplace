@@ -53,6 +53,12 @@ properties:
     title: I acknowledge that Workload Identity must be enabled for Presslabs Dashboard to function properly
     description: Presslabs Dashboard requires Workload Identity to be enabled for nodes running it's workloads.
 
+  gcpApplicationManagerEnabled:
+    type: boolean
+    default: false
+    title: I acknowledge that Application Manager addon must be enabled for Presslabs Dashboard to function properly
+    description: Presslabs Dashboard requires Application Manager addon to be enabled to see the proper system status.
+
   reportingSecret:
     type: string
     x-google-marketplace:
@@ -80,6 +86,7 @@ required:
 - namespace
 - dashboardDomain
 - gcpWorkloadIdentityEnabled
+- gcpApplicationManagerEnabled
 
 x-google-marketplace:
   clusterConstraints:

@@ -4,3 +4,7 @@ properties:
   gcpWorkloadIdentityEnabled:
     type: boolean
     default: false
+
+  gcpApplicationManagerEnabled:
+    type: boolean
+    default: false
