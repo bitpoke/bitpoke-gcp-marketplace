@@ -43,7 +43,7 @@ dashboard:
       name: $serviceAccount
 
     extraArgs:
-      - --locales-path=/pkg/locales
+      - --locales-path=locales
 
   controller:
     <<: *component_default
