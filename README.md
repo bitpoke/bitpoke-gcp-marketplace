@@ -106,6 +106,12 @@ Navigate to the cloned repo
 cd dashboard-gcp-marketplace
 ```
 
+Select the release branch
+
+```shell
+git checkout release-1.4
+```
+
 #### Configure the app with environment variables
 
 Choose the instance name and namespace for the app:
