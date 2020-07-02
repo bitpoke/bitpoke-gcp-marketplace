@@ -131,7 +131,7 @@ spec:
         - --http-addr=:8080
         - --grpc-addr=:9000
         - --base-url=https://$dashboardDomain
-        - --locales-path=locales
+        - --locales-path=/locales
         - --stack-name=stack
         - --stack-namespace=presslabs-system
         env:
