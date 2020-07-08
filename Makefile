@@ -39,7 +39,9 @@ APP_PARAMETERS ?= { \
   "name": "$(NAME)", \
   "namespace": "$(NAMESPACE)", \
   "dashboardDomain": "$(DOMAIN)", \
-  "reportingSecret": "$(REPORTING_SECRET)" \
+  "reportingSecret": "$(REPORTING_SECRET)", \
+  "gcpWorkloadIdentityEnabled": "true", \
+  "gcpApplicationManagerEnabled": "true" \
 }
 
 APP_TEST_PARAMETERS ?= "{}"

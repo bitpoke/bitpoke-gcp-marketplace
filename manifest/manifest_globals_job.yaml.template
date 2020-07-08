@@ -1618,11 +1618,12 @@ spec:
 
           # wait for needed CRDs to exist and be ready; timeout of 30s
           # those CRDs are installed by stack installer
+          # wait for presslabs-system namespace to exists
           RESOURCES="certificates.cert-manager.io issuers.cert-manager.io"
           i=0
           while [ $i -lt 30  ]; do
             i=$(expr $i + 1)
-            kubectl get crd $RESOURCES && i=30
+            kubectl get crd $RESOURCES && kubectl get namespace presslabs-system && i=30
             sleep 1
           done
 
