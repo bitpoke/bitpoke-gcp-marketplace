@@ -1,3 +1,5 @@
 .build
 
 init.sh
+
+*_manifest.yaml
