@@ -13,7 +13,7 @@ metadata:
     chart: dashboard-0.1.1
     heritage: Tiller
     release: ${name}
-  name: ${name}-dashboard-oidc
+  name: dashboard-oidc
 type: Opaque
 ---
 apiVersion: v1
@@ -29,7 +29,7 @@ metadata:
     chart: dashboard-0.1.1
     heritage: Tiller
     release: ${name}
-  name: ${name}-dashboard-sentry
+  name: dashboard-sentry
 type: Opaque
 ---
 apiVersion: v1
@@ -116,7 +116,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/oidc-config: 417669dadac4848824c602a8af7100e6a18974eaec79d4417ebfd67365d7b100
+        checksum/oidc-config: 83171ba1bf2df853321ddf53479671db7b59b97c88dfe4ba9a0b14f7db92e50b
       labels:
         app: dashboard
         app.kubernetes.io/name: ${name}
@@ -144,10 +144,10 @@ spec:
         envFrom:
         - prefix: OIDC_
           secretRef:
-            name: ${name}-dashboard-oidc
+            name: dashboard-oidc
         - prefix: SENTRY_
           secretRef:
-            name: ${name}-dashboard-sentry
+            name: dashboard-sentry
         image: $dashboardImage
         imagePullPolicy: IfNotPresent
         name: apiserver
