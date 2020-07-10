@@ -1611,10 +1611,7 @@ spec:
         - |
           # fail at first command that fails
           set -e
-          # patch with application UID and create resources
-          # don't validate due to: https://github.com/jetstack/cert-manager/issues/1143
-          APP_UID=$(kubectl get applications.app.k8s.io ${name} -o jsonpath --template '{.metadata.uid}') ;
-          echo -n "\n++ Patching resources with owner reference: $name ($APP_UID)\n" ;
+
 
           # wait for needed CRDs to exist and be ready; timeout of 30s
           # those CRDs are installed by stack installer
@@ -1623,7 +1620,7 @@ spec:
           i=0
           while [ $i -lt 30  ]; do
             i=$(expr $i + 1)
-            kubectl get crd $RESOURCES && kubectl get namespace presslabs-system && i=30
+            kubectl get crd $RESOURCES && kubectl get namespace presslabs-system && kubectl get application ${name} -n ${namespace} && i=30
             sleep 1
           done
 
@@ -1632,6 +1629,25 @@ spec:
 
           # wait for cert-manager webhook to be ready
           kubectl wait --namespace presslabs-system --for condition=Available deployment/stack-cert-manager-webhook --timeout=120s
+
+
+          # patch with application UID and create resources
+          # don't validate due to: https://github.com/jetstack/cert-manager/issues/1143
+          export APP_UID=$(kubectl get applications.app.k8s.io ${name} -o jsonpath --template '{.metadata.uid}');
+          echo -e "\n++ Patching resources with owner reference: $name ($APP_UID)\n" ;
+
+
+          # create oidc secret
+          kubectl create secret generic dashboard-oidc || true
+
+          # patch oidc secret with owner reference
+          kubectl patch secret dashboard-oidc --type='json' -p="[{\"op\": \"add\", \"path\": \"/metadata/ownerReferences\", \"value\": [{\"apiVersion\": \"apps.k8s.io/v1beta1\", \"kind\": \"application\", \"name\": \"${name}\", \"uid\": \"$APP_UID\"}]}]"
+
+          # create sentry secret
+          kubectl create secret generic dashboard-sentry || true
+
+          # patch sentry secret with owner reference
+          kubectl patch secret dashboard-sentry --type='json' -p="[{\"op\": \"add\", \"path\": \"/metadata/ownerReferences\", \"value\": [{\"apiVersion\": \"apps.k8s.io/v1beta1\", \"kind\": \"application\", \"name\": \"${name}\", \"uid\": \"${APP_UID}\"}]}]"
 
           cat /data/globals/manifest_globals.yaml | env -i "APPLICATION_UID=$APP_UID" envsubst | kubectl apply -f- --validate=false ;
         command:
