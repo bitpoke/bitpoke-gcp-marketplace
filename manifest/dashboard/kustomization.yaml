@@ -3,7 +3,6 @@ resources:
   - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-deployment.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-ingress.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-service.yaml
-  - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-sentry-secret.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/controller-deployment.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/webhook-service.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/dashboard-application.yaml
