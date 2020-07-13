@@ -1637,17 +1637,16 @@ spec:
           echo -e "\n++ Patching resources with owner reference: $name ($APP_UID)\n" ;
 
 
-          # create oidc secret
           kubectl create secret generic dashboard-oidc || true
-
-          # patch oidc secret with owner reference
-          kubectl patch secret dashboard-oidc --type='json' -p="[{\"op\": \"add\", \"path\": \"/metadata/ownerReferences\", \"value\": [{\"apiVersion\": \"apps.k8s.io/v1beta1\", \"kind\": \"application\", \"name\": \"${name}\", \"uid\": \"$APP_UID\"}]}]"
-
-          # create sentry secret
           kubectl create secret generic dashboard-sentry || true
 
-          # patch sentry secret with owner reference
-          kubectl patch secret dashboard-sentry --type='json' -p="[{\"op\": \"add\", \"path\": \"/metadata/ownerReferences\", \"value\": [{\"apiVersion\": \"apps.k8s.io/v1beta1\", \"kind\": \"application\", \"name\": \"${name}\", \"uid\": \"${APP_UID}\"}]}]"
+          setOwnerReference() {
+            kubectl patch $@ --type='json' -p="[{\"op\": \"add\", \"path\": \"/metadata/ownerReferences\", \"value\": [{\"apiVersion\": \"apps.k8s.io/v1beta1\", \"kind\": \"application\", \"name\": \"${name}\", \"uid\": \"$APP_UID\"}]}]"
+          }
+
+          setOwnerReference secret dashboard-oidc
+          setOwnerReference secret dashboard-sentry
+
 
           cat /data/globals/manifest_globals.yaml | env -i "APPLICATION_UID=$APP_UID" envsubst | kubectl apply -f- --validate=false ;
         command:
