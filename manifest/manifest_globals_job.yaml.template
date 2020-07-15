@@ -1613,6 +1613,11 @@ spec:
           set -e
 
 
+          # create oidc and sentry secrets
+          kubectl create secret generic dashboard-oidc || true
+          kubectl create secret generic dashboard-sentry || true
+
+
           # wait for needed CRDs to exist and be ready; timeout of 30s
           # those CRDs are installed by stack installer
           # wait for presslabs-system namespace to exists
@@ -1636,9 +1641,6 @@ spec:
           export APP_UID=$(kubectl get applications.app.k8s.io ${name} -o jsonpath --template '{.metadata.uid}');
           echo -e "\n++ Patching resources with owner reference: $name ($APP_UID)\n" ;
 
-
-          kubectl create secret generic dashboard-oidc || true
-          kubectl create secret generic dashboard-sentry || true
 
           setOwnerReference() {
             kubectl patch $@ --type='json' -p="[{\"op\": \"add\", \"path\": \"/metadata/ownerReferences\", \"value\": [{\"apiVersion\": \"apps.k8s.io/v1beta1\", \"kind\": \"application\", \"name\": \"${name}\", \"uid\": \"$APP_UID\"}]}]"
