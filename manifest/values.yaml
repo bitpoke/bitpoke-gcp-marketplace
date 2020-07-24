@@ -9,7 +9,7 @@ global:
     namespace: ${namespace}
 
 dashboard:
-  image: $dashboardImage
+  image: $imageFull
   fullNameOverride: "${name}-dashboard"
 
   stack:

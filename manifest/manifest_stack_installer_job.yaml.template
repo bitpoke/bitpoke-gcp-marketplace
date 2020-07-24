@@ -111,7 +111,7 @@ spec:
           value: localhost:44134
         - name: NAMESPACE
           value: presslabs-system
-        image: $stackInstallerImage
+        image: $imageK8s_deploy_toolsFull
         name: installer
         volumeMounts:
         - mountPath: /config
@@ -123,7 +123,7 @@ spec:
         env:
         - name: TILLER_NAMESPACE
           value: presslabs-system
-        image: $stackInstallerImage
+        image: $imageStack_installerFull
         name: tiller
       restartPolicy: Never
       serviceAccountName: $serviceAccount

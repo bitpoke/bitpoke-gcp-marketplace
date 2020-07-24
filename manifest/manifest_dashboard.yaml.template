@@ -114,7 +114,7 @@ spec:
         - prefix: SENTRY_
           secretRef:
             name: dashboard-sentry
-        image: $dashboardImage
+        image: $imageFull
         imagePullPolicy: IfNotPresent
         name: apiserver
         ports:
@@ -194,7 +194,7 @@ spec:
               name: $reportingSecret
         - name: AGENT_SERVICE_NAME
           value: presslabs-dashboard.mp-press-labs-public.appspot.com
-        image: $dashboardImage
+        image: $imageFull
         imagePullPolicy: IfNotPresent
         name: controller
         ports:

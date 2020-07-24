@@ -9,7 +9,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: installer
-        image: $stackInstallerImage
+        image: $imageK8s_deploy_toolsFull
         env:
         - name: HELM_HOST
           value: localhost:44134
@@ -21,7 +21,7 @@ spec:
           mountPath: /config
 
       - name: tiller
-        image: $stackInstallerImage
+        image: $imageStack_installerFull
         # this command will start tiller
         command: [ "supervisord", "-c", "/etc/supervisor.conf" ]
         env:

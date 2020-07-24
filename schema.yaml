@@ -1,4 +1,55 @@
-applicationApiVersion: v1beta1
+x-google-marketplace:
+  schemaVersion: v2
+
+  # MUST match the version of the Application custom resource object.
+  applicationApiVersion: v1beta1
+
+  # The release version is required in the schema and MUST match the
+  # release tag on the the deployer.
+  publishedVersion: $TAG
+  publishedVersionMetadata:
+    releaseNote: >-
+      TODO Release 0.5 note.
+
+    # releaseTypes list is optional.
+    # "Security" should only be used if this is an important update to patch
+    # an existing vulnerability, as such updates will display more prominently for users.
+    # releaseTypes:
+    # - Feature
+    # - BugFix
+    # - Security
+
+    # If "recommended" is "true", users using older releases are encouraged
+    # to update as soon as possible. This is useful if, for example, this release
+    # fixes a critical issue.
+    # recommended: true
+
+  images:
+    "":
+      properties:
+        imageFull:
+          type: FULL
+
+    k8s_deploy_tools:
+      properties:
+        imageK8s_deploy_toolsFull:
+          type: FULL
+
+    stack_installer:
+      properties:
+        imageStack_installerFull:
+          type: FULL
+
+  clusterConstraints:
+    resources:
+    - replicas: 3
+      requests:
+        cpu: 1
+        memory: 3Gi
+      affinity:
+        simpleNodeAffinity:
+          type: REQUIRE_ONE_NODE_PER_REPLICA
+
 
 properties:
   name:
@@ -19,8 +70,7 @@ properties:
       type: SERVICE_ACCOUNT
       serviceAccount:
         description: >
-          TODO needs description
-          TODO needs description
+          Service account that will be assigned to the Presslabs Dashboard.
         roles:
         - type: ClusterRole
           rulesType: PREDEFINED
@@ -44,12 +94,6 @@ properties:
       If not specified, an ephemeral external IP will be created which you can later convert to a static one.
       Read more about it at https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address.
 
-  dashboardImage:
-    type: string
-    default: $REGISTRY:$TAG
-    x-google-marketplace:
-      type: IMAGE
-
   gcpWorkloadIdentityEnabled:
     type: boolean
     default: false
@@ -67,22 +111,6 @@ properties:
     x-google-marketplace:
       type: REPORTING_SECRET
 
-  #
-  # Container Images
-  #
-
-  kubectlImage:
-    type: string
-    default: $REGISTRY/k8s-deploy-tools:$TAG
-    x-google-marketplace:
-      type: IMAGE
-
-  stackInstallerImage:
-    type: string
-    default: $REGISTRY/stack-installer:$TAG
-    x-google-marketplace:
-      type: IMAGE
-
 
 required:
 - name
@@ -90,14 +118,3 @@ required:
 - dashboardDomain
 - gcpWorkloadIdentityEnabled
 - gcpApplicationManagerEnabled
-
-x-google-marketplace:
-  clusterConstraints:
-    resources:
-    - replicas: 3
-      requests:
-        cpu: 1
-        memory: 3Gi
-      affinity:
-        simpleNodeAffinity:
-          type: REQUIRE_ONE_NODE_PER_REPLICA

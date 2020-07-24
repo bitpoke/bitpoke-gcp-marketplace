@@ -1654,7 +1654,7 @@ spec:
         command:
         - /bin/sh
         - -c
-        image: $kubectlImage
+        image: $imageK8s_deploy_toolsFull
         name: init
         volumeMounts:
         - mountPath: /data/globals/

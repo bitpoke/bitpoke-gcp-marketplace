@@ -40,8 +40,8 @@ APP_PARAMETERS ?= { \
   "namespace": "$(NAMESPACE)", \
   "dashboardDomain": "$(DOMAIN)", \
   "reportingSecret": "$(REPORTING_SECRET)", \
-  "gcpWorkloadIdentityEnabled": "true", \
-  "gcpApplicationManagerEnabled": "true" \
+  "gcpWorkloadIdentityEnabled": true, \
+  "gcpApplicationManagerEnabled": true \
 }
 
 APP_TEST_PARAMETERS ?= "{}"
@@ -92,7 +92,7 @@ endef
 	       $(REGISTRY)/dashboard:$(TAG))
 	$(call republish,\
 				 spaceonfire/k8s-deploy-tools,\
-	       $(REGISTRY)/dashboard/k8s-deploy-tools:$(TAG))
+	       $(REGISTRY)/dashboard/k8s_deploy_tools:$(TAG))
 
 	@touch "$@"
 
@@ -102,7 +102,7 @@ endef
                                   | .build/dashboard
 	$(call republish,\
 				 quay.io/presslabs/stack-installer:$(STACK_TAG),\
-	       $(REGISTRY)/dashboard/stack-installer:$(TAG))
+	       $(REGISTRY)/dashboard/stack_installer:$(TAG))
 
 	@touch "$@"
 
@@ -133,12 +133,15 @@ endef
 	find .build/manifest/charts -type f -print0 | xargs -0 $(SEDI) 's/helm-namespace/$${namespace}/g'
 
 
+
+KUSTOMIZE ?= "kustomize"
+
 .build/manifest/manifest_globals.yaml: manifest/*.yaml \
                                        .build/manifest/charts/dashboard-gcm \
                                        .build/manifest/globals \
                                        | .build/manifest
 
-	kustomize build .build/manifest/globals -o "$@" \
+	$(KUSTOMIZE) build .build/manifest/globals -o "$@" \
 		--load_restrictor none --reorder none
 
 
@@ -146,7 +149,7 @@ manifest/manifest_dashboard.yaml.template: manifest/*.yaml \
                                  .build/manifest/charts/dashboard-gcm \
                                  .build/manifest/dashboard
 
-	kustomize build .build/manifest/dashboard -o "$@" \
+	$(KUSTOMIZE) build .build/manifest/dashboard -o "$@" \
 		--load_restrictor none
 
 
@@ -154,14 +157,14 @@ manifest/manifest_globals_job.yaml.template: manifest/*.yaml \
                                  .build/manifest/job \
                                  .build/manifest/manifest_globals.yaml
 
-	kustomize build .build/manifest/job -o "$@" \
+	$(KUSTOMIZE) build .build/manifest/job -o "$@" \
 		--load_restrictor none
 
 manifest/manifest_stack_installer_job.yaml.template: manifest/*.yaml \
                                  .build/manifest/stack_values.yaml \
                                  .build/manifest/stack
 
-	kustomize build .build/manifest/stack -o "$@" \
+	$(KUSTOMIZE) build .build/manifest/stack -o "$@" \
 		--load_restrictor none
 
 
