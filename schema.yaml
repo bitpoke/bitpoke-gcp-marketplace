@@ -18,6 +18,9 @@ properties:
     x-google-marketplace:
       type: SERVICE_ACCOUNT
       serviceAccount:
+        description: >
+          TODO needs description
+          TODO needs description
         roles:
         - type: ClusterRole
           rulesType: PREDEFINED
