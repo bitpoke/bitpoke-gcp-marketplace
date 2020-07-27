@@ -7,7 +7,7 @@ data:
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         cert-manager.io/disable-validation: "true"
       name: presslabs-system
     ---
@@ -21,7 +21,7 @@ data:
         app: dashboard
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
@@ -76,7 +76,7 @@ data:
         app: dashboard
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
@@ -179,7 +179,7 @@ data:
         app: dashboard
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
@@ -286,7 +286,7 @@ data:
         app: dashboard
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
@@ -440,7 +440,7 @@ data:
         app: dashboard
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
@@ -489,7 +489,7 @@ data:
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
       name: dashboard.presslabs.com:organization::member
     rules:
     - apiGroups:
@@ -536,7 +536,7 @@ data:
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
       name: dashboard.presslabs.com:organization::owner
     rules:
     - apiGroups:
@@ -588,7 +588,7 @@ data:
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
       name: dashboard.presslabs.com:project::member
     rules:
     - apiGroups:
@@ -682,7 +682,7 @@ data:
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
       name: dashboard.presslabs.com:project::owner
     rules:
     - apiGroups:
@@ -719,7 +719,7 @@ data:
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
       name: dashboard.presslabs.com:dashboard:superadmin
     roleRef:
       apiGroup: rbac.authorization.k8s.io
@@ -735,7 +735,7 @@ data:
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         rbac.dashboard.presslabs.com/aggregate-to-controller: "true"
       name: dashboard.presslabs.com:project::prometheus
     rules:
@@ -767,7 +767,7 @@ data:
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         rbac.dashboard.presslabs.com/aggregate-to-controller: "true"
       name: dashboard.presslabs.com:organization::invites
     rules:
@@ -792,7 +792,7 @@ data:
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
       name: presslabs-dashboard-database
     value: 50000
     ---
@@ -804,7 +804,7 @@ data:
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
       name: presslabs-dashboard-memcached
     value: 10000
     ---
@@ -816,7 +816,7 @@ data:
         addonmanager.kubernetes.io/mode: EnsureExists
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         kubernetes.io/cluster-service: "true"
       name: ssd
     parameters:
@@ -834,7 +834,7 @@ data:
         app: dashboard
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
@@ -924,7 +924,7 @@ data:
         app: dashboard
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
@@ -945,7 +945,7 @@ data:
         app: dashboard
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
@@ -971,7 +971,7 @@ data:
         app: dashboard
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
@@ -993,7 +993,7 @@ data:
         app: dashboard
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         chart: dashboard-0.1.1
         heritage: Tiller
         release: ${name}
@@ -1021,7 +1021,7 @@ data:
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         cnrm.cloud.google.com/managed-by-kcc: "true"
         cnrm.cloud.google.com/system: "true"
         controller-tools.k8s.io: "1.0"
@@ -1157,7 +1157,7 @@ data:
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         cnrm.cloud.google.com/managed-by-kcc: "true"
         cnrm.cloud.google.com/system: "true"
         cnrm.cloud.google.com/tf2crd: "true"
@@ -1247,7 +1247,7 @@ data:
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         cnrm.cloud.google.com/managed-by-kcc: "true"
         cnrm.cloud.google.com/system: "true"
         cnrm.cloud.google.com/tf2crd: "true"
@@ -1452,7 +1452,7 @@ data:
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         cnrm.cloud.google.com/managed-by-kcc: "true"
         cnrm.cloud.google.com/system: "true"
         cnrm.cloud.google.com/tf2crd: "true"
@@ -1586,8 +1586,8 @@ metadata:
   labels:
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.4"
-  name: ${name}-dash-globals-manifests-7mg8c62h98
+    app.kubernetes.io/version: "1.5"
+  name: ${name}-dash-globals-manifests-c7f2bk7gmh
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1595,7 +1595,7 @@ metadata:
   labels:
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.4"
+    app.kubernetes.io/version: "1.5"
   name: ${name}-dash-install-manifests
 spec:
   backoffLimit: 3
@@ -1604,7 +1604,7 @@ spec:
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
     spec:
       containers:
       - args:
@@ -1663,5 +1663,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-7mg8c62h98
+          name: ${name}-dash-globals-manifests-c7f2bk7gmh
         name: globals-manifests

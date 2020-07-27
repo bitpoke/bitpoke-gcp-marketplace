@@ -5,7 +5,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.4"
+    app.kubernetes.io/version: "1.5"
     chart: dashboard-0.1.1
     heritage: Tiller
     release: ${name}
@@ -24,7 +24,7 @@ spec:
     app: dashboard
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.4"
+    app.kubernetes.io/version: "1.5"
     component: apiserver
     release: ${name}
   type: ClusterIP
@@ -36,7 +36,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.4"
+    app.kubernetes.io/version: "1.5"
     chart: dashboard-0.1.1
     heritage: Tiller
     release: ${name}
@@ -51,7 +51,7 @@ spec:
     app: dashboard
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.4"
+    app.kubernetes.io/version: "1.5"
     component: controller
     release: ${name}
   type: ClusterIP
@@ -63,7 +63,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.4"
+    app.kubernetes.io/version: "1.5"
     chart: dashboard-0.1.1
     component: apiserver
     heritage: Tiller
@@ -76,7 +76,7 @@ spec:
       app: dashboard
       app.kubernetes.io/name: ${name}
       app.kubernetes.io/part-of: presslabs-dashboard
-      app.kubernetes.io/version: "1.4"
+      app.kubernetes.io/version: "1.5"
       component: apiserver
       release: ${name}
   template:
@@ -87,7 +87,7 @@ spec:
         app: dashboard
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         component: apiserver
         release: ${name}
     spec:
@@ -137,7 +137,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.4"
+    app.kubernetes.io/version: "1.5"
     chart: dashboard-0.1.1
     component: controller
     heritage: Tiller
@@ -150,7 +150,7 @@ spec:
       app: dashboard
       app.kubernetes.io/name: ${name}
       app.kubernetes.io/part-of: presslabs-dashboard
-      app.kubernetes.io/version: "1.4"
+      app.kubernetes.io/version: "1.5"
       component: controller
       release: ${name}
   template:
@@ -161,7 +161,7 @@ spec:
         app: dashboard
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.4"
+        app.kubernetes.io/version: "1.5"
         component: controller
         release: ${name}
     spec:
@@ -223,7 +223,7 @@ metadata:
   labels:
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.4"
+    app.kubernetes.io/version: "1.5"
   name: ${name}
 spec:
   componentKinds:
@@ -318,7 +318,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.4"
+    app.kubernetes.io/version: "1.5"
     chart: dashboard-0.1.1
     heritage: Tiller
     release: ${name}
