@@ -8,6 +8,7 @@ configMapGenerator:
   behavior: create
   files:
     - ../stack_values.yaml
+    - ../cm_values.yaml
 
 
 commonLabels:

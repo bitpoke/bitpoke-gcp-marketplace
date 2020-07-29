@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# NOTE: this is deprecated, we are using helm v3 which don't requires tiller
+# this will be removed in the future versions.
+
 # kill subporcess when exiting
 trap "kill 0" EXIT
 

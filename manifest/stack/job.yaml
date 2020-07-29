@@ -11,8 +11,6 @@ spec:
       - name: installer
         image: $imageK8s_deploy_toolsFull
         env:
-        - name: HELM_HOST
-          value: localhost:44134
         - name: NAMESPACE
           value: presslabs-system
 
@@ -20,19 +18,10 @@ spec:
         - name: values-yaml
           mountPath: /config
 
-      - name: tiller
-        image: $imageStack_installerFull
-        # this command will start tiller
-        command: [ "supervisord", "-c", "/etc/supervisor.conf" ]
-        env:
-        - name: TILLER_NAMESPACE
-          value: presslabs-system
-
       volumes:
       - name: values-yaml
         configMap:
           name: "${name}-stack-values"
-
 
 
   backoffLimit: 3

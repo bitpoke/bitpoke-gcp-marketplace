@@ -24,7 +24,7 @@ DASHBOARD_CHART_PATH ?= charts/dashboard-gcm
 
 DASHBOARD_IMAGE ?= gcr.io/press-labs-dashboard/dashboard-gcp-marketplace-amd64
 DASHBOARD_TAG ?= $(shell git describe --tags --abbrev=0)
-STACK_TAG ?= 0.9.1
+STACK_TAG ?= 0.10.0
 
 $(info ---- TAG = $(TAG))
 
@@ -162,6 +162,7 @@ manifest/manifest_globals_job.yaml.template: manifest/*.yaml \
 
 manifest/manifest_stack_installer_job.yaml.template: manifest/*.yaml \
                                  .build/manifest/stack_values.yaml \
+                                 .build/manifest/cm_values.yaml \
                                  .build/manifest/stack
 
 	$(KUSTOMIZE) build .build/manifest/stack -o "$@" \

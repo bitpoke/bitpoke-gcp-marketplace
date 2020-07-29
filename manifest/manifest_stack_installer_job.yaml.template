@@ -1,6 +1,23 @@
 apiVersion: v1
 data:
-  stack_values.yaml: |+
+  cm_values.yaml: |
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "50m"
+
+    webhook:
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "50m"
+
+    cainjector:
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "50m"
+  stack_values.yaml: |
     component_default: &component_default
       resources:
         requests:
@@ -55,38 +72,50 @@ data:
             memory: "128Mi"
             cpu: "50m"
 
-    cert-manager:
-      <<: *component_default
-      resources:
-        requests:
-          memory: "128Mi"
-          cpu: "50m"
-      enabled: true
-      webhook:
-        <<: *component_default
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "50m"
-
-      cainjector:
-        <<: *component_default
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "50m"
-
-
     prometheus-operator:
-      enabled: false
+      enabled: true
+      prometheus:
+        enabled: false
 
+      alertmanager:
+        enabled: false
+
+      grafana:
+        enabled: false
+
+      coreDns:
+        enabled: false
+
+      kubeApiServer:
+        enabled: false
+
+      kubeControllerManager:
+        enabled: false
+
+      kubeDns:
+        enabled: false
+
+      kubeEtcd:
+        enabled: false
+
+      kubeProxy:
+        enabled: false
+
+      kubeScheduler:
+        enabled: false
+
+      kubelet:
+        enabled: false
+
+      nodeExporter:
+        enabled: false
 kind: ConfigMap
 metadata:
   labels:
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
     app.kubernetes.io/version: "1.5"
-  name: ${name}-stack-values-d6m7g6dg79
+  name: ${name}-stack-values-bb97km42tm
 ---
 apiVersion: batch/v1
 kind: Job
@@ -107,8 +136,6 @@ spec:
     spec:
       containers:
       - env:
-        - name: HELM_HOST
-          value: localhost:44134
         - name: NAMESPACE
           value: presslabs-system
         image: $imageK8s_deploy_toolsFull
@@ -116,18 +143,9 @@ spec:
         volumeMounts:
         - mountPath: /config
           name: values-yaml
-      - command:
-        - supervisord
-        - -c
-        - /etc/supervisor.conf
-        env:
-        - name: TILLER_NAMESPACE
-          value: presslabs-system
-        image: $imageStack_installerFull
-        name: tiller
       restartPolicy: Never
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-stack-values-d6m7g6dg79
+          name: ${name}-stack-values-bb97km42tm
         name: values-yaml
