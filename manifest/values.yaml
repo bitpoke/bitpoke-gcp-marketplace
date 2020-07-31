@@ -47,12 +47,13 @@ dashboard:
 
   controller:
     <<: *component_default
-    enablePrometheusIntegration: false
+    enablePrometheusIntegration: true
     serviceAccount:
       create: false
       name: $serviceAccount
     extraArgs:
       - --site-certificate-issuer=stack-default-certificate-issuer
+      - --prometheus-to-sd-enabled=true
 
   rbac:
     create: false
