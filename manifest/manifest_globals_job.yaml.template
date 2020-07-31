@@ -1633,7 +1633,7 @@ spec:
           kubectl wait --for condition=established crd $RESOURCES --timeout=120s
 
           # wait for cert-manager webhook to be ready
-          kubectl wait --namespace presslabs-system --for condition=Available deployment/stack-cert-manager-webhook --timeout=120s
+          kubectl wait --namespace presslabs-system --for condition=Available deployment/stack-cm-cert-manager-webhook --timeout=120s
 
 
           # patch with application UID and create resources
@@ -1654,7 +1654,7 @@ spec:
         command:
         - /bin/sh
         - -c
-        image: $imageK8s_deploy_toolsFull
+        image: $imageK8sDeployToolsFull
         name: init
         volumeMounts:
         - mountPath: /data/globals/

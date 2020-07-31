@@ -9,7 +9,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: installer
-        image: $imageK8s_deploy_toolsFull
+        image: $imageStackInstallerFull
         env:
         - name: NAMESPACE
           value: presslabs-system

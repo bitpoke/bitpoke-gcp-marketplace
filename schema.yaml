@@ -27,18 +27,21 @@ x-google-marketplace:
   images:
     "":
       properties:
-        imageFull:
+        imageDashboardFull:
           type: FULL
 
     k8s_deploy_tools:
       properties:
-        imageK8s_deploy_toolsFull:
+        imageK8sDeployToolsFull:
           type: FULL
+        deployerTag:
+          type: TAG
 
     stack_installer:
       properties:
-        imageStack_installerFull:
+        imageStackInstallerFull:
           type: FULL
+
 
   clusterConstraints:
     resources:

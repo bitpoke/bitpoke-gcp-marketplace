@@ -8,13 +8,17 @@ global:
   leaderElection:
     namespace: ${namespace}
 
+
 dashboard:
-  image: $imageFull
+  image: $imageDashboardFull
   fullNameOverride: "${name}-dashboard"
 
   stack:
     name: stack
     namespace: presslabs-system
+
+  application:
+    version: $deployerTag
 
   defaults:
     installRoles: true

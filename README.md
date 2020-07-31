@@ -133,7 +133,7 @@ Configure the container images:
 REGISTRY=gcr.io/press-labs-public
 TAG=1.4
 
-export imageFull="${REGISTRY}/dashboard:${TAG}"
+export imageDashboardFull="${REGISTRY}/dashboard:${TAG}"
 export imageStackInstallerFull="${REGISTRY}/dashboard/stack_installer:${TAG}"
 export imageK8sDeployToolsFull=${REGISTRY}/dashboard/k8s_deploy_tools:${TAG}
 
@@ -151,9 +151,9 @@ script:
 
 ```shell
 for i in \
-         "imageFull" \
-         "imageK8s_deploy_toolsFull" \
-         "imageStack_installerFull"; do
+         "imageDashboardFull" \
+         "imageK8sDeployToolsFull" \
+         "imageStackInstallerFull"; do
   repo=$(echo ${!i} | cut -d: -f1);
   digest=$(docker pull ${!i} | sed -n -e 's/Digest: //p');
   export $i="$repo@$digest";
@@ -224,8 +224,10 @@ Use `envsubst` to expand the template. We recommend that you save the expanded
 manifest file for future updates to the application.
 
 ```shell
+export deployerTag=$TAG
+
 for f in manifest/*.yaml.template; do \
-  cat $f | envsubst '$name $namespace $dashboardDomain $imageFull $imageStack_installerFull $serviceAccount $reportingSecret $imageK8s_deploy_toolsFull $dashboardIP' >> "${name}_manifest.yaml"; \
+  cat $f | envsubst '$name $namespace $dashboardDomain $imageDashboardFull $imageStackInstallerFull $serviceAccount $reportingSecret $imageK8sDeployToolsFull $dashboardIP $deployerTag' >> "${name}_manifest.yaml"; \
   echo "---" >> "${name}_manifest.yaml"; \
 done
 ```

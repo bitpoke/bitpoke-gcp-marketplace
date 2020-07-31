@@ -141,7 +141,7 @@ spec:
       - env:
         - name: NAMESPACE
           value: presslabs-system
-        image: $imageK8s_deploy_toolsFull
+        image: $imageStackInstallerFull
         name: installer
         volumeMounts:
         - mountPath: /config

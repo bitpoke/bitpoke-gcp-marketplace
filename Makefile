@@ -126,7 +126,7 @@ endef
 	helm dependency update $(DASHBOARD_CHART_PATH)
 	helm template $(DASHBOARD_CHART_PATH) -f manifest/values.yaml \
 			--name 'helm-release-name' --namespace 'helm-namespace' \
-			--kube-version 1.10 \
+			--kube-version 1.16 \
 			--output-dir .build/manifest/charts
 # it we need to replace the release name and namespace with our placeholders
 	find .build/manifest/charts -type f -print0 | xargs -0 $(SEDI) 's/helm-release-name/$${name}/g'
