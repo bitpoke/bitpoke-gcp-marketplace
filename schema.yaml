@@ -30,14 +30,14 @@ x-google-marketplace:
         imageDashboardFull:
           type: FULL
 
-    k8s_deploy_tools:
+    k8s-deploy-tools:
       properties:
         imageK8sDeployToolsFull:
           type: FULL
         deployerTag:
           type: TAG
 
-    stack_installer:
+    stack-installer:
       properties:
         imageStackInstallerFull:
           type: FULL

@@ -92,7 +92,7 @@ endef
 	       $(REGISTRY)/dashboard:$(TAG))
 	$(call republish,\
 				 spaceonfire/k8s-deploy-tools,\
-	       $(REGISTRY)/dashboard/k8s_deploy_tools:$(TAG))
+	       $(REGISTRY)/dashboard/k8s-deploy-tools:$(TAG))
 
 	@touch "$@"
 
@@ -102,7 +102,7 @@ endef
                                   | .build/dashboard
 	$(call republish,\
 				 quay.io/presslabs/stack-installer:$(STACK_TAG),\
-	       $(REGISTRY)/dashboard/stack_installer:$(TAG))
+	       $(REGISTRY)/dashboard/stack-installer:$(TAG))
 
 	@touch "$@"
 
