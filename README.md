@@ -131,7 +131,7 @@ Configure the container images:
 
 ```shell
 REGISTRY=gcr.io/press-labs-public
-TAG=1.4
+TAG=1.5.0 # you must include the patch version
 
 export imageDashboardFull="${REGISTRY}/dashboard:${TAG}"
 export imageStackInstallerFull="${REGISTRY}/dashboard/stack_installer:${TAG}"
