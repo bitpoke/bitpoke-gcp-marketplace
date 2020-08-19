@@ -83,6 +83,8 @@ define republish
 	docker push $(2)
 endef
 
+DEPLOY_TOOLS_TAG ?= v0.1.0
+
 .build/dashboard/dashboard: .build/var/TAG \
                             .build/var/REGISTRY \
                             .build/var/DASHBOARD_TAG \
@@ -91,7 +93,7 @@ endef
 	       $(DASHBOARD_IMAGE):$(DASHBOARD_TAG),\
 	       $(REGISTRY)/dashboard:$(TAG))
 	$(call republish,\
-				 spaceonfire/k8s-deploy-tools,\
+				 quay.io/presslabs/light-k8s-deploy-tools:$(DEPLOY_TOOLS_TAG),\
 	       $(REGISTRY)/dashboard/k8s-deploy-tools:$(TAG))
 
 	@touch "$@"
