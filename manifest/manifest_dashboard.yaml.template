@@ -173,7 +173,6 @@ spec:
         - --webhook-cert-dir=/tmp/${name}-dashboard-webhook-cert-dir
         - --prometheus-operator-enabled=true
         - --site-certificate-issuer=stack-default-certificate-issuer
-        - --prometheus-to-sd-enabled=true
         - --stack.name=stack
         - --stack.namespace=presslabs-system
         env:
