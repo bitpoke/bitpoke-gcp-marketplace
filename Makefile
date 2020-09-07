@@ -24,7 +24,7 @@ DASHBOARD_CHART_PATH ?= charts/dashboard-gcm
 
 DASHBOARD_IMAGE ?= gcr.io/press-labs-dashboard/dashboard-gcp-marketplace-amd64
 DASHBOARD_TAG ?= $(shell git describe --tags --abbrev=0)
-STACK_TAG ?= 0.10.2
+STACK_TAG ?= 0.10.3
 
 $(info ---- TAG = $(TAG))
 
