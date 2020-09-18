@@ -118,7 +118,7 @@ metadata:
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
     app.kubernetes.io/version: "1.5"
-  name: ${name}-stack-values-6hc8chgktd
+  name: ${name}-stack-values-296dddm7f6
 ---
 apiVersion: batch/v1
 kind: Job
@@ -150,5 +150,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-stack-values-6hc8chgktd
+          name: ${name}-stack-values-296dddm7f6
         name: values-yaml

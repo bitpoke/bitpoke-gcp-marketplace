@@ -126,11 +126,10 @@ DEPLOY_TOOLS_TAG ?= v0.1.0
                                   $(DASHBOARD_CHART_PATH) \
                                   | .build/manifest/charts
 	helm dependency update $(DASHBOARD_CHART_PATH)
-	helm template $(DASHBOARD_CHART_PATH) -f manifest/values.yaml \
-			--name 'helm-release-name' --namespace 'helm-namespace' \
-			--kube-version 1.16 \
+	helm template --include-crds $(DASHBOARD_CHART_PATH) -f manifest/values.yaml \
+			--name-template 'helm-release-name' --namespace 'helm-namespace' \
 			--output-dir .build/manifest/charts
-# it we need to replace the release name and namespace with our placeholders
+	# it we need to replace the release name and namespace with our placeholders
 	find .build/manifest/charts -type f -print0 | xargs -0 $(SEDI) 's/helm-release-name/$${name}/g'
 	find .build/manifest/charts -type f -print0 | xargs -0 $(SEDI) 's/helm-namespace/$${namespace}/g'
 

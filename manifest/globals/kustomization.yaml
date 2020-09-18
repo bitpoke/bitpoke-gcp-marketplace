@@ -4,7 +4,7 @@ resources:
   - namespace.yaml
 
   # crds
-  - ../charts/dashboard-gcm/charts/dashboard/templates/crds.yaml
+  - ../charts/dashboard-gcm/charts/dashboard/crds/crds.yaml
 
   # dashboard
   - ../charts/dashboard-gcm/charts/dashboard/templates/default-roles.yaml

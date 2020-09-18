@@ -2,4 +2,4 @@ apiVersion: v1
 appVersion: "latest"
 description: Presslabs Dashboard Cart for Google Marketplace
 name: dashboard-gcm
-version: 0.1.0
+version: 0.1.1
