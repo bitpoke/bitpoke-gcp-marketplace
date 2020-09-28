@@ -17,13 +17,9 @@ data:
       annotations:
         controller-gen.kubebuilder.io/version: v0.3.0
       labels:
-        app: '{{ include "dashboard.name" . }}'
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
         app.kubernetes.io/version: "1.5"
-        chart: '{{ include "dashboard.chart" . }}'
-        heritage: '{{ .Release.Service }}'
-        release: '{{ .Release.Name }}'
       name: accountbindings.dashboard.presslabs.com
     spec:
       group: dashboard.presslabs.com
@@ -67,13 +63,9 @@ data:
       annotations:
         controller-gen.kubebuilder.io/version: v0.3.0
       labels:
-        app: '{{ include "dashboard.name" . }}'
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
         app.kubernetes.io/version: "1.5"
-        chart: '{{ include "dashboard.chart" . }}'
-        heritage: '{{ .Release.Service }}'
-        release: '{{ .Release.Name }}'
       name: invites.dashboard.presslabs.com
     spec:
       group: dashboard.presslabs.com
@@ -160,13 +152,9 @@ data:
       annotations:
         controller-gen.kubebuilder.io/version: v0.3.0
       labels:
-        app: '{{ include "dashboard.name" . }}'
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
         app.kubernetes.io/version: "1.5"
-        chart: '{{ include "dashboard.chart" . }}'
-        heritage: '{{ .Release.Service }}'
-        release: '{{ .Release.Name }}'
       name: mysqldatabases.dashboard.presslabs.com
     spec:
       group: dashboard.presslabs.com
@@ -255,13 +243,9 @@ data:
       annotations:
         controller-gen.kubebuilder.io/version: v0.3.0
       labels:
-        app: '{{ include "dashboard.name" . }}'
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
         app.kubernetes.io/version: "1.5"
-        chart: '{{ include "dashboard.chart" . }}'
-        heritage: '{{ .Release.Service }}'
-        release: '{{ .Release.Name }}'
       name: mysqlusers.dashboard.presslabs.com
     spec:
       group: dashboard.presslabs.com
@@ -390,13 +374,9 @@ data:
       annotations:
         controller-gen.kubebuilder.io/version: v0.3.0
       labels:
-        app: '{{ include "dashboard.name" . }}'
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
         app.kubernetes.io/version: "1.5"
-        chart: '{{ include "dashboard.chart" . }}'
-        heritage: '{{ .Release.Service }}'
-        release: '{{ .Release.Name }}'
       name: projects.dashboard.presslabs.com
     spec:
       group: dashboard.presslabs.com
@@ -1499,7 +1479,7 @@ metadata:
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
     app.kubernetes.io/version: "1.5"
-  name: ${name}-dash-globals-manifests-k5c87g74kt
+  name: ${name}-dash-globals-manifests-g6627tcg52
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1579,5 +1559,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-k5c87g74kt
+          name: ${name}-dash-globals-manifests-g6627tcg52
         name: globals-manifests
