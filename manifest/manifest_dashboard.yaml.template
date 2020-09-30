@@ -5,7 +5,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.5"
+    app.kubernetes.io/version: "1.6"
     chart: dashboard-0.1.1
     heritage: Helm
     release: ${name}
@@ -24,7 +24,7 @@ spec:
     app: dashboard
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.5"
+    app.kubernetes.io/version: "1.6"
     component: apiserver
     release: ${name}
   type: ClusterIP
@@ -36,7 +36,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.5"
+    app.kubernetes.io/version: "1.6"
     chart: dashboard-0.1.1
     heritage: Helm
     release: ${name}
@@ -51,7 +51,7 @@ spec:
     app: dashboard
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.5"
+    app.kubernetes.io/version: "1.6"
     component: controller
     release: ${name}
   type: ClusterIP
@@ -63,7 +63,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.5"
+    app.kubernetes.io/version: "1.6"
     chart: dashboard-0.1.1
     component: apiserver
     heritage: Helm
@@ -76,7 +76,7 @@ spec:
       app: dashboard
       app.kubernetes.io/name: ${name}
       app.kubernetes.io/part-of: presslabs-dashboard
-      app.kubernetes.io/version: "1.5"
+      app.kubernetes.io/version: "1.6"
       component: apiserver
       release: ${name}
   template:
@@ -87,7 +87,7 @@ spec:
         app: dashboard
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.5"
+        app.kubernetes.io/version: "1.6"
         component: apiserver
         release: ${name}
     spec:
@@ -137,7 +137,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.5"
+    app.kubernetes.io/version: "1.6"
     chart: dashboard-0.1.1
     component: controller
     heritage: Helm
@@ -150,7 +150,7 @@ spec:
       app: dashboard
       app.kubernetes.io/name: ${name}
       app.kubernetes.io/part-of: presslabs-dashboard
-      app.kubernetes.io/version: "1.5"
+      app.kubernetes.io/version: "1.6"
       component: controller
       release: ${name}
   template:
@@ -161,7 +161,7 @@ spec:
         app: dashboard
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.5"
+        app.kubernetes.io/version: "1.6"
         component: controller
         release: ${name}
     spec:
@@ -222,7 +222,7 @@ metadata:
   labels:
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.5"
+    app.kubernetes.io/version: "1.6"
   name: ${name}
 spec:
   componentKinds:
@@ -317,7 +317,7 @@ metadata:
     app: dashboard
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.5"
+    app.kubernetes.io/version: "1.6"
     chart: dashboard-0.1.1
     heritage: Helm
     release: ${name}
