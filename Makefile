@@ -25,11 +25,13 @@ DASHBOARD_CHART_PATH ?= charts/dashboard-gcm
 DASHBOARD_IMAGE ?= gcr.io/press-labs-dashboard/dashboard-gcp-marketplace-amd64
 DASHBOARD_TAG ?= $(shell git describe --tags --abbrev=0)
 STACK_TAG ?= 0.10.3
+DEPLOY_TOOLS_TAG ?= 0.1.0
 
 $(info ---- TAG = $(TAG))
 
 $(info ---- DASHBOARD_TAG = $(DASHBOARD_TAG))
 $(info ---- STACK_TAG = $(STACK_TAG))
+$(info ---- DEPLOY_TOOLS_TAG = $(DEPLOY_TOOLS_TAG))
 
 
 APP_DEPLOYER_IMAGE ?= $(REGISTRY)/dashboard/deployer:$(TAG)
@@ -83,7 +85,6 @@ define republish
 	docker push $(2)
 endef
 
-DEPLOY_TOOLS_TAG ?= v0.1.0
 
 .build/dashboard/dashboard: .build/var/TAG \
                             .build/var/REGISTRY \
