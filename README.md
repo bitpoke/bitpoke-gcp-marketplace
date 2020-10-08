@@ -69,6 +69,15 @@ Configure `kubectl` to connect to the new cluster.
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
+#### Enable Application Addon
+
+```shell
+gcloud beta container clusters update "$CLUSTER" --zone "$ZONE" --update-addons ApplicationManager=ENABLED
+```
+
+For more information about Application Addon, please check 
+[this](https://cloud.google.com/kubernetes-engine/docs/how-to/add-on/application-delivery#setting_up).
+
 #### Clone this repo
 
 Clone this repo and the associated tools repo:
@@ -76,27 +85,6 @@ Clone this repo and the associated tools repo:
 ```shell
 git clone --recursive https://github.com/presslabs/dashboard-gcp-marketplace.git
 ```
-
-#### Install the Application resource definition and install the Application controller
-
-An Application resource is a collection of individual Kubernetes components,
-such as Services, Deployments, and so on, that you can manage as a group.
-
-To set up your cluster to understand Application resources and to install the 
-Application controller, run the following command:
-
-```shell
-curl https://raw.githubusercontent.com/kubernetes-sigs/application/v0.8.2/deploy/kube-app-manager-aio.yaml \
-  | sed 's/quay.io\/kubernetes-sigs\/kube-app-manager:v0.8.1/gcr.io\/press-labs-public\/application-manager:v0.8.2/' \
-  | kubectl apply -f -
-```
-
-You need to run this command once.
-
-The Application resource is defined by the
-[Kubernetes SIG-apps](https://github.com/kubernetes/community/tree/master/sig-apps)
-community. The source code can be found on
-[github.com/kubernetes-sigs/application](https://github.com/kubernetes-sigs/application).
 
 ### Install the Application
 
@@ -109,7 +97,7 @@ cd dashboard-gcp-marketplace
 Select the release branch
 
 ```shell
-git checkout release-1.5
+git checkout release-1.6
 ```
 
 #### Configure the app with environment variables
@@ -131,11 +119,11 @@ Configure the container images:
 
 ```shell
 REGISTRY=gcr.io/press-labs-public
-TAG=1.5.0 # you must include the patch version
+TAG=1.6.0 # you must include the patch version; e.g.: 1.5.0, 1.6.0-rc.1, 1.7.2
 
 export imageDashboardFull="${REGISTRY}/dashboard:${TAG}"
-export imageStackInstallerFull="${REGISTRY}/dashboard/stack_installer:${TAG}"
-export imageK8sDeployToolsFull=${REGISTRY}/dashboard/k8s_deploy_tools:${TAG}
+export imageStackInstallerFull="${REGISTRY}/dashboard/stack-installer:${TAG}"
+export imageK8sDeployToolsFull="${REGISTRY}/dashboard/k8s-deploy-tools:${TAG}"
 
 # optional
 export dashboardIP=
@@ -173,7 +161,7 @@ kubectl create namespace "$namespace"
 #### Generate license key
 
 You can obtain the license key, by going to 
-[Marketplace](https://console.cloud.google.com/marketplace/kubernetes/config/press-labs-public/presslabs-dashboard?version=1.4) 
+[Marketplace](https://console.cloud.google.com/marketplace/kubernetes/config/press-labs-public/presslabs-dashboard?version=1.6)
 and generate it.
 
 Apply the license key
