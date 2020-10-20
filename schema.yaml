@@ -71,7 +71,13 @@ properties:
       type: SERVICE_ACCOUNT
       serviceAccount:
         description: >
-          Service account that will be assigned to the Presslabs Dashboard.
+          This service account is used to deploy cluster wide multiple components in order to run
+          Presslabs Dashboard. The requested permission is cluster-admin.
+
+          Is used to install Presslabs Stack in presslabs-system namespace, to install custom CRDs, to
+          install Cert Manager, to configure cluster wide webhooks, and to install RBAC roles needed
+          to operate the Dashboard.
+
         roles:
         - type: ClusterRole
           rulesType: PREDEFINED
