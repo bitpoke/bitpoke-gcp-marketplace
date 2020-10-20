@@ -8,8 +8,19 @@ x-google-marketplace:
   # release tag on the the deployer.
   publishedVersion: $TAG
   publishedVersionMetadata:
-    releaseNote: >-
-      TODO Release 0.5 note.
+    releaseNote: >
+      Added:
+      - Added a button to pause/unpause sites.
+      - Added a button to enable/disable Memcached for sites.
+      - Added query parameters options for page cache. Requires stack-mu-plugin v0.5.0 or newer and a recent build of the quay.io/presslabs/wordpress-runtime image.
+
+      Changed:
+      - Updates Presslabs Stack to version v0.10.3.
+      - Updates Presslabs Wordpress Operator to v0.10.5.
+      - Updates Google Config Connector to 1.19.1. Requires separate update from the related Presslabs Dashboard status page.
+
+      Fixed:
+      - Fixed Prometheus retention size computation.
 
     # releaseTypes list is optional.
     # "Security" should only be used if this is an important update to patch
@@ -18,6 +29,9 @@ x-google-marketplace:
     # - Feature
     # - BugFix
     # - Security
+    releaseTypes:
+      - Feature
+      - BugFix
 
     # If "recommended" is "true", users using older releases are encouraged
     # to update as soon as possible. This is useful if, for example, this release
