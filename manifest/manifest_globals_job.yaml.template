@@ -623,8 +623,16 @@ data:
     - apiGroups:
       - ""
       resources:
-      - events
       - pods
+      verbs:
+      - get
+      - list
+      - watch
+      - delete
+    - apiGroups:
+      - ""
+      resources:
+      - events
       verbs:
       - get
       - list
@@ -1479,7 +1487,7 @@ metadata:
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
     app.kubernetes.io/version: "1.6"
-  name: ${name}-dash-globals-manifests-765759kk68
+  name: ${name}-dash-globals-manifests-5f52b9t9d8
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1559,5 +1567,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-765759kk68
+          name: ${name}-dash-globals-manifests-5f52b9t9d8
         name: globals-manifests
