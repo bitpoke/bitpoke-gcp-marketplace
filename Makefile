@@ -184,7 +184,7 @@ clean-manifests:
 # a simple rule to test if the generated manifests are ok
 .PHONY: verify-manifests
 verify-manifests: clean-manifests manifests
-# check for missing files or not used in kustomize
+	# check for missing files or not used in kustomize
 	./scripts/check_files.sh .build/manifest/charts \
 	  manifest/dashboard/kustomization.yaml \
 	  manifest/globals/kustomization.yaml
