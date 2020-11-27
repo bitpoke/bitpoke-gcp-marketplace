@@ -171,7 +171,6 @@ spec:
         - --base-url=https://$dashboardDomain
         - --webhook-port=4433
         - --webhook-cert-dir=/tmp/${name}-dashboard-webhook-cert-dir
-        - --prometheus-operator-enabled=true
         - --site-certificate-issuer=stack-default-certificate-issuer
         - --stack.name=stack
         - --stack.namespace=presslabs-system

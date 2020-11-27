@@ -51,7 +51,6 @@ dashboard:
 
   controller:
     <<: *component_default
-    enablePrometheusIntegration: true
     serviceAccount:
       create: false
       name: $serviceAccount
