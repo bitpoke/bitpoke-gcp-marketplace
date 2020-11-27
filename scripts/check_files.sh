@@ -5,7 +5,7 @@ shift
 manifests=${@}
 
 chartFile=.build/files_from_chart.txt
-filesinKustomizeFile=.build/files_from_kustomize.txt
+filesInKustomizeFile=.build/files_from_kustomize.txt
 
 # lists files from chart and filter them
 find $dir_path -name '*.yaml' |\
@@ -14,17 +14,17 @@ find $dir_path -name '*.yaml' |\
     grep -v 'apiserver-sentry-secret.yaml' |\
     sed 's/.build\/manifest/../g' | sort > $chartFile
 
-echo -n "" > $filesinKustomizeFile.tmp
+echo -n "" > $filesInKustomizeFile.tmp
 for kustomizationFile in $manifests; do
-    yq r $kustomizationFile resources >> $filesinKustomizeFile.tmp
+    yq r $kustomizationFile resources | sed '/^#/d' >> $filesInKustomizeFile.tmp
 done
 
 # lists files from kustomization files and filter them
-cat $filesinKustomizeFile.tmp | awk '{print $2}' |\
+cat $filesInKustomizeFile.tmp | awk '{print $2}' |\
     grep -v 'namespace.yaml' |\
     grep -v 'google-config-connector-crds.yaml' |\
-    sort > $filesinKustomizeFile
+    sort > $filesInKustomizeFile
 
-rm $filesinKustomizeFile.tmp
+rm $filesInKustomizeFile.tmp
 
-diff $chartFile $filesinKustomizeFile
+diff $chartFile $filesInKustomizeFile
