@@ -34,14 +34,10 @@ data:
           description: AccountBinding is the Schema for the account bindings API
           properties:
             apiVersion:
-              description: 'APIVersion defines the versioned schema of this representation
-                of an object. Servers should convert recognized schemas to the latest
-                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
               type: string
             kind:
-              description: 'Kind is a string value representing the REST resource this
-                object represents. Servers may infer this from the endpoint the client
-                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
               type: string
             metadata:
               type: object
@@ -86,14 +82,10 @@ data:
           description: Invite is the Schema for the invites API
           properties:
             apiVersion:
-              description: 'APIVersion defines the versioned schema of this representation
-                of an object. Servers should convert recognized schemas to the latest
-                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
               type: string
             kind:
-              description: 'Kind is a string value representing the REST resource this
-                object represents. Servers may infer this from the endpoint the client
-                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
               type: string
             metadata:
               type: object
@@ -101,12 +93,10 @@ data:
               description: InviteSpec defines the desired state of Invite
               properties:
                 email:
-                  description: The email of the invited user (it is recommended to encrypt
-                    the string)
+                  description: The email of the invited user (it is recommended to encrypt the string)
                   type: string
                 redeemToken:
-                  description: RedeemToken is the token used for verification purposes
-                    when redeeming the invite. It is recommended to encrypt the string.
+                  description: RedeemToken is the token used for verification purposes when redeeming the invite. It is recommended to encrypt the string.
                   type: string
               type: object
             status:
@@ -115,12 +105,10 @@ data:
                 conditions:
                   description: Conditions represents the Invite resource conditions list.
                   items:
-                    description: InviteCondition defines the condition struct for an Invite
-                      resource
+                    description: InviteCondition defines the condition struct for an Invite resource
                     properties:
                       lastTransitionTime:
-                        description: Last time the condition transitioned from one status
-                          to another.
+                        description: Last time the condition transitioned from one status to another.
                         format: date-time
                         type: string
                       lastUpdateTime:
@@ -128,8 +116,7 @@ data:
                         format: date-time
                         type: string
                       message:
-                        description: A human readable message indicating details about
-                          the transition.
+                        description: A human readable message indicating details about the transition.
                         type: string
                       reason:
                         description: The reason for the condition's last transition.
@@ -182,14 +169,10 @@ data:
           description: MySQLDatabase is the Schema for the MySQL Database API
           properties:
             apiVersion:
-              description: 'APIVersion defines the versioned schema of this representation
-                of an object. Servers should convert recognized schemas to the latest
-                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
               type: string
             kind:
-              description: 'Kind is a string value representing the REST resource this
-                object represents. Servers may infer this from the endpoint the client
-                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
               type: string
             metadata:
               type: object
@@ -197,17 +180,14 @@ data:
               description: MySQLDatabaseSpec defines the desired state of MySQLDatabaseSpec
               properties:
                 clusterRef:
-                  description: ClusterRef represents a reference to the MySQL cluster.
-                    This field should be immutable.
+                  description: ClusterRef represents a reference to the MySQL cluster. This field should be immutable.
                   properties:
                     name:
-                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                        TODO: Add other useful fields. apiVersion, kind, uid?'
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
                       type: string
                   type: object
                 database:
-                  description: Database represents the database name which will be created.
-                    This field should be immutable.
+                  description: Database represents the database name which will be created. This field should be immutable.
                   type: string
               required:
               - clusterRef
@@ -217,15 +197,12 @@ data:
               description: MySQLDatabaseStatus defines the observed state of MySQLDatabase
               properties:
                 conditions:
-                  description: Conditions represents the MySQLDatabase  resource conditions
-                    list.
+                  description: Conditions represents the MySQLDatabase  resource conditions list.
                   items:
-                    description: MySQLDatabaseCondition defines the condition struct for
-                      a MySQLDatabase resource
+                    description: MySQLDatabaseCondition defines the condition struct for a MySQLDatabase resource
                     properties:
                       lastTransitionTime:
-                        description: Last time the condition transitioned from one status
-                          to another.
+                        description: Last time the condition transitioned from one status to another.
                         format: date-time
                         type: string
                       lastUpdateTime:
@@ -233,8 +210,7 @@ data:
                         format: date-time
                         type: string
                       message:
-                        description: A human readable message indicating details about
-                          the transition.
+                        description: A human readable message indicating details about the transition.
                         type: string
                       reason:
                         description: The reason for the condition's last transition.
@@ -284,14 +260,10 @@ data:
           description: MySQLUser is the Schema for the MySQL User API
           properties:
             apiVersion:
-              description: 'APIVersion defines the versioned schema of this representation
-                of an object. Servers should convert recognized schemas to the latest
-                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
               type: string
             kind:
-              description: 'Kind is a string value representing the REST resource this
-                object represents. Servers may infer this from the endpoint the client
-                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
               type: string
             metadata:
               type: object
@@ -299,51 +271,42 @@ data:
               description: MySQLUserSpec defines the desired state of MySQLUserSpec
               properties:
                 allowedHost:
-                  description: AllowedHost is the allowed host to connect from. This field
-                    should be immutable.
+                  description: AllowedHost is the allowed host to connect from. This field should be immutable.
                   type: string
                 clusterRef:
-                  description: ClusterRef represents a reference to the MySQL cluster.
-                    This field should be immutable.
+                  description: ClusterRef represents a reference to the MySQL cluster. This field should be immutable.
                   properties:
                     name:
-                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                        TODO: Add other useful fields. apiVersion, kind, uid?'
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
                       type: string
                   type: object
                 password:
                   description: Password is the password for the user.
                   properties:
                     key:
-                      description: The key of the secret to select from.  Must be a valid
-                        secret key.
+                      description: The key of the secret to select from.  Must be a valid secret key.
                       type: string
                     name:
-                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                        TODO: Add other useful fields. apiVersion, kind, uid?'
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
                       type: string
                   required:
                   - key
                   type: object
                 permissions:
-                  description: Permissions is the list of roles that user has in the specified
-                    database.
+                  description: Permissions is the list of roles that user has in the specified database.
                   items:
                     description: MySQLPermission defines a MySQL schema permission
                     properties:
                       permissions:
-                        description: Permissions represents the permissions granted on
-                          the schema/tables
+                        description: Permissions represents the permissions granted on the schema/tables
                         items:
                           type: string
                         type: array
                       schema:
-                        description: Schema represents the schema to which the permission
-                          applies
+                        description: Schema represents the schema to which the permission applies
                         type: string
                       tables:
-                        description: Tables represents the tables inside the schema to
-                          which the permission applies
+                        description: Tables represents the tables inside the schema to which the permission applies
                         items:
                           type: string
                         type: array
@@ -354,8 +317,7 @@ data:
                     type: object
                   type: array
                 user:
-                  description: User is the name of the user that will be created with
-                    will access the specified database. This field should be immutable.
+                  description: User is the name of the user that will be created with will access the specified database. This field should be immutable.
                   type: string
               required:
               - clusterRef
@@ -366,15 +328,12 @@ data:
               description: MySQLUserStatus defines the observed state of MySQLUser
               properties:
                 conditions:
-                  description: Conditions represents the MySQLUser resource conditions
-                    list.
+                  description: Conditions represents the MySQLUser resource conditions list.
                   items:
-                    description: MySQLUserCondition defines the condition struct for a
-                      MySQLUser resource
+                    description: MySQLUserCondition defines the condition struct for a MySQLUser resource
                     properties:
                       lastTransitionTime:
-                        description: Last time the condition transitioned from one status
-                          to another.
+                        description: Last time the condition transitioned from one status to another.
                         format: date-time
                         type: string
                       lastUpdateTime:
@@ -382,8 +341,7 @@ data:
                         format: date-time
                         type: string
                       message:
-                        description: A human readable message indicating details about
-                          the transition.
+                        description: A human readable message indicating details about the transition.
                         type: string
                       reason:
                         description: The reason for the condition's last transition.
@@ -433,14 +391,10 @@ data:
           description: Project is the Schema for the projects API
           properties:
             apiVersion:
-              description: 'APIVersion defines the versioned schema of this representation
-                of an object. Servers should convert recognized schemas to the latest
-                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
               type: string
             kind:
-              description: 'Kind is a string value representing the REST resource this
-                object represents. Servers may infer this from the endpoint the client
-                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
               type: string
             metadata:
               type: object
@@ -1019,14 +973,10 @@ data:
         openAPIV3Schema:
           properties:
             apiVersion:
-              description: 'APIVersion defines the versioned schema of this representation
-                of an object. Servers should convert recognized schemas to the latest
-                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
               type: string
             kind:
-              description: 'Kind is a string value representing the REST resource this
-                object represents. Servers may infer this from the endpoint the client
-                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
               type: string
             metadata:
               type: object
@@ -1037,8 +987,7 @@ data:
                   items:
                     properties:
                       members:
-                        description: Optional. The list of IAM users to be bound to the
-                          role.
+                        description: Optional. The list of IAM users to be bound to the role.
                         items:
                           pattern: ^(user|serviceAccount|group|domain):.+$
                           type: string
@@ -1098,25 +1047,20 @@ data:
             status:
               properties:
                 conditions:
-                  description: Conditions represents the latest available observations
-                    of the IAM policy's current state.
+                  description: Conditions represents the latest available observations of the IAM policy's current state.
                   items:
                     properties:
                       lastTransitionTime:
-                        description: Last time the condition transitioned from one status
-                          to another.
+                        description: Last time the condition transitioned from one status to another.
                         type: string
                       message:
-                        description: Human-readable message indicating details about last
-                          transition.
+                        description: Human-readable message indicating details about last transition.
                         type: string
                       reason:
-                        description: Unique, one-word, CamelCase reason for the condition's
-                          last transition.
+                        description: Unique, one-word, CamelCase reason for the condition's last transition.
                         type: string
                       status:
-                        description: Status is the status of the condition. Can be True,
-                          False, Unknown.
+                        description: Status is the status of the condition. Can be True, False, Unknown.
                         type: string
                       type:
                         description: Type is the type of the condition.
@@ -1161,14 +1105,10 @@ data:
         openAPIV3Schema:
           properties:
             apiVersion:
-              description: 'apiVersion defines the versioned schema of this representation
-                of an object. Servers should convert recognized schemas to the latest
-                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
               type: string
             kind:
-              description: 'kind is a string value representing the REST resource this
-                object represents. Servers may infer this from the endpoint the client
-                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
               type: string
             metadata:
               type: object
@@ -1182,25 +1122,20 @@ data:
             status:
               properties:
                 conditions:
-                  description: Conditions represents the latest available observation
-                    of the resource's current state.
+                  description: Conditions represents the latest available observation of the resource's current state.
                   items:
                     properties:
                       lastTransitionTime:
-                        description: Last time the condition transitioned from one status
-                          to another.
+                        description: Last time the condition transitioned from one status to another.
                         type: string
                       message:
-                        description: Human-readable message indicating details about last
-                          transition.
+                        description: Human-readable message indicating details about last transition.
                         type: string
                       reason:
-                        description: Unique, one-word, CamelCase reason for the condition's
-                          last transition.
+                        description: Unique, one-word, CamelCase reason for the condition's last transition.
                         type: string
                       status:
-                        description: Status is the status of the condition. Can be True,
-                          False, Unknown.
+                        description: Status is the status of the condition. Can be True, False, Unknown.
                         type: string
                       type:
                         description: Type is the type of the condition.
@@ -1251,14 +1186,10 @@ data:
         openAPIV3Schema:
           properties:
             apiVersion:
-              description: 'apiVersion defines the versioned schema of this representation
-                of an object. Servers should convert recognized schemas to the latest
-                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
               type: string
             kind:
-              description: 'kind is a string value representing the REST resource this
-                object represents. Servers may infer this from the endpoint the client
-                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
               type: string
             metadata:
               type: object
@@ -1389,25 +1320,20 @@ data:
             status:
               properties:
                 conditions:
-                  description: Conditions represents the latest available observation
-                    of the resource's current state.
+                  description: Conditions represents the latest available observation of the resource's current state.
                   items:
                     properties:
                       lastTransitionTime:
-                        description: Last time the condition transitioned from one status
-                          to another.
+                        description: Last time the condition transitioned from one status to another.
                         type: string
                       message:
-                        description: Human-readable message indicating details about last
-                          transition.
+                        description: Human-readable message indicating details about last transition.
                         type: string
                       reason:
-                        description: Unique, one-word, CamelCase reason for the condition's
-                          last transition.
+                        description: Unique, one-word, CamelCase reason for the condition's last transition.
                         type: string
                       status:
-                        description: Status is the status of the condition. Can be True,
-                          False, Unknown.
+                        description: Status is the status of the condition. Can be True, False, Unknown.
                         type: string
                       type:
                         description: Type is the type of the condition.
@@ -1456,14 +1382,10 @@ data:
         openAPIV3Schema:
           properties:
             apiVersion:
-              description: 'apiVersion defines the versioned schema of this representation
-                of an object. Servers should convert recognized schemas to the latest
-                internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              description: 'apiVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
               type: string
             kind:
-              description: 'kind is a string value representing the REST resource this
-                object represents. Servers may infer this from the endpoint the client
-                submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              description: 'kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
               type: string
             metadata:
               type: object
@@ -1522,25 +1444,20 @@ data:
             status:
               properties:
                 conditions:
-                  description: Conditions represents the latest available observation
-                    of the resource's current state.
+                  description: Conditions represents the latest available observation of the resource's current state.
                   items:
                     properties:
                       lastTransitionTime:
-                        description: Last time the condition transitioned from one status
-                          to another.
+                        description: Last time the condition transitioned from one status to another.
                         type: string
                       message:
-                        description: Human-readable message indicating details about last
-                          transition.
+                        description: Human-readable message indicating details about last transition.
                         type: string
                       reason:
-                        description: Unique, one-word, CamelCase reason for the condition's
-                          last transition.
+                        description: Unique, one-word, CamelCase reason for the condition's last transition.
                         type: string
                       status:
-                        description: Status is the status of the condition. Can be True,
-                          False, Unknown.
+                        description: Status is the status of the condition. Can be True, False, Unknown.
                         type: string
                       type:
                         description: Type is the type of the condition.
@@ -1570,7 +1487,7 @@ metadata:
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
     app.kubernetes.io/version: "1.7"
-  name: ${name}-dash-globals-manifests-b8h5bcfgtg
+  name: ${name}-dash-globals-manifests-726d6tgc5k
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1650,5 +1567,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-b8h5bcfgtg
+          name: ${name}-dash-globals-manifests-726d6tgc5k
         name: globals-manifests
