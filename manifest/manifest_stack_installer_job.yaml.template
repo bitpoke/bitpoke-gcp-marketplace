@@ -5,13 +5,11 @@ data:
       requests:
         memory: "128Mi"
         cpu: "50m"
-
     webhook:
       resources:
         requests:
           memory: "128Mi"
           cpu: "50m"
-
     cainjector:
       resources:
         requests:
@@ -23,12 +21,10 @@ data:
         requests:
           memory: "256Mi"
           cpu: "100m"
-
     letsencrypt:
       enabled: true
       email: ping@$dashboardDomain
       server: https://acme-v02.api.letsencrypt.org/directory
-
     wordpress-operator:
       <<: *component_default
       resources:
@@ -38,14 +34,12 @@ data:
       enabled: true
       crd:
         install: false
-
     mysql-operator:
       <<: *component_default
       enabled: true
       installCRDs: false
       orchestrator:
         <<: *component_default
-
     nginx-ingress:
       enabled: true
       rbac:
@@ -71,45 +65,32 @@ data:
           requests:
             memory: "128Mi"
             cpu: "50m"
-
     prometheus-operator:
       enabled: true
       prometheus:
         enabled: false
-
       alertmanager:
         enabled: false
-
       grafana:
         enabled: false
-
       coreDns:
         enabled: false
-
       kubeApiServer:
         enabled: false
-
       kubeControllerManager:
         enabled: false
-
       kubeDns:
         enabled: false
-
       kubeEtcd:
         enabled: false
-
       kubeProxy:
         enabled: false
-
       kubeScheduler:
         enabled: false
-
       kubelet:
         enabled: false
-
       nodeExporter:
         enabled: false
-
       kubeStateMetrics:
         enabled: false
 kind: ConfigMap
@@ -117,8 +98,8 @@ metadata:
   labels:
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.6"
-  name: ${name}-stack-values-296dddm7f6
+    app.kubernetes.io/version: "1.7"
+  name: ${name}-stack-values-9dcd89c28c
 ---
 apiVersion: batch/v1
 kind: Job
@@ -126,7 +107,7 @@ metadata:
   labels:
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
-    app.kubernetes.io/version: "1.6"
+    app.kubernetes.io/version: "1.7"
   name: ${name}-dash-install-stack
 spec:
   backoffLimit: 3
@@ -135,7 +116,7 @@ spec:
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
-        app.kubernetes.io/version: "1.6"
+        app.kubernetes.io/version: "1.7"
     spec:
       containers:
       - env:
@@ -150,5 +131,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-stack-values-296dddm7f6
+          name: ${name}-stack-values-9dcd89c28c
         name: values-yaml
