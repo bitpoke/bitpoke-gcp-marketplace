@@ -1513,12 +1513,7 @@ spec:
           set -e
 
 
-          # create oidc and sentry secrets
-          kubectl create secret generic dashboard-oidc || true
-          kubectl create secret generic dashboard-sentry || true
-
-
-          # wait for needed CRDs to exist and be ready; timeout of 30s
+          # wait for needed CRDs and secrets to exist and be ready; timeout of 30s
           # those CRDs are installed by stack installer
           # wait for presslabs-system namespace to exists
           RESOURCES="certificates.cert-manager.io issuers.cert-manager.io"
@@ -1526,6 +1521,8 @@ spec:
           while [ $i -lt 30  ]; do
             i=$(expr $i + 1)
             kubectl get crd $RESOURCES \
+              && kubectl get secret dashboard-oidc \
+              && kubectl get secret dashboard-sentry \
               && kubectl get namespace presslabs-system \
               && kubectl get application ${name} -n ${namespace} \
               && kubectl -n presslabs-system get deployment/stack-cm-cert-manager-webhook \
