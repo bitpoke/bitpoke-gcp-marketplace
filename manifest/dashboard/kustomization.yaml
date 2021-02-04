@@ -1,7 +1,5 @@
 # resources that will be deployed by the deploy
 resources:
-  - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-oidc-secret.yaml
-  - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-sentry-secret.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-deployment.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-ingress.yaml
   - ../charts/dashboard-gcm/charts/dashboard/templates/apiserver-service.yaml
