@@ -97,7 +97,7 @@ cd dashboard-gcp-marketplace
 Select the release branch
 
 ```shell
-git checkout release-1.6
+git checkout release-1.7
 ```
 
 #### Configure the app with environment variables
