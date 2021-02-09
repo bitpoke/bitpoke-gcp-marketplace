@@ -1,7 +1,13 @@
 # Overview
 
-The Presslabs Dashboard is the scalable Kubernetes-based self-service WordPress hosting, deployment
-and management platform.
+The Presslabs Dashboard is the cloud-native WordPress hosting platform, 
+providing infrastructure management for WordPress properties. The Dashboard is 
+running on top of Kubernetes and the Presslabs Stack for WordPress. 
+The Dashboard is a versatile, yet simple to use elastic solution that allows 
+customizable development workflows and is fit for complex setups requiring true 
+back-end scaling.
+
+[Learn more](https://www.presslabs.com/dashboard/)
 
 ## Architecture
 
@@ -16,7 +22,7 @@ The following operators are included in this application:
  * [**Cert Manager**](https://github.com/jetstack/cert-manager) used for managing and issuance TLS
    certificates.
  * [**Nginx Ingress Controller**](https://github.com/kubernetes/ingress-nginx) for configuring NGINX.
- * **Presslabs Dashboard**
+ * [**Presslabs Dashboard**](https://www.presslabs.com/dashboard/)
  
  
 # Installation
