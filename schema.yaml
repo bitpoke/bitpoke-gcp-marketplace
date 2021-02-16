@@ -15,6 +15,7 @@ x-google-marketplace:
       - Added support for pods listing.
 
       Changed:
+      - Updates Presslabs Stack to version v0.10.4.
       - Updates Google Config Connector to 1.27.0. 
       Requires separate update from the related 
       [Presslabs Dashboard status page](https://www.presslabs.com/docs/dashboard/installation/configure-dashboard/#config-connector).      
