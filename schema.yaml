@@ -10,15 +10,23 @@ x-google-marketplace:
   publishedVersionMetadata:
     releaseNote: >
       Added:
-      - Added a method for specifying tolerations for MySQL, WordPress and Memcached.
-      - Added a Grafana deployment for viewing various metrics.
-      - Added support for pods listing.
+      - Added a method for specifying tolerations for WordPress, MySQL and Memcached.
+      - Added a per Project Grafana deployment for viewing various metrics for WordPress, MySQL and Memcached.
+      - Added Pods list views for Projects and individual entities, with useful per pod actions such as "delete" and "view logs".
+      - Added context switchers in the header bar for a faster navigation.
+
 
       Changed:
       - Updates Presslabs Stack to version v0.10.4.
       - Updates Google Config Connector to 1.27.0. 
       Requires separate update from the related 
-      [Presslabs Dashboard status page](https://www.presslabs.com/docs/dashboard/installation/configure-dashboard/#config-connector).      
+      [Presslabs Dashboard status page](https://www.presslabs.com/docs/dashboard/installation/configure-dashboard/#config-connector).
+      - Reorganized the side menu for a more coherent navigation.
+      - Split the Scheduling and Resources forms into separated views.
+
+
+      Fixed:
+      - Fixed a false System Status warning.
 
     # releaseTypes list is optional.
     # "Security" should only be used if this is an important update to patch
@@ -29,6 +37,7 @@ x-google-marketplace:
     # - Security
     releaseTypes:
       - Feature
+      - BugFix
 
     # If "recommended" is "true", users using older releases are encouraged
     # to update as soon as possible. This is useful if, for example, this release
