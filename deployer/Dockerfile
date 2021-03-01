@@ -20,3 +20,5 @@ COPY manifest/*.yaml.template /data/manifest/
 
 COPY --from=build /tmp/schema.yaml /data/
 COPY apptest/deployer /data-test/
+
+ENV WAIT_FOR_READY_TIMEOUT 1800
