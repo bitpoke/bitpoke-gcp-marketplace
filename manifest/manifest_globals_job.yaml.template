@@ -11,11 +11,11 @@ data:
         cert-manager.io/disable-validation: "true"
       name: presslabs-system
     ---
-    apiVersion: apiextensions.k8s.io/v1beta1
+    apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.3.0
+        controller-gen.kubebuilder.io/version: v0.5.0
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
@@ -29,39 +29,38 @@ data:
         plural: accountbindings
         singular: accountbinding
       scope: Namespaced
-      validation:
-        openAPIV3Schema:
-          description: AccountBinding is the Schema for the account bindings API
-          properties:
-            apiVersion:
-              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-              type: string
-            kind:
-              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-              type: string
-            metadata:
-              type: object
-            spec:
-              description: AccountBindingSpec defines the desired state of AccountBinding
-              properties:
-                userId:
-                  description: The unaltered OpenID Connect subject
-                  type: string
-              required:
-              - userId
-              type: object
-          type: object
-      version: v1alpha1
       versions:
       - name: v1alpha1
+        schema:
+          openAPIV3Schema:
+            description: AccountBinding is the Schema for the account bindings API
+            properties:
+              apiVersion:
+                description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+                type: string
+              kind:
+                description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+                type: string
+              metadata:
+                type: object
+              spec:
+                description: AccountBindingSpec defines the desired state of AccountBinding
+                properties:
+                  userId:
+                    description: The unaltered OpenID Connect subject
+                    type: string
+                required:
+                - userId
+                type: object
+            type: object
         served: true
         storage: true
     ---
-    apiVersion: apiextensions.k8s.io/v1beta1
+    apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.3.0
+        controller-gen.kubebuilder.io/version: v0.5.0
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
@@ -75,82 +74,81 @@ data:
         plural: invites
         singular: invite
       scope: Namespaced
-      subresources:
-        status: {}
-      validation:
-        openAPIV3Schema:
-          description: Invite is the Schema for the invites API
-          properties:
-            apiVersion:
-              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-              type: string
-            kind:
-              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-              type: string
-            metadata:
-              type: object
-            spec:
-              description: InviteSpec defines the desired state of Invite
-              properties:
-                email:
-                  description: The email of the invited user (it is recommended to encrypt the string)
-                  type: string
-                redeemToken:
-                  description: RedeemToken is the token used for verification purposes when redeeming the invite. It is recommended to encrypt the string.
-                  type: string
-              type: object
-            status:
-              description: InviteStatus defines the observed state of an Invite
-              properties:
-                conditions:
-                  description: Conditions represents the Invite resource conditions list.
-                  items:
-                    description: InviteCondition defines the condition struct for an Invite resource
-                    properties:
-                      lastTransitionTime:
-                        description: Last time the condition transitioned from one status to another.
-                        format: date-time
-                        type: string
-                      lastUpdateTime:
-                        description: The last time this condition was updated.
-                        format: date-time
-                        type: string
-                      message:
-                        description: A human readable message indicating details about the transition.
-                        type: string
-                      reason:
-                        description: The reason for the condition's last transition.
-                        type: string
-                      status:
-                        description: Status of the condition, one of True, False, Unknown.
-                        type: string
-                      type:
-                        description: Type of Invite condition.
-                        type: string
-                    required:
-                    - lastTransitionTime
-                    - message
-                    - reason
-                    - status
-                    - type
-                    type: object
-                  type: array
-                userId:
-                  description: UserID is the ID of the invited user
-                  type: string
-              type: object
-          type: object
-      version: v1alpha1
       versions:
       - name: v1alpha1
+        schema:
+          openAPIV3Schema:
+            description: Invite is the Schema for the invites API
+            properties:
+              apiVersion:
+                description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+                type: string
+              kind:
+                description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+                type: string
+              metadata:
+                type: object
+              spec:
+                description: InviteSpec defines the desired state of Invite
+                properties:
+                  email:
+                    description: The email of the invited user (it is recommended to encrypt the string)
+                    type: string
+                  redeemToken:
+                    description: RedeemToken is the token used for verification purposes when redeeming the invite. It is recommended to encrypt the string.
+                    type: string
+                type: object
+              status:
+                description: InviteStatus defines the observed state of an Invite
+                properties:
+                  conditions:
+                    description: Conditions represents the Invite resource conditions list.
+                    items:
+                      description: InviteCondition defines the condition struct for an Invite resource
+                      properties:
+                        lastTransitionTime:
+                          description: Last time the condition transitioned from one status to another.
+                          format: date-time
+                          type: string
+                        lastUpdateTime:
+                          description: The last time this condition was updated.
+                          format: date-time
+                          type: string
+                        message:
+                          description: A human readable message indicating details about the transition.
+                          type: string
+                        reason:
+                          description: The reason for the condition's last transition.
+                          type: string
+                        status:
+                          description: Status of the condition, one of True, False, Unknown.
+                          type: string
+                        type:
+                          description: Type of Invite condition.
+                          type: string
+                      required:
+                      - lastTransitionTime
+                      - message
+                      - reason
+                      - status
+                      - type
+                      type: object
+                    type: array
+                  userId:
+                    description: UserID is the ID of the invited user
+                    type: string
+                type: object
+            type: object
         served: true
         storage: true
+        subresources:
+          status: {}
     ---
-    apiVersion: apiextensions.k8s.io/v1beta1
+    apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.3.0
+        controller-gen.kubebuilder.io/version: v0.5.0
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
@@ -164,84 +162,83 @@ data:
         plural: mysqldatabases
         singular: mysqldatabase
       scope: Namespaced
-      validation:
-        openAPIV3Schema:
-          description: MySQLDatabase is the Schema for the MySQL Database API
-          properties:
-            apiVersion:
-              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-              type: string
-            kind:
-              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-              type: string
-            metadata:
-              type: object
-            spec:
-              description: MySQLDatabaseSpec defines the desired state of MySQLDatabaseSpec
-              properties:
-                clusterRef:
-                  description: ClusterRef represents a reference to the MySQL cluster. This field should be immutable.
-                  properties:
-                    name:
-                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
-                      type: string
-                  type: object
-                database:
-                  description: Database represents the database name which will be created. This field should be immutable.
-                  type: string
-              required:
-              - clusterRef
-              - database
-              type: object
-            status:
-              description: MySQLDatabaseStatus defines the observed state of MySQLDatabase
-              properties:
-                conditions:
-                  description: Conditions represents the MySQLDatabase  resource conditions list.
-                  items:
-                    description: MySQLDatabaseCondition defines the condition struct for a MySQLDatabase resource
-                    properties:
-                      lastTransitionTime:
-                        description: Last time the condition transitioned from one status to another.
-                        format: date-time
-                        type: string
-                      lastUpdateTime:
-                        description: The last time this condition was updated.
-                        format: date-time
-                        type: string
-                      message:
-                        description: A human readable message indicating details about the transition.
-                        type: string
-                      reason:
-                        description: The reason for the condition's last transition.
-                        type: string
-                      status:
-                        description: Status of the condition, one of True, False, Unknown.
-                        type: string
-                      type:
-                        description: Type of MySQLDatabase condition.
-                        type: string
-                    required:
-                    - lastTransitionTime
-                    - message
-                    - reason
-                    - status
-                    - type
-                    type: object
-                  type: array
-              type: object
-          type: object
-      version: v1alpha1
       versions:
       - name: v1alpha1
+        schema:
+          openAPIV3Schema:
+            description: MySQLDatabase is the Schema for the MySQL Database API
+            properties:
+              apiVersion:
+                description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+                type: string
+              kind:
+                description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+                type: string
+              metadata:
+                type: object
+              spec:
+                description: MySQLDatabaseSpec defines the desired state of MySQLDatabaseSpec
+                properties:
+                  clusterRef:
+                    description: ClusterRef represents a reference to the MySQL cluster. This field should be immutable.
+                    properties:
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
+                        type: string
+                    type: object
+                  database:
+                    description: Database represents the database name which will be created. This field should be immutable.
+                    type: string
+                required:
+                - clusterRef
+                - database
+                type: object
+              status:
+                description: MySQLDatabaseStatus defines the observed state of MySQLDatabase
+                properties:
+                  conditions:
+                    description: Conditions represents the MySQLDatabase  resource conditions list.
+                    items:
+                      description: MySQLDatabaseCondition defines the condition struct for a MySQLDatabase resource
+                      properties:
+                        lastTransitionTime:
+                          description: Last time the condition transitioned from one status to another.
+                          format: date-time
+                          type: string
+                        lastUpdateTime:
+                          description: The last time this condition was updated.
+                          format: date-time
+                          type: string
+                        message:
+                          description: A human readable message indicating details about the transition.
+                          type: string
+                        reason:
+                          description: The reason for the condition's last transition.
+                          type: string
+                        status:
+                          description: Status of the condition, one of True, False, Unknown.
+                          type: string
+                        type:
+                          description: Type of MySQLDatabase condition.
+                          type: string
+                      required:
+                      - lastTransitionTime
+                      - message
+                      - reason
+                      - status
+                      - type
+                      type: object
+                    type: array
+                type: object
+            type: object
         served: true
         storage: true
     ---
-    apiVersion: apiextensions.k8s.io/v1beta1
+    apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.3.0
+        controller-gen.kubebuilder.io/version: v0.5.0
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
@@ -255,124 +252,123 @@ data:
         plural: mysqlusers
         singular: mysqluser
       scope: Namespaced
-      validation:
-        openAPIV3Schema:
-          description: MySQLUser is the Schema for the MySQL User API
-          properties:
-            apiVersion:
-              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-              type: string
-            kind:
-              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-              type: string
-            metadata:
-              type: object
-            spec:
-              description: MySQLUserSpec defines the desired state of MySQLUserSpec
-              properties:
-                allowedHost:
-                  description: AllowedHost is the allowed host to connect from. This field should be immutable.
-                  type: string
-                clusterRef:
-                  description: ClusterRef represents a reference to the MySQL cluster. This field should be immutable.
-                  properties:
-                    name:
-                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
-                      type: string
-                  type: object
-                password:
-                  description: Password is the password for the user.
-                  properties:
-                    key:
-                      description: The key of the secret to select from.  Must be a valid secret key.
-                      type: string
-                    name:
-                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
-                      type: string
-                  required:
-                  - key
-                  type: object
-                permissions:
-                  description: Permissions is the list of roles that user has in the specified database.
-                  items:
-                    description: MySQLPermission defines a MySQL schema permission
-                    properties:
-                      permissions:
-                        description: Permissions represents the permissions granted on the schema/tables
-                        items:
-                          type: string
-                        type: array
-                      schema:
-                        description: Schema represents the schema to which the permission applies
-                        type: string
-                      tables:
-                        description: Tables represents the tables inside the schema to which the permission applies
-                        items:
-                          type: string
-                        type: array
-                    required:
-                    - permissions
-                    - schema
-                    - tables
-                    type: object
-                  type: array
-                user:
-                  description: User is the name of the user that will be created with will access the specified database. This field should be immutable.
-                  type: string
-              required:
-              - clusterRef
-              - password
-              - user
-              type: object
-            status:
-              description: MySQLUserStatus defines the observed state of MySQLUser
-              properties:
-                conditions:
-                  description: Conditions represents the MySQLUser resource conditions list.
-                  items:
-                    description: MySQLUserCondition defines the condition struct for a MySQLUser resource
-                    properties:
-                      lastTransitionTime:
-                        description: Last time the condition transitioned from one status to another.
-                        format: date-time
-                        type: string
-                      lastUpdateTime:
-                        description: The last time this condition was updated.
-                        format: date-time
-                        type: string
-                      message:
-                        description: A human readable message indicating details about the transition.
-                        type: string
-                      reason:
-                        description: The reason for the condition's last transition.
-                        type: string
-                      status:
-                        description: Status of the condition, one of True, False, Unknown.
-                        type: string
-                      type:
-                        description: Type of MySQLUser condition.
-                        type: string
-                    required:
-                    - lastTransitionTime
-                    - message
-                    - reason
-                    - status
-                    - type
-                    type: object
-                  type: array
-              type: object
-          type: object
-      version: v1alpha1
       versions:
       - name: v1alpha1
+        schema:
+          openAPIV3Schema:
+            description: MySQLUser is the Schema for the MySQL User API
+            properties:
+              apiVersion:
+                description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+                type: string
+              kind:
+                description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+                type: string
+              metadata:
+                type: object
+              spec:
+                description: MySQLUserSpec defines the desired state of MySQLUserSpec
+                properties:
+                  allowedHost:
+                    description: AllowedHost is the allowed host to connect from. This field should be immutable.
+                    type: string
+                  clusterRef:
+                    description: ClusterRef represents a reference to the MySQL cluster. This field should be immutable.
+                    properties:
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
+                        type: string
+                    type: object
+                  password:
+                    description: Password is the password for the user.
+                    properties:
+                      key:
+                        description: The key of the secret to select from.  Must be a valid secret key.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?'
+                        type: string
+                    required:
+                    - key
+                    type: object
+                  permissions:
+                    description: Permissions is the list of roles that user has in the specified database.
+                    items:
+                      description: MySQLPermission defines a MySQL schema permission
+                      properties:
+                        permissions:
+                          description: Permissions represents the permissions granted on the schema/tables
+                          items:
+                            type: string
+                          type: array
+                        schema:
+                          description: Schema represents the schema to which the permission applies
+                          type: string
+                        tables:
+                          description: Tables represents the tables inside the schema to which the permission applies
+                          items:
+                            type: string
+                          type: array
+                      required:
+                      - permissions
+                      - schema
+                      - tables
+                      type: object
+                    type: array
+                  user:
+                    description: User is the name of the user that will be created with will access the specified database. This field should be immutable.
+                    type: string
+                required:
+                - clusterRef
+                - password
+                - user
+                type: object
+              status:
+                description: MySQLUserStatus defines the observed state of MySQLUser
+                properties:
+                  conditions:
+                    description: Conditions represents the MySQLUser resource conditions list.
+                    items:
+                      description: MySQLUserCondition defines the condition struct for a MySQLUser resource
+                      properties:
+                        lastTransitionTime:
+                          description: Last time the condition transitioned from one status to another.
+                          format: date-time
+                          type: string
+                        lastUpdateTime:
+                          description: The last time this condition was updated.
+                          format: date-time
+                          type: string
+                        message:
+                          description: A human readable message indicating details about the transition.
+                          type: string
+                        reason:
+                          description: The reason for the condition's last transition.
+                          type: string
+                        status:
+                          description: Status of the condition, one of True, False, Unknown.
+                          type: string
+                        type:
+                          description: Type of MySQLUser condition.
+                          type: string
+                      required:
+                      - lastTransitionTime
+                      - message
+                      - reason
+                      - status
+                      - type
+                      type: object
+                    type: array
+                type: object
+            type: object
         served: true
         storage: true
     ---
-    apiVersion: apiextensions.k8s.io/v1beta1
+    apiVersion: apiextensions.k8s.io/v1
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.3.0
+        controller-gen.kubebuilder.io/version: v0.5.0
       labels:
         app.kubernetes.io/name: ${name}
         app.kubernetes.io/part-of: presslabs-dashboard
@@ -386,29 +382,28 @@ data:
         plural: projects
         singular: project
       scope: Namespaced
-      validation:
-        openAPIV3Schema:
-          description: Project is the Schema for the projects API
-          properties:
-            apiVersion:
-              description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-              type: string
-            kind:
-              description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-              type: string
-            metadata:
-              type: object
-            spec:
-              description: ProjectSpec defines the desired state of Project
-              properties:
-                namespace:
-                  description: Name of ProjectNamespace
-                  type: string
-              type: object
-          type: object
-      version: v1alpha1
       versions:
       - name: v1alpha1
+        schema:
+          openAPIV3Schema:
+            description: Project is the Schema for the projects API
+            properties:
+              apiVersion:
+                description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+                type: string
+              kind:
+                description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+                type: string
+              metadata:
+                type: object
+              spec:
+                description: ProjectSpec defines the desired state of Project
+                properties:
+                  namespace:
+                    description: Name of ProjectNamespace
+                    type: string
+                type: object
+            type: object
         served: true
         storage: true
     ---
@@ -782,7 +777,9 @@ data:
         name: ${name}
         uid: ${APPLICATION_UID}
     webhooks:
-    - clientConfig:
+    - admissionReviewVersions:
+      - v1 v1beta1
+      clientConfig:
         service:
           name: ${name}-dashboard-webhook
           namespace: ${namespace}
@@ -807,7 +804,10 @@ data:
         - UPDATE
         resources:
         - namespaces
-    - clientConfig:
+      sideEffects: None
+    - admissionReviewVersions:
+      - v1 v1beta1
+      clientConfig:
         service:
           name: ${name}-dashboard-webhook
           namespace: ${namespace}
@@ -832,7 +832,10 @@ data:
         - UPDATE
         resources:
         - namespaces
-    - clientConfig:
+      sideEffects: None
+    - admissionReviewVersions:
+      - v1 v1beta1
+      clientConfig:
         service:
           name: ${name}-dashboard-webhook
           namespace: ${namespace}
@@ -853,6 +856,7 @@ data:
         - UPDATE
         resources:
         - wordpresses
+      sideEffects: None
     ---
     apiVersion: cert-manager.io/v1alpha2
     kind: Certificate
@@ -1487,7 +1491,7 @@ metadata:
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
     app.kubernetes.io/version: "1.7"
-  name: ${name}-dash-globals-manifests-726d6tgc5k
+  name: ${name}-dash-globals-manifests-kkk276t78b
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1567,5 +1571,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-726d6tgc5k
+          name: ${name}-dash-globals-manifests-kkk276t78b
         name: globals-manifests
