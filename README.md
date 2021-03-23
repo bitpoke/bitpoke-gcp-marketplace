@@ -1,10 +1,10 @@
 # Overview
 
-The Presslabs Dashboard is the cloud-native WordPress hosting platform, 
-providing infrastructure management for WordPress properties. The Dashboard is 
-running on top of Kubernetes and the Presslabs Stack for WordPress. 
-The Dashboard is a versatile, yet simple to use elastic solution that allows 
-customizable development workflows and is fit for complex setups requiring true 
+The Presslabs Dashboard is a cloud-native WordPress hosting platform,
+providing infrastructure management for WordPress properties. The Dashboard is
+running on top of Kubernetes and the Presslabs Stack for WordPress.
+The Dashboard is a versatile, yet simple to use elastic solution that allows
+customizable development workflows and is fit for complex setups requiring true
 back-end scaling.
 
 [Learn more](https://www.presslabs.com/dashboard/)
@@ -23,19 +23,22 @@ The following operators are included in this application:
    certificates.
  * [**Nginx Ingress Controller**](https://github.com/kubernetes/ingress-nginx) for configuring NGINX.
  * [**Presslabs Dashboard**](https://www.presslabs.com/dashboard/)
- 
- 
+
+
 # Installation
+
+> ###### NOTE
+>
+> We recommend you to install the Presslabs Dashboard app with just a few clicks directly from the Google Cloud Marketplace, but you can also use command line instructions to install it manually.
 
 ## Quick install with Google Cloud Marketplace
 
 Get up and running with a few clicks! Install this Dashboard app to a Google
-Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/). 
+Kubernetes Engine cluster using [Google Cloud Marketplace](https://console.cloud.google.com/marketplace/details/press-labs-public/presslabs-dashboard). Check the [Dashboard documentation](https://www.presslabs.com/docs/dashboard/installation/dashboard-prerequisites/) for step by step tutorials.
 
 ## Command line instructions
 
-You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
+If you want to install Dashboard manually, you can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
 workstation to complete these steps.
 
 [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/presslabs/dashboard-gcp-marketplace&cloudshell_open_in_editor=README.md)
@@ -81,7 +84,7 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 gcloud beta container clusters update "$CLUSTER" --zone "$ZONE" --update-addons ApplicationManager=ENABLED
 ```
 
-For more information about Application Addon, please check 
+For more information about Application Addon, please check
 [this](https://cloud.google.com/kubernetes-engine/docs/how-to/add-on/application-delivery#setting_up).
 
 #### Clone this repo
@@ -166,7 +169,7 @@ kubectl create namespace "$namespace"
 
 #### Generate license key
 
-You can obtain the license key, by going to 
+You can obtain the license key, by going to
 [Marketplace](https://console.cloud.google.com/marketplace/kubernetes/config/press-labs-public/presslabs-dashboard?version=1.6)
 and generate it.
 
