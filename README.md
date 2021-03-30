@@ -1,11 +1,8 @@
 # Overview
 
-The Presslabs Dashboard is a cloud-native WordPress hosting platform,
-providing infrastructure management for WordPress properties. The Dashboard is
-running on top of Kubernetes and the Presslabs Stack for WordPress.
-The Dashboard is a versatile, yet simple to use elastic solution that allows
-customizable development workflows and is fit for complex setups requiring true
-back-end scaling.
+The Presslabs Dashboard app is a commercial solution that uses advanced cloud technology and the Kubernetes container orchestration platform to scale the most widely used CMS nowadays, WordPress. Presslabs Dashboard provides a versatile and simple to use cloud-native hosting platform that offers the possibility to create, deploy, scale, manage and monitor WordPress sites directly from the dashboard, or right from the Kubernetes cluster using kubectl.
+
+The product was developed as a horizontal scaling solution for WordPress agencies, big publishers, site owners, and hosting companies with millions of users per second struggling to find solutions that combine the Kubernetes flexibility and the security offered by Google Cloud Platform.
 
 [Learn more](https://www.presslabs.com/dashboard/)
 
