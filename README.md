@@ -103,7 +103,7 @@ cd dashboard-gcp-marketplace
 Select the release branch
 
 ```shell
-git checkout release-1.7
+git checkout release-1.6
 ```
 
 #### Configure the app with environment variables
@@ -125,7 +125,7 @@ Configure the container images:
 
 ```shell
 REGISTRY=gcr.io/press-labs-public
-TAG=1.7.0 # you must include the patch version; e.g.: 1.5.0, 1.6.0-rc.1, 1.7.2
+TAG=1.6.0 # you must include the patch version; e.g.: 1.5.0, 1.6.0-rc.1, 1.7.2
 
 export imageDashboardFull="${REGISTRY}/dashboard:${TAG}"
 export imageStackInstallerFull="${REGISTRY}/dashboard/stack-installer:${TAG}"
