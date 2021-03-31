@@ -1,7 +1,10 @@
 # Overview
 
-The Presslabs Dashboard is the scalable Kubernetes-based self-service WordPress hosting, deployment
-and management platform.
+The Presslabs Dashboard app is a commercial solution that uses advanced cloud technology and the Kubernetes container orchestration platform to scale the most widely used CMS nowadays, WordPress. Presslabs Dashboard provides a versatile and simple to use cloud-native hosting platform that offers the possibility to create, deploy, scale, manage and monitor WordPress sites directly from the dashboard, or right from the Kubernetes cluster using kubectl.
+
+The product was developed as a horizontal scaling solution for WordPress agencies, big publishers, site owners, and hosting companies with millions of users per second struggling to find solutions that combine the Kubernetes flexibility and the security offered by Google Cloud Platform.
+
+[Learn more](https://www.presslabs.com/dashboard/)
 
 ## Architecture
 
@@ -16,20 +19,23 @@ The following operators are included in this application:
  * [**Cert Manager**](https://github.com/jetstack/cert-manager) used for managing and issuance TLS
    certificates.
  * [**Nginx Ingress Controller**](https://github.com/kubernetes/ingress-nginx) for configuring NGINX.
- * **Presslabs Dashboard**
- 
- 
+ * [**Presslabs Dashboard**](https://www.presslabs.com/dashboard/)
+
+
 # Installation
 
-## Quick install with Google Cloud Marketplace
+> ###### NOTE
+>
+> We recommend you to install the Presslabs Dashboard app with just a few clicks directly from the [Google Cloud Marketplace](https://console.cloud.google.com/marketplace/details/press-labs-public/presslabs-dashboard), but you can also use command line instructions to install it manually.
+
+## Recommended: Quick install with Google Cloud Marketplace
 
 Get up and running with a few clicks! Install this Dashboard app to a Google
-Kubernetes Engine cluster using Google Cloud Marketplace. Follow the
-[on-screen instructions](https://console.cloud.google.com/marketplace/details/google/). 
+Kubernetes Engine cluster using [Google Cloud Marketplace](https://console.cloud.google.com/marketplace/details/press-labs-public/presslabs-dashboard). Check the [Dashboard documentation](https://www.presslabs.com/docs/dashboard/installation/dashboard-prerequisites/) for step by step tutorials.
 
 ## Command line instructions
 
-You can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
+If you want to install Dashboard manually, you can use [Google Cloud Shell](https://cloud.google.com/shell/) or a local
 workstation to complete these steps.
 
 [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/presslabs/dashboard-gcp-marketplace&cloudshell_open_in_editor=README.md)
@@ -75,7 +81,7 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 gcloud beta container clusters update "$CLUSTER" --zone "$ZONE" --update-addons ApplicationManager=ENABLED
 ```
 
-For more information about Application Addon, please check 
+For more information about Application Addon, please check
 [this](https://cloud.google.com/kubernetes-engine/docs/how-to/add-on/application-delivery#setting_up).
 
 #### Clone this repo
@@ -97,7 +103,7 @@ cd dashboard-gcp-marketplace
 Select the release branch
 
 ```shell
-git checkout release-1.6
+git checkout release-1.7
 ```
 
 #### Configure the app with environment variables
@@ -119,7 +125,7 @@ Configure the container images:
 
 ```shell
 REGISTRY=gcr.io/press-labs-public
-TAG=1.6.0 # you must include the patch version; e.g.: 1.5.0, 1.6.0-rc.1, 1.7.2
+TAG=1.7.0 # you must include the patch version; e.g.: 1.5.0, 1.6.0-rc.1, 1.7.2
 
 export imageDashboardFull="${REGISTRY}/dashboard:${TAG}"
 export imageStackInstallerFull="${REGISTRY}/dashboard/stack-installer:${TAG}"
@@ -160,7 +166,7 @@ kubectl create namespace "$namespace"
 
 #### Generate license key
 
-You can obtain the license key, by going to 
+You can obtain the license key, by going to
 [Marketplace](https://console.cloud.google.com/marketplace/kubernetes/config/press-labs-public/presslabs-dashboard?version=1.6)
 and generate it.
 
