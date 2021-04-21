@@ -778,7 +778,8 @@ data:
         uid: ${APPLICATION_UID}
     webhooks:
     - admissionReviewVersions:
-      - v1 v1beta1
+      - v1
+      - v1beta1
       clientConfig:
         service:
           name: ${name}-dashboard-webhook
@@ -806,7 +807,8 @@ data:
         - namespaces
       sideEffects: None
     - admissionReviewVersions:
-      - v1 v1beta1
+      - v1
+      - v1beta1
       clientConfig:
         service:
           name: ${name}-dashboard-webhook
@@ -834,7 +836,8 @@ data:
         - namespaces
       sideEffects: None
     - admissionReviewVersions:
-      - v1 v1beta1
+      - v1
+      - v1beta1
       clientConfig:
         service:
           name: ${name}-dashboard-webhook
@@ -1491,7 +1494,7 @@ metadata:
     app.kubernetes.io/name: ${name}
     app.kubernetes.io/part-of: presslabs-dashboard
     app.kubernetes.io/version: "1.7"
-  name: ${name}-dash-globals-manifests-kkk276t78b
+  name: ${name}-dash-globals-manifests-5t7mbd26df
 ---
 apiVersion: batch/v1
 kind: Job
@@ -1571,5 +1574,5 @@ spec:
       serviceAccountName: $serviceAccount
       volumes:
       - configMap:
-          name: ${name}-dash-globals-manifests-kkk276t78b
+          name: ${name}-dash-globals-manifests-5t7mbd26df
         name: globals-manifests

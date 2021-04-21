@@ -147,7 +147,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 92b60374fc410b432380ce3f988f7de491633ea156e8af087e13290fa764f277
+        checksum/config: fc88168942e4a46b3ff968c198cd402bd941680ae270e5263188fea2d54a155d
       labels:
         app: dashboard
         app.kubernetes.io/name: ${name}
