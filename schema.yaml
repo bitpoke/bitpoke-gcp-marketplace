@@ -49,8 +49,8 @@ x-google-marketplace:
     resources:
     - replicas: 3
       requests:
-        cpu: 665m # total to ~2 CPU
-        memory: 1333M # total to 4GB
+        cpu: 1300m # total to ~ 4 CPU
+        memory: 2600M # total to ~ 8GB
 
 
 properties:
