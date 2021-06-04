@@ -45,7 +45,7 @@ x-google-marketplace:
 
 
   clusterConstraints:
-    k8sVersion: '>=1.15.0'
+    k8sVersion: '>=1.17.0'
     resources:
     - replicas: 3
       requests:
