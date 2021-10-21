@@ -1,9 +1,9 @@
 include ../../build/makelib/common.mk
 
 ifeq ($(CI),true)
-PUBLISH_REPO := https://github.com/presslabs/dashboard-gcp-marketplace.git
+PUBLISH_REPO := https://github.com/bitpoke/dashboard-gcp-marketplace.git
 else
-PUBLISH_REPO := git@github.com:presslabs/dashboard-gcp-marketplace.git
+PUBLISH_REPO := git@github.com:bitpoke/dashboard-gcp-marketplace.git
 endif
 
 PUBLISH_BRANCH ?= $(BRANCH_NAME)
