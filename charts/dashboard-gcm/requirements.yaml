@@ -1,4 +1,0 @@
-dependencies:
-  - name: dashboard
-    repository: file://../../../../deploy/charts/dashboard
-    version: 0.1.1

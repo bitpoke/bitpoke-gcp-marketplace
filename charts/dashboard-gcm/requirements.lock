@@ -1,6 +1,0 @@
-dependencies:
-- name: dashboard
-  repository: file://../../../../deploy/charts/dashboard
-  version: 0.1.1
-digest: sha256:323661e08ff9d3693ab9edfb3cf568851d051343fec9614fc813870bf20e3aa7
-generated: "2020-10-12T15:55:03.663858218+03:00"

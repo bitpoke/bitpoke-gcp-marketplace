@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: presslabs-system
-  labels:
-    # avoid chicken-and-egg problem by disabling issuer validation in this namespace
-    cert-manager.io/disable-validation: "true"
