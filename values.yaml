@@ -1,0 +1,13 @@
+isMarketplaceInstall: true
+crds:
+  useDeployer: true
+stack:
+  useDeployer: true
+webhook:
+  useDeployer: true
+ingress:
+  enabled: true
+  className: bitpoke-stack
+metering:
+  gcp:
+    serviceName: presslabs-dashboard.mp-press-labs-public.appspot.com
