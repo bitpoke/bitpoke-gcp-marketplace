@@ -3,6 +3,9 @@ crds:
   useDeployer: true
 stack:
   useDeployer: true
+  deployer:
+    serviceAccount:
+      create: true
 webhook:
   useDeployer: true
 ingress:

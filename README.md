@@ -63,13 +63,13 @@ export PROJECT={{project-name}}
 export CLUSTER={{cluster-name}}
 export ZONE={{zone}}
 
-gcloud container clusters create "$CLUSTER" --zone "$ZONE" --workload-pool=$PROJECT.svc.id.goog
+gcloud container clusters create "$CLUSTER" --zone "$ZONE" --workload-pool=$PROJECT.svc.id.goog --machine-type=e2-standard-2 --num-nodes=4
 ```
 
 Configure `kubectl` to connect to the new cluster.
 
 ```sh
-gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE
+gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
 ### Configure the Kubernetes Cluster
@@ -77,25 +77,25 @@ gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE
 #### Configure Application Manager
 
 ```sh
-gcloud container clusters update "$CLUSTER" --zone "$ZONE" --update-addons ApplicationManager=ENABLED
+gcloud beta container clusters update "$CLUSTER" --zone "$ZONE" --update-addons ApplicationManager=ENABLED
 ```
 
 Application Manager run its components in the `application-system` namespace. You can verify the Pods are ready by running the following command:
 
 ```sh
-kubectl wait -n application-system --for=condition=Ready pod --all
+kubectl wait -n application-system --for=condition=available --timeout=10s deployment --all
 ```
 
 If Application Manager is installed correctly, the output is similar to the following:
 
 ```terminal
-pod/application-manager-5fqea4 condition met
-pod/application-manager-ohdsr9 condition met
+deployment.apps/application-controller-manager condition met
 ```
 
 > __NOTE__
 >
 > Application Manager might not be properly set-up due to issue [201423655](https://issuetracker.google.com/issues/201423655).
+> If that's the case follow the instructions in the bug report.
 
 #### Configure Config Connector
 
@@ -154,7 +154,7 @@ kubectl -n $namespace apply -f license.yaml
 Set reporting secret name
 
 ```sh
-export reportingSecret="$(kubectl get -o jsonpath={.metadata.name} -f license.yaml)"
+export reportingSecret="$(kubectl -n $namespace get -o jsonpath={.metadata.name} -f license.yaml)"
 ```
 
 ## Install the application
@@ -174,7 +174,7 @@ helm template -n "${namespace}" "${name}" bitpoke/bitpoke -f values.yaml --set-s
 Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
 ```shell
-kubectl apply -f "${name}_manifest.yaml" --namespace "${namespace}"
+kubectl -n "${namespace}" apply -f "${name}_manifest.yaml"
 ```
 
 # Congratulations!
