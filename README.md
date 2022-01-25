@@ -62,8 +62,12 @@ Create a new cluster from the command line:
 export PROJECT={{project-name}}
 export CLUSTER={{cluster-name}}
 export ZONE={{zone}}
+export MACHINE_TYPE="e2-standard-2"
+export NUM_NODES="4"
+```
 
-gcloud container clusters create "$CLUSTER" --zone "$ZONE" --workload-pool=$PROJECT.svc.id.goog --machine-type=e2-standard-2 --num-nodes=4
+```sh
+gcloud container clusters create "$CLUSTER" --zone "$ZONE" --workload-pool=$PROJECT.svc.id.goog --addons=ApplicationManager,ConfigConnector,HorizontalPodAutoscaling --machine-type=${MACHINE_TYPE} --num-nodes=${NUM_NODES}
 ```
 
 Configure `kubectl` to connect to the new cluster.
@@ -72,13 +76,9 @@ Configure `kubectl` to connect to the new cluster.
 gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
 ```
 
-### Configure the Kubernetes Cluster
+### Configure and Verify the provisioned Kubernetes Cluster
 
-#### Configure Application Manager
-
-```sh
-gcloud beta container clusters update "$CLUSTER" --zone "$ZONE" --update-addons ApplicationManager=ENABLED
-```
+#### Verify Application Manager
 
 Application Manager run its components in the `application-system` namespace. You can verify the Pods are ready by running the following command:
 
@@ -98,10 +98,6 @@ deployment.apps/application-controller-manager condition met
 > If that's the case follow the instructions in the bug report.
 
 #### Configure Config Connector
-
-```sh
-gcloud container clusters update "$CLUSTER" --zone "$ZONE" --update-addons ConfigConnector=ENABLED
-```
 
 To configure the Config Connector, [follow the instructions provided in the Google Cloud Documentation](https://cloud.google.com/config-connector/docs/how-to/install-upgrade-uninstall).
 
@@ -142,12 +138,12 @@ kubectl create namespace "${namespace}"
 
 #### Obtain license key
 
-You can [generate the license key](https://console.cloud.google.com/marketplace/kubernetes/config/press-labs-public/presslabs-dashboard?version=1.8) on the
-Marketplace application page.
+You can [generate the license key](https://console.cloud.google.com/marketplace/kubernetes/config/press-labs-public/presslabs-dashboard) on the
+Marketplace application page from _Deploy via command line_ tab.
 
 Apply the license key
 
-```shell
+```sh
 kubectl -n $namespace apply -f license.yaml
 ```
 
@@ -166,14 +162,14 @@ We recommend that you save the expanded
 manifest file for future updates to the application.
 
 ```sh
-helm template -n "${namespace}" "${name}" bitpoke/bitpoke -f values.yaml --set-string marketplace.loadBalancerIP="${loadBalancerIP}" --set-string marketplace.domain="${domain}" --set-string metering.gcp.secretName="${reportingSecret}" > "${name}_manifest.yaml"
+helm template -n "${namespace}" "${name}" bitpoke/bitpoke --skip-tests -f values.yaml --set-string marketplace.loadBalancerIP="${loadBalancerIP}" --set-string marketplace.domain="${domain}" --set-string metering.gcp.secretName="${reportingSecret}" > "${name}_manifest.yaml"
 ```
 
 #### Apply the manifest to your Kubernetes cluster
 
 Use `kubectl` to apply the manifest to your Kubernetes cluster:
 
-```shell
+```sh
 kubectl -n "${namespace}" apply -f "${name}_manifest.yaml"
 ```
 
