@@ -30,10 +30,10 @@ The following operators are included with this application:
 >
 > We recommend you to install the Bitpoke App for WordPress with just a few clicks directly from the [Google Cloud Marketplace](https://console.cloud.google.com/marketplace/product/press-labs-public/presslabs-dashboard), but you can also follow the instructions to install it manually.
 
-To install Bitpoke App for WordPress manually, you can use [Google Cloud Shell](https://ssh.cloud.google.com/?cloudshell_git_repo=https://github.com/bitpoke/bitpoke-gcp-marketplace&cloudshell_git_branch=master&cloudshell_tutorial=README.md&shellonly=true) or a local
+To install Bitpoke App for WordPress manually, you can use [Google Cloud Shell](https://ssh.cloud.google.com/?cloudshell_git_repo=https://github.com/bitpoke/bitpoke-gcp-marketplace&cloudshell_git_branch=release-1.8&cloudshell_tutorial=README.md&shellonly=true) or a local
 workstation to complete these steps.
 
-[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://ssh.cloud.google.com/?cloudshell_git_repo=https://github.com/bitpoke/bitpoke-gcp-marketplace&cloudshell_git_branch=master&cloudshell_tutorial=README.md&shellonly=true)
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://ssh.cloud.google.com/?cloudshell_git_repo=https://github.com/bitpoke/bitpoke-gcp-marketplace&cloudshell_git_branch=release-1.8&cloudshell_tutorial=README.md&shellonly=true)
 
 # Prerequisites
 
