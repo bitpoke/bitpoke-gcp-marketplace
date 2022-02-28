@@ -7,8 +7,6 @@ The product was developed as a horizontal scaling solution for WordPress agencie
 
 [Learn more](https://www.bitpoke.io/wordpress/)
 
-
-
 ## Architecture
 
 The Bitpoke App for WordPress operates over [bitpoke/stack](https://github.com/bitpoke/stack) which is
@@ -24,7 +22,7 @@ The following operators are included with this application:
  * [**Nginx Ingress Controller**](https://github.com/kubernetes/ingress-nginx) for configuring NGINX.
  * [**Prometheus Operator**](https://github.com/prometheus-operator/prometheus-operator) for metrics collection.
 
-# Manual Installation Instructions
+## Manual Installation Instructions
 
 > __NOTE__
 >
@@ -34,8 +32,6 @@ To install Bitpoke App for WordPress manually, you can use [Google Cloud Shell](
 workstation to complete these steps.
 
 [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://ssh.cloud.google.com/?cloudshell_git_repo=https://github.com/bitpoke/bitpoke-gcp-marketplace&cloudshell_git_branch=release-1.8&cloudshell_tutorial=README.md&shellonly=true)
-
-# Prerequisites
 
 ## Set up command-line tools
 
@@ -101,8 +97,6 @@ deployment.apps/application-controller-manager condition met
 
 To configure the Config Connector, [follow the instructions provided in the Google Cloud Documentation](https://cloud.google.com/config-connector/docs/how-to/install-upgrade-uninstall).
 
-# Install the Application
-
 ## Add and update the Bitpoke Helm Repository
 
 ```sh
@@ -127,7 +121,7 @@ export domain=domain.example.com
 > It's highly recommended to [reserve a dedicated IP](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address) for your deployment. This way, on upgrades your deployed sites won't change heir IP address.
 
 ```sh
-export loadBalancerIP="YOUR RESERVERD IP"
+export loadBalancerIP="YOUR RESERVED IP"
 ```
 
 #### Create the application namespace
@@ -173,7 +167,7 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster:
 kubectl -n "${namespace}" apply -f "${name}_manifest.yaml"
 ```
 
-# Congratulations!
+## Congratulations!
 
 <walkthrough-conclusion-trophy></walkthrough-conclusion-trophy>
 
