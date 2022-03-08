@@ -53,13 +53,13 @@ export NUM_NODES="4"
 ```
 
 ```sh
-gcloud container clusters create "$CLUSTER" --zone "$ZONE" --workload-pool=$PROJECT.svc.id.goog --addons=ApplicationManager,ConfigConnector,HorizontalPodAutoscaling --machine-type=${MACHINE_TYPE} --num-nodes=${NUM_NODES}
+gcloud container clusters create "{{cluster-name}}" --zone "$ZONE" --workload-pool=$PROJECT.svc.id.goog --addons=ApplicationManager,ConfigConnector,HorizontalPodAutoscaling --machine-type=${MACHINE_TYPE} --num-nodes=${NUM_NODES}
 ```
 
 Configure `kubectl` to connect to the new cluster.
 
 ```sh
-gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
+gcloud container clusters get-credentials "{{cluster-name}}" --zone "$ZONE"
 ```
 
 ### Configure and Verify the provisioned Kubernetes Cluster
@@ -95,8 +95,8 @@ gcloud iam service-accounts create cnrm-system
 Second, give elevated permissions to the new service account:
 
 ```bash
-gcloud projects add-iam-policy-binding ${project} \
-    --member="serviceAccount:cnrm-system@${project}.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding {{project-name}} \
+    --member="serviceAccount:cnrm-system@{{project-name}}.iam.gserviceaccount.com" \
     --role="roles/owner"
 ```
 
@@ -104,8 +104,8 @@ Third, create an IAM policy binding between the IAM service account and the pred
 
 ```bash
 gcloud iam service-accounts add-iam-policy-binding \
-cnrm-system@${project}.iam.gserviceaccount.com \
-    --member="serviceAccount:${project}.svc.id.goog[cnrm-system/cnrm-controller-manager]" \
+cnrm-system@{{project-name}}.iam.gserviceaccount.com \
+    --member="serviceAccount:{{project-name}}.svc.id.goog[cnrm-system/cnrm-controller-manager]" \
     --role="roles/iam.workloadIdentityUser"
 ```
 
@@ -125,7 +125,7 @@ metadata:
   name: configconnector.core.cnrm.cloud.google.com
 spec:
  mode: cluster
- googleServiceAccount: "cnrm-system@${project}.iam.gserviceaccount.com"
+ googleServiceAccount: "cnrm-system@{{project-name}}.iam.gserviceaccount.com"
 ```
 
 Save and run the following command:
