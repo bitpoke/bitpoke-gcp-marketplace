@@ -32,13 +32,15 @@ If you are not using Cloud Shell, you'll need the following tools installed in y
 If you're seeing this from Google Cloud Shell, start by pressing `Next`.
 
 ## Create a Google Kubernetes Cluster
-> __NOTE__
->
-> Bitpoke App for WordPress requires a GKE cluster with [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity), [Config Connector](https://cloud.google.com/config-connector/docs/how-to/install-upgrade-uninstall) and [Application Manager](https://cloud.google.com/kubernetes-engine/docs/how-to/add-on/application-delivery) add ons.
+
+Bitpoke App for WordPress requires a GKE cluster with [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity), [Config Connector](https://cloud.google.com/config-connector/docs/how-to/install-upgrade-uninstall) and [Application Manager](https://cloud.google.com/kubernetes-engine/docs/how-to/add-on/application-delivery) add ons.
 
 <walkthrough-project-setup></walkthrough-project-setup>
 <walkthrough-watcher-constant key="cluster-name" value="bitpoke-1"></walkthrough-watcher-constant>
 <walkthrough-watcher-constant key="zone" value="us-west1-a"></walkthrough-watcher-constant>
+<walkthrough-watcher-constant key="domain" value="app.mysite.com"></walkthrough-watcher-constant>
+<walkthrough-watcher-constant key="ip" value="12.34.56.78"></walkthrough-watcher-constant>
+
 
 Create a new cluster from the command line:
 
@@ -84,7 +86,53 @@ kubectl apply -f https://www.bitpoke.io/docs/app-for-wordpress/installation/kalm
 
 #### Configure Config Connector
 
-To configure the Config Connector, [follow the instructions provided in the Google Cloud Documentation](https://cloud.google.com/config-connector/docs/how-to/install-upgrade-uninstall).
+First, create an IAM service account, by running in Cloud Shell:
+
+```bash
+gcloud iam service-accounts create cnrm-system
+```
+
+Second, give elevated permissions to the new service account:
+
+```bash
+gcloud projects add-iam-policy-binding ${project-name} \
+    --member="serviceAccount:cnrm-system@${project-name}.iam.gserviceaccount.com" \
+    --role="roles/owner"
+```
+
+Third, create an IAM policy binding between the IAM service account and the predefined Kubernetes service account that Config Connector runs:
+
+```bash
+gcloud iam service-accounts add-iam-policy-binding \
+cnrm-system@${project-name}.iam.gserviceaccount.com \
+    --member="serviceAccount:${project-name}.svc.id.goog[cnrm-system/cnrm-controller-manager]" \
+    --role="roles/iam.workloadIdentityUser"
+```
+
+To finalize setting Config Connector you need to edit with your favorite command-line text editor, vim or nano, the file `configconnector.yaml`:
+
+```sh
+vim configconnector.yaml
+```
+
+```yaml
+# configconnector.yaml
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  # the name is restricted to ensure that there is only one
+  # ConfigConnector resource installed in your cluster
+  name: configconnector.core.cnrm.cloud.google.com
+spec:
+ mode: cluster
+ googleServiceAccount: "cnrm-system@${project-name}.iam.gserviceaccount.com"
+```
+
+Save and run the following command:
+
+```bash
+kubectl apply -f configconnector.yaml
+```
 
 ## Add and update the Bitpoke Helm Repository
 
@@ -102,15 +150,15 @@ Choose the instance name and namespace for the app:
 ```sh
 export name=bitpoke-1
 export namespace=bitpoke
-export domain=domain.example.com
+export domain={{domain}}
 ```
 
 > __NOTE__
 >
-> It's highly recommended to [reserve a dedicated IP](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address) for your deployment. This way, on upgrades your deployed sites won't change heir IP address.
+> It's highly recommended to [reserve a dedicated IP](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address) for your deployment. so that on upgrades your deployed sites won't change their IP address.
 
 ```sh
-export loadBalancerIP="YOUR RESERVED IP"
+export loadBalancerIP="{{ip}}"
 ```
 
 #### Create the application namespace
@@ -121,8 +169,9 @@ kubectl create namespace "${namespace}"
 
 #### Obtain license key
 
-You can [generate the license key](https://console.cloud.google.com/marketplace/kubernetes/config/press-labs-public/presslabs-dashboard) on the
-Marketplace application page from _Deploy via command line_ tab.
+You need to generate the license key on the Marketplace application page from _Deploy via command line_ [tab](https://console.cloud.google.com/marketplace/kubernetes/config/press-labs-public/presslabs-dashboard).
+
+Now upload the `license.yaml` file to the Google Cloud Shell by clicking on the three vertical dots icon and selecting the file.
 
 Apply the license key
 
@@ -138,11 +187,9 @@ export reportingSecret="$(kubectl -n $namespace get -o jsonpath={.metadata.name}
 
 ## Install the application
 
-
 #### Expand the application manifest template
 
-We recommend that you save the expanded
-manifest file for future updates to the application.
+We recommend that you save the expanded manifest file for future updates to the application.
 
 ```sh
 helm template -n "${namespace}" "${name}" bitpoke/bitpoke --skip-tests -f values.yaml --set-string marketplace.loadBalancerIP="${loadBalancerIP}" --set-string marketplace.domain="${domain}" --set-string metering.gcp.secretName="${reportingSecret}" > "${name}_manifest.yaml"
