@@ -87,11 +87,12 @@ If Application Manager is installed correctly, the output is similar to the foll
 ```terminal
 deployment.apps/application-controller-manager condition met
 ```
+If not, the Application Manager might not be properly set-up due to issue [201423655](https://issuetracker.google.com/issues/201423655).
+If that's the case run the following command:
 
-> __NOTE__
->
-> Application Manager might not be properly set-up due to issue [201423655](https://issuetracker.google.com/issues/201423655).
-> If that's the case follow the instructions in the bug report.
+```sh
+kubectl apply -f https://www.bitpoke.io/docs/app-for-wordpress/installation/kalm-gcp-fix-201423655.yaml
+```
 
 #### Configure Config Connector
 
