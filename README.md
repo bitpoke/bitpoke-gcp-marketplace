@@ -24,11 +24,12 @@ The following operators are included with this application:
 
 ## Manual Installation Instructions
 
-> __NOTE__
->
-> We recommend you to install the Bitpoke App for WordPress with just a few clicks directly from the [Google Cloud Marketplace](https://console.cloud.google.com/marketplace/product/press-labs-public/presslabs-dashboard), but you can also follow these instructions to install it via command line. We recommend using [Google Cloud Shell](https://ssh.cloud.google.com/?cloudshell_git_repo=https://github.com/bitpoke/bitpoke-gcp-marketplace&cloudshell_git_branch=release-1.8&cloudshell_tutorial=README.md&shellonly=true) but a local workstation is also an option. If you are not using Cloud Shell, you'll need the following tools installed in your development environment: [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git), [gcloud](https://cloud.google.com/sdk/gcloud/), [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/), [helm](https://helm.sh/docs/intro/quickstart/).
+We recommend you to install the Bitpoke App for WordPress with just a few clicks directly from the [Google Cloud Marketplace](https://console.cloud.google.com/marketplace/product/press-labs-public/presslabs-dashboard), but you can also follow these instructions to install it via command line. We recommend using [Google Cloud Shell](https://ssh.cloud.google.com/?cloudshell_git_repo=https://github.com/bitpoke/bitpoke-gcp-marketplace&cloudshell_git_branch=release-1.8&cloudshell_tutorial=README.md&shellonly=true) but a local workstation is also an option. 
+If you are not using Cloud Shell, you'll need the following tools installed in your development environment: [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git), [gcloud](https://cloud.google.com/sdk/gcloud/), [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/), [helm](https://helm.sh/docs/intro/quickstart/).
 
 [![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://ssh.cloud.google.com/?cloudshell_git_repo=https://github.com/bitpoke/bitpoke-gcp-marketplace&cloudshell_git_branch=release-1.8&cloudshell_tutorial=README.md&shellonly=true)
+
+If you're seeing this from Google Cloud Shell, start by pressing `Next`.
 
 ## Create a Google Kubernetes Cluster
 > __NOTE__
