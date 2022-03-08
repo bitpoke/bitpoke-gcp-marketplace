@@ -1,60 +1,42 @@
 # Overview
 <walkthrough-tutorial-duration duration="15"></walkthrough-tutorial-duration>
 
-The Bitpoke App for WordPress is a commercial solution that uses advanced cloud technology and the Kubernetes container orchestration platform to scale the most widely used CMS nowadays, WordPress. Bitpoke App for WordPress provides a versatile and simple to use cloud-native hosting platform that offers the possibility to create, deploy, scale, manage and monitor WordPress sites directly from the dashboard, or right from the Kubernetes cluster using kubectl.
+The Bitpoke App for WordPress is a versatile and simple to use cloud-native hosting platform to create, deploy, scale, manage and monitor WordPress sites.
 
-The product was developed as a horizontal scaling solution for WordPress agencies, big publishers, site owners, and hosting companies with millions of users per second struggling to find solutions that combine the Kubernetes flexibility and the security offered by Google Cloud Platform.
+It is as a multi-tenant, horizontal scaling solution for high-end agencies, publishers, shops, and hosting companies looking for modern solutions that combine the Kubernetes flexibility with the security offered by Google Cloud.
 
 [Learn more](https://www.bitpoke.io/wordpress/)
 
-
-
 ## Architecture
 
-The Bitpoke App for WordPress operates over [bitpoke/stack](https://github.com/bitpoke/stack) which is
-a collection of operators used for deploying a WordPress site.
+The Bitpoke App for WordPress operates over [bitpoke/stack](https://github.com/bitpoke/stack) which is an open system built on Kubernetes operators used for deploying a WordPress site.
 
 The following operators are included with this application:
- * [**WordPress Operator**](https://github.com/bitpoke/wordpress-operator) the operator in charge
-   of creating the deployment for a site
- * [**MySQL Operator**](https://github.com/bitpoke/mysql-operator) which creates the MySQL
-   databases for sites.
- * [**Cert Manager**](https://github.com/jetstack/cert-manager) used for managing and issuance TLS
-   certificates.
+ * [**Bitpoke WordPress Operator**](https://github.com/bitpoke/wordpress-operator) in charge of creating the deployment for a WordPress site.
+ * [**Bitpoke MySQL Operator**](https://github.com/bitpoke/mysql-operator) creates and manages the MySQL databases 
+ * [**Cert Manager**](https://github.com/jetstack/cert-manager) used for managing and issuing TLS certificates.
  * [**Nginx Ingress Controller**](https://github.com/kubernetes/ingress-nginx) for configuring NGINX.
  * [**Prometheus Operator**](https://github.com/prometheus-operator/prometheus-operator) for metrics collection.
 
-# Manual Installation Instructions
+## Manual Installation Instructions
 
-> __NOTE__
->
-> We recommend you to install the Bitpoke App for WordPress with just a few clicks directly from the [Google Cloud Marketplace](https://console.cloud.google.com/marketplace/product/press-labs-public/presslabs-dashboard), but you can also follow the instructions to install it manually.
+We recommend you to install the Bitpoke App for WordPress with just a few clicks directly from the [Google Cloud Marketplace](https://console.cloud.google.com/marketplace/product/press-labs-public/presslabs-dashboard), but you can also follow these instructions to install it via command line. We recommend using [Google Cloud Shell](https://ssh.cloud.google.com/?cloudshell_git_repo=https://github.com/bitpoke/bitpoke-gcp-marketplace&cloudshell_git_branch=release-1.8&cloudshell_tutorial=README.md&shellonly=true) but a local workstation is also an option. 
+If you are not using Cloud Shell, you'll need the following tools installed in your development environment: [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git), [gcloud](https://cloud.google.com/sdk/gcloud/), [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/), [helm](https://helm.sh/docs/intro/quickstart/).
 
-To install Bitpoke App for WordPress manually, you can use [Google Cloud Shell](https://ssh.cloud.google.com/?cloudshell_git_repo=https://github.com/bitpoke/bitpoke-gcp-marketplace&cloudshell_git_branch=release-1.8&cloudshell_tutorial=README.md&shellonly=true) or a local
-workstation to complete these steps.
+[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://ssh.cloud.google.com/?cloudshell_git_repo=https://github.com/bitpoke/bitpoke-gcp-marketplace&cloudshell_git_branch=release-1.8&cloudshell_tutorial=README.md&cloudshell_workspace=.&shellonly=true)
 
-[![Open in Cloud Shell](http://gstatic.com/cloudssh/images/open-btn.svg)](https://ssh.cloud.google.com/?cloudshell_git_repo=https://github.com/bitpoke/bitpoke-gcp-marketplace&cloudshell_git_branch=release-1.8&cloudshell_tutorial=README.md&shellonly=true)
-
-# Prerequisites
-
-## Set up command-line tools
-
-You'll need the following tools in your development environment. If you are
-using Cloud Shell, these tools are installed in your environment by default.
-
--   [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
--   [gcloud](https://cloud.google.com/sdk/gcloud/)
--   [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
--   [helm](https://helm.sh/docs/intro/quickstart/)
+If you're seeing this from Google Cloud Shell, start by pressing `Next`.
 
 ## Create a Google Kubernetes Cluster
-> __NOTE__
->
-> Bitpoke App for WordPress requires a GKE cluster with [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity), [Config Connector](https://cloud.google.com/config-connector/docs/how-to/install-upgrade-uninstall) and [Application Manager](https://cloud.google.com/kubernetes-engine/docs/how-to/add-on/application-delivery) add ons.
+
+Bitpoke App for WordPress requires a GKE cluster with [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity), [Config Connector](https://cloud.google.com/config-connector/docs/how-to/install-upgrade-uninstall) and [Application Manager](https://cloud.google.com/kubernetes-engine/docs/how-to/add-on/application-delivery) add ons.
 
 <walkthrough-project-setup></walkthrough-project-setup>
 <walkthrough-watcher-constant key="cluster-name" value="bitpoke-1"></walkthrough-watcher-constant>
 <walkthrough-watcher-constant key="zone" value="us-west1-a"></walkthrough-watcher-constant>
+<walkthrough-watcher-constant key="domain" value="app.mysite.com"></walkthrough-watcher-constant>
+<walkthrough-watcher-constant key="ip" value="12.34.56.78"></walkthrough-watcher-constant>
+
 
 Create a new cluster from the command line:
 
@@ -66,19 +48,31 @@ export MACHINE_TYPE="e2-standard-2"
 export NUM_NODES="4"
 ```
 
-```sh
-gcloud container clusters create "$CLUSTER" --zone "$ZONE" --workload-pool=$PROJECT.svc.id.goog --addons=ApplicationManager,ConfigConnector,HorizontalPodAutoscaling --machine-type=${MACHINE_TYPE} --num-nodes=${NUM_NODES}
-```
-
-Configure `kubectl` to connect to the new cluster.
+Set the project for the current workspace by running:
 
 ```sh
-gcloud container clusters get-credentials "$CLUSTER" --zone "$ZONE"
+gcloud config set project "$PROJECT"
 ```
 
-### Configure and Verify the provisioned Kubernetes Cluster
+For regular production nodes, use the command:
 
-#### Verify Application Manager
+```sh
+gcloud beta container clusters create "{{cluster-name}}" --zone "$ZONE" --workload-pool=$PROJECT.svc.id.goog --addons=ApplicationManager,ConfigConnector,HorizontalPodAutoscaling --machine-type=${MACHINE_TYPE} --num-nodes=${NUM_NODES}
+```
+
+For a cost-effective preemptible nodes cluster, you should run:
+
+```sh
+gcloud beta container clusters create "{{cluster-name}}" --zone "$ZONE" --preemptible --workload-pool=$PROJECT.svc.id.goog --addons=ApplicationManager,ConfigConnector,HorizontalPodAutoscaling --machine-type=${MACHINE_TYPE} --num-nodes=${NUM_NODES}
+```
+
+Configure `kubectl` to connect to the new cluster:
+
+```sh
+gcloud container clusters get-credentials "{{cluster-name}}" --zone "$ZONE"
+```
+
+## Verify Application Manager
 
 Application Manager run its components in the `application-system` namespace. You can verify the Pods are ready by running the following command:
 
@@ -91,55 +85,82 @@ If Application Manager is installed correctly, the output is similar to the foll
 ```terminal
 deployment.apps/application-controller-manager condition met
 ```
+If not, the Application Manager might not be properly set-up due to issue [201423655](https://issuetracker.google.com/issues/201423655).
+If that's the case run the following command:
 
-> __NOTE__
->
-> Application Manager might not be properly set-up due to issue [201423655](https://issuetracker.google.com/issues/201423655).
-> If that's the case follow the instructions in the bug report.
+```sh
+kubectl apply -f kalm-gcp-fix-201423655.yaml
+```
 
-#### Configure Config Connector
+## Configure Config Connector
 
-To configure the Config Connector, [follow the instructions provided in the Google Cloud Documentation](https://cloud.google.com/config-connector/docs/how-to/install-upgrade-uninstall).
+First, create an IAM service account, by running in Cloud Shell:
 
-# Install the Application
+```sh
+gcloud iam service-accounts create cnrm-system
+```
 
-## Add and update the Bitpoke Helm Repository
+Second, give elevated permissions to the new service account:
+
+```sh
+gcloud projects add-iam-policy-binding {{project-name}} \
+    --member="serviceAccount:cnrm-system@{{project-name}}.iam.gserviceaccount.com" \
+    --role="roles/owner"
+```
+
+Third, create an IAM policy binding between the IAM service account and the predefined Kubernetes service account that Config Connector runs:
+
+```sh
+gcloud iam service-accounts add-iam-policy-binding \
+cnrm-system@{{project-name}}.iam.gserviceaccount.com \
+    --member="serviceAccount:{{project-name}}.svc.id.goog[cnrm-system/cnrm-controller-manager]" \
+    --role="roles/iam.workloadIdentityUser"
+```
+
+Click <walkthrough-editor-select-regex filePath="configconnector.yaml" regex="PLACEHOLDER">here to edit</walkthrough-editor-select-regex> configconnector.yaml and replace `PLACEHOLDER` with {{project-name}}. Save and close.
+
+Then run the following command:
+
+```sh
+kubectl apply -f configconnector.yaml
+```
+
+## Prepare the application environment
+
+Add and update the Bitpoke Helm Repository:
 
 ```sh
 helm repo add bitpoke https://helm-charts.bitpoke.io
 helm repo update
 ```
 
-## Prepare the application environment
-
-#### Configure the environment
-
-Choose the instance name and namespace for the app:
+Next, we'll configure the environment. Choose the instance name and namespace for the app:
 
 ```sh
 export name=bitpoke-1
 export namespace=bitpoke
-export domain=domain.example.com
+export domain={{domain}}
 ```
 
 > __NOTE__
 >
-> It's highly recommended to [reserve a dedicated IP](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address) for your deployment. This way, on upgrades your deployed sites won't change heir IP address.
+> It's highly recommended to [reserve a dedicated IP](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address) for your deployment. so that on upgrades your deployed sites won't change their IP address.
 
 ```sh
-export loadBalancerIP="YOUR RESERVERD IP"
+export loadBalancerIP="{{ip}}"
 ```
 
-#### Create the application namespace
+Now we'll create the application namespace:
 
 ```sh
 kubectl create namespace "${namespace}"
 ```
 
-#### Obtain license key
+## Obtain license key
 
-You can [generate the license key](https://console.cloud.google.com/marketplace/kubernetes/config/press-labs-public/presslabs-dashboard) on the
-Marketplace application page from _Deploy via command line_ tab.
+You need to generate the license key on the Marketplace application page from _Deploy via command line_ [tab](https://console.cloud.google.com/marketplace/kubernetes/config/press-labs-public/presslabs-dashboard).
+
+Now upload the `license.yaml` file to the Google Cloud Shell by clicking on the three vertical dots icon and selecting the file.
 
 Apply the license key
 
@@ -155,11 +176,9 @@ export reportingSecret="$(kubectl -n $namespace get -o jsonpath={.metadata.name}
 
 ## Install the application
 
-
 #### Expand the application manifest template
 
-We recommend that you save the expanded
-manifest file for future updates to the application.
+We recommend that you save the expanded manifest file for future updates to the application.
 
 ```sh
 helm template -n "${namespace}" "${name}" bitpoke/bitpoke --skip-tests -f values.yaml --set-string marketplace.loadBalancerIP="${loadBalancerIP}" --set-string marketplace.domain="${domain}" --set-string metering.gcp.secretName="${reportingSecret}" > "${name}_manifest.yaml"
@@ -173,7 +192,7 @@ Use `kubectl` to apply the manifest to your Kubernetes cluster:
 kubectl -n "${namespace}" apply -f "${name}_manifest.yaml"
 ```
 
-# Congratulations!
+## Congratulations!
 
 <walkthrough-conclusion-trophy></walkthrough-conclusion-trophy>
 
